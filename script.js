@@ -12,7 +12,7 @@
 // === CONFIGURATION ===
 // WARNING: Exposing API keys in frontend code is unsafe for production.
 // This is done here strictly for a designated prototype environment.
-const GEMINI_API_KEY = "AIzaSyA5xcQTKIB5nlCd0LHrvLJwN6Ndb84Svoo";
+const GEMINI_API_KEY = "Private";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 // === AI SERVICE ===

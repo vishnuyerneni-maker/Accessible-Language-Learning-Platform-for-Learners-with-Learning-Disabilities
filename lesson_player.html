@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson - English Basics</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Inline styles for player-specific layout -->
+    <style>
+        .lesson-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+        
+        .visual-aid {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .text-content {
+            font-size: 1.2rem; /* Larger default for readability */
+            line-height: 1.8;
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .lesson-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ACCESSIBILITY TOOLBAR -->
+    <aside class="a11y-toolbar">
+        <button id="a11y-theme" class="a11y-btn">🌗 Theme</button>
+        <button id="a11y-font" class="a11y-btn">Aa Font</button>
+        <button id="a11y-size-up" class="a11y-btn">A+</button>
+        <button id="a11y-size-down" class="a11y-btn">A-</button>
+    </aside>
+
+    <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="dashboard.html" class="btn btn-outline" style="font-size: 0.9rem;">&larr; Back to Dashboard</a>
+            <h3 style="margin: 0; color: var(--text-muted);">Module 1: Greetings</h3>
+            <div><!-- Spacer --></div>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 40px;">
+        
+        <div class="card lesson-layout">
+            
+            <!-- LEFT: Visual Aid (Multi-modal) -->
+            <div>
+                <!-- Using a placeholder image for prototype -->
+                <div style="background-color: #ddd; height: 300px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #666;">
+                    [ Illustration of Two People Shaking Hands ]
+                </div>
+                <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+                    Fig 1.1 - A formal greeting
+                </p>
+            </div>
+
+            <!-- RIGHT: Text Content & Audio -->
+            <div>
+                <h1 id="lesson-title" style="margin-bottom: 20px;">Saying "Hello"</h1>
+                
+                <div id="lesson-text" class="text-content">
+                    <p>In English, there are many ways to say hello.</p>
+                    <p>The most common way is simply to say <strong>"Hello"</strong> or <strong>"Hi"</strong>.</p>
+                    <p>When meeting someone for the first time, used "Nice to meet you."</p>
+                </div>
+
+                <!-- Assistive Actions -->
+                <div style="margin-top: 20px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="speakText('lesson-text')">
+                        🔊 Read Aloud
+                    </button>
+                    <button class="btn btn-outline" onclick="alert('Microphone integration coming in Module 5.')">
+                        🎙️ Practice Speaking
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="controls">
+            <button class="btn btn-outline" disabled>Previous</button>
+            <button class="btn btn-primary" onclick="completeLesson()">Next: Take Quiz &rarr;</button>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        function completeLesson() {
+            // Mark progress as 80% (Lesson done, quiz remaining)
+            MockBackend.updateProgress('course_101', 80);
+            
+            showToast("Lesson Completed! Progress Saved.");
+            setTimeout(() => {
+                window.location.href = 'quiz.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

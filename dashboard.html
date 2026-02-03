@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Accessible Learn</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ACCESSIBILITY TOOLBAR -->
+    <aside class="a11y-toolbar" aria-label="Accessibility Tools">
+        <button id="a11y-theme" class="a11y-btn">🌗 Theme</button>
+        <button id="a11y-font" class="a11y-btn">Aa Font</button>
+        <button id="a11y-size-up" class="a11y-btn">A+</button>
+        <button id="a11y-size-down" class="a11y-btn">A-</button>
+    </aside>
+
+    <!-- Header / Navigation -->
+    <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="color: var(--primary-color); margin: 0;">My Dashboard</h2>
+            <nav>
+                <span>Welcome, <strong>Student</strong></span>
+                <a href="profile.html" class="btn btn-outline" style="margin-left: 10px; padding: 5px 15px; font-size: 0.9rem;">My Profile</a>
+                <a href="index.html" class="btn btn-outline" style="margin-left: 5px; padding: 5px 15px; font-size: 0.9rem;">Log Out</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top: 30px;">
+        
+        <!-- Welcome Section -->
+        <section style="margin-bottom: 30px;">
+            <h1>Continue Learning</h1>
+            <p style="color: var(--text-muted);">Pick up where you left off.</p>
+        </section>
+
+        <!-- Course Grid (Dynamic) -->
+        <div id="course-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+            <!-- Courses will be loaded here by JS -->
+            <p>Loading courses...</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Dashboard Specific Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+        });
+
+        function renderDashboard() {
+            const grid = document.getElementById('course-grid');
+            const courses = MockBackend.getCourses();
+            
+            grid.innerHTML = ''; // Clear loading text
+
+            if (courses.length === 0) {
+                grid.innerHTML = '<p>No courses available.</p>';
+                return;
+            }
+
+            courses.forEach(course => {
+                const isLocked = course.locked;
+                const btnClass = isLocked ? 'btn-outline' : 'btn-primary';
+                const btnText = isLocked ? 'Locked 🔒' : (course.progress > 0 ? 'Resume Lesson' : 'Start Lesson');
+                const btnAction = isLocked ? '' : `onclick="window.location.href='lesson_player.html?course=${course.id}'"`;
+                const btnState = isLocked ? 'disabled' : '';
+
+                const cardHtml = `
+                    <article class="card">
+                        <div style="background-color: #eee; height: 150px; border-radius: var(--radius-md); margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                            ${course.image}
+                        </div>
+                        <h3>${course.title}</h3>
+                        <p style="margin-bottom: 15px; min-height: 48px;">${course.description}</p>
+                        
+                        <!-- Progress Bar -->
+                        <div style="background: #e0e0e0; border-radius: 10px; height: 10px; margin-bottom: 15px;">
+                            <div style="background: var(--secondary-color); width: ${course.progress}%; height: 100%; border-radius: 10px; transition: width 0.5s;"></div>
+                        </div>
+                        <p style="font-size: 0.8rem; margin-bottom: 15px;">
+                            ${course.progress}% Completed
+                        </p>
+
+                        <button class="btn ${btnClass}" style="width: 100%;" ${btnAction} ${btnState}>
+                            ${btnText}
+                        </button>
+                    </article>
+                `;
+                grid.innerHTML += cardHtml;
+            });
+        }
+    </script>
+</body>
+</html>

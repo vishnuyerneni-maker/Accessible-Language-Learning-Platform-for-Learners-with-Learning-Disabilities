@@ -1,0 +1,18 @@
+Accessible Language Learning Platform for Learners with Learning Disabilities
+
+This project is a specialized web-based educational platform designed to support learners with cognitive and sensory challenges such as dyslexia, ADHD, and auditory processing difficulties. Unlike traditional learning apps, it prioritizes accessibility through a custom-built, adaptive user interface.
+
+Key Modules Implemented:
+
+1.  **User Management & Roles**: The system supports distinct roles for Students and Parents. Students access a simplified, distraction-free learning environment, while Parents have a dedicated dashboard to monitor their child's progress, activity logs, and performance in real-time. Secure authentication ensures data privacy.
+
+2.  **Core Accessibility Engine**: A persistent accessibility toolbar allows users to instantly toggle High Contrast modes, enable Dyslexia-Friendly fonts (OpenDyslexic simulation), and adjust text size. These preferences are saved locally, ensuring a consistent experience across sessions.
+
+3.  **Multi-Modal Learning Delivery**: Lessons are delivered using a combination of text, varied visual cues, and integrated Text-to-Speech (TTS) functionality. This multi-sensory approach helps reinforce concepts for learners who struggle with text-only instruction.
+
+4.  **AI-Powered Assessment**: The platform integrates Generative AI (Google Gemini) to create dynamic, infinite quiz content. Uniquely, it provides real-time, context-aware explanations for every answer, turning assessments into active learning moments rather than just evaluations.
+
+5.  **Gamified Progression**: A smart locking mechanism ensures students master foundational concepts (e.g., Greetings) before advancing to complex topics (e.g., Active Listening). Visual progress bars and immediate feedback loops keep learners motivated.
+
+Technical Architecture:
+Built with a lightweight, standards-compliant HTML5/CSS3/JavaScript stack, the application uses a simulated local storage backend to demonstrate full functionality (CRUD operations, auth, state management) without requiring complex server setup, making it ideal for rapid deployment and testing.

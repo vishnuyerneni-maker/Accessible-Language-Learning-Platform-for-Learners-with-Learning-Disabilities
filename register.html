@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Accessible Learn</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function toggleForm(type) {
+            document.getElementById('student-fields').style.display = type === 'student' ? 'block' : 'none';
+            document.getElementById('parent-fields').style.display = type === 'parent' ? 'block' : 'none';
+            
+            // Visual toggle state
+            document.getElementById('btn-student').classList.toggle('btn-primary', type === 'student');
+            document.getElementById('btn-student').classList.toggle('btn-outline', type !== 'student');
+            document.getElementById('btn-parent').classList.toggle('btn-primary', type === 'parent');
+            document.getElementById('btn-parent').classList.toggle('btn-outline', type !== 'parent');
+        }
+    </script>
+</head>
+<body>
+
+    <!-- ACCESSIBILITY TOOLBAR -->
+    <aside class="a11y-toolbar">
+        <button id="a11y-theme" class="a11y-btn">🌗 Theme</button>
+        <button id="a11y-font" class="a11y-btn">Aa Font</button>
+        <button id="a11y-size-up" class="a11y-btn">A+</button>
+        <button id="a11y-size-down" class="a11y-btn">A-</button>
+    </aside>
+
+    <main class="container" style="max-width: 600px; margin-top: 50px;">
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 20px;">Create an Account</h2>
+            
+            <!-- Type Toggle -->
+            <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
+                <button id="btn-student" class="btn btn-primary" onclick="toggleForm('student')">I am a Student</button>
+                <button id="btn-parent" class="btn btn-outline" onclick="toggleForm('parent')">I am a Parent</button>
+            </div>
+
+            <form action="dashboard.html">
+                <!-- Common Fields -->
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Full Name</label>
+                    <input type="text" class="form-input" required style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Email Address</label>
+                    <input type="email" class="form-input" required style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Password</label>
+                    <input type="password" class="form-input" required style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+                </div>
+
+                <!-- Student Specific -->
+                <div id="student-fields">
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 5px;">Age</label>
+                        <input type="number" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+                    </div>
+                </div>
+
+                <!-- Parent Specific -->
+                <div id="parent-fields" style="display: none;">
+                    <div style="margin-bottom: 15px; background: #eef; padding: 10px; border-radius: 4px;">
+                        <label style="display: block; margin-bottom: 5px;"><strong>Child Linking</strong></label>
+                        <p style="font-size: 0.9rem; margin-bottom: 10px;">Enter your child's student ID or email to link accounts.</p>
+                        <input type="text" placeholder="Child's Email / ID" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #ccc;">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 20px;">Register</button>
+                <p style="text-align: center; margin-top: 15px;">Already have an account? <a href="index.html">Log In</a></p>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

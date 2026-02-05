@@ -61,13 +61,84 @@ const MockBackend = {
     // Initial Seed Data (Simulating a DB)
     seedData: {
         courses: [
+            // ===== DYSLEXIA-FOCUSED COURSES =====
+            {
+                id: 'dyslexia_101',
+                title: 'Letter Recognition Fun',
+                description: 'Learn to identify letters through colorful games and activities.',
+                totalModules: 5,
+                image: '🔤',
+                locked: false,
+                category: 'dyslexia',
+                color: '#FF6B35',
+                illustration: 'castle'
+            },
+            {
+                id: 'dyslexia_102',
+                title: 'Phonics Adventures',
+                description: 'Master letter sounds with fun audio exercises and songs.',
+                totalModules: 6,
+                image: '🎵',
+                locked: false,
+                category: 'dyslexia',
+                color: '#8B5CF6',
+                illustration: 'music'
+            },
+            {
+                id: 'dyslexia_103',
+                title: 'Word Building Magic',
+                description: 'Build words letter by letter with drag-and-drop activities.',
+                totalModules: 5,
+                image: '🧩',
+                locked: false,
+                category: 'dyslexia',
+                color: '#06B6D4',
+                illustration: 'puzzle'
+            },
+            {
+                id: 'dyslexia_104',
+                title: 'Reading with Pictures',
+                description: 'Associate words with images to boost comprehension.',
+                totalModules: 4,
+                image: '🖼️',
+                locked: false,
+                category: 'dyslexia',
+                color: '#EC4899',
+                illustration: 'art'
+            },
+            {
+                id: 'dyslexia_105',
+                title: 'Rhyme Time Stories',
+                description: 'Learn through fun rhymes and rhythm patterns.',
+                totalModules: 5,
+                image: '📖',
+                locked: false,
+                category: 'dyslexia',
+                color: '#10B981',
+                illustration: 'book'
+            },
+            {
+                id: 'dyslexia_106',
+                title: 'Syllable Superstars',
+                description: 'Break words into syllables with clapping games.',
+                totalModules: 4,
+                image: '👏',
+                locked: false,
+                category: 'dyslexia',
+                color: '#F59E0B',
+                illustration: 'star'
+            },
+            // ===== REGULAR ENGLISH COURSES =====
             {
                 id: 'course_101',
                 title: 'English Greeting Basics',
                 description: 'Learn how to introduce yourself and ask simple questions.',
                 totalModules: 3,
                 image: '👋',
-                locked: false
+                locked: false,
+                category: 'english',
+                color: '#3B82F6',
+                illustration: 'wave'
             },
             {
                 id: 'course_102',
@@ -75,7 +146,10 @@ const MockBackend = {
                 description: 'Practice understanding spoken phrases in noisy environments.',
                 totalModules: 4,
                 image: '👂',
-                locked: true
+                locked: true,
+                category: 'english',
+                color: '#7C3AED',
+                illustration: 'ear'
             },
             {
                 id: 'course_103',
@@ -83,7 +157,10 @@ const MockBackend = {
                 description: 'Essential words for daily life and family conversations.',
                 totalModules: 5,
                 image: '🏠',
-                locked: true
+                locked: true,
+                category: 'english',
+                color: '#059669',
+                illustration: 'home'
             },
             {
                 id: 'course_104',
@@ -91,7 +168,10 @@ const MockBackend = {
                 description: 'Professional communication for workplace success.',
                 totalModules: 6,
                 image: '💼',
-                locked: true
+                locked: true,
+                category: 'english',
+                color: '#DC2626',
+                illustration: 'briefcase'
             },
             {
                 id: 'course_105',
@@ -99,7 +179,10 @@ const MockBackend = {
                 description: 'Essential expressions for traveling abroad with confidence.',
                 totalModules: 5,
                 image: '✈️',
-                locked: true
+                locked: true,
+                category: 'english',
+                color: '#2563EB',
+                illustration: 'plane'
             },
             {
                 id: 'course_106',
@@ -107,39 +190,10 @@ const MockBackend = {
                 description: 'Order food, read menus, and dine out like a native.',
                 totalModules: 4,
                 image: '🍴',
-                locked: true
-            },
-            {
-                id: 'course_107',
-                title: 'Shopping & Money',
-                description: 'Learn to shop, bargain, and handle transactions.',
-                totalModules: 4,
-                image: '🛒',
-                locked: true
-            },
-            {
-                id: 'course_108',
-                title: 'Health & Medical',
-                description: 'Describe symptoms and communicate with healthcare providers.',
-                totalModules: 5,
-                image: '⚕️',
-                locked: true
-            },
-            {
-                id: 'course_109',
-                title: 'Social Media English',
-                description: 'Internet slang, abbreviations, and online communication.',
-                totalModules: 3,
-                image: '📱',
-                locked: true
-            },
-            {
-                id: 'course_110',
-                title: 'Advanced Conversations',
-                description: 'Master complex dialogues and natural expressions.',
-                totalModules: 7,
-                image: '💬',
-                locked: true
+                locked: true,
+                category: 'english',
+                color: '#EA580C',
+                illustration: 'food'
             }
         ],
         users: [

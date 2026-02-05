@@ -27,104 +27,79 @@
     <header style="padding: 30px 0;">
         <nav class="container flex justify-between items-center">
             <div class="flex items-center gap-md">
-                <span style="font-size: 2rem;">📚</span>
-                <h1 style="margin: 0; font-size: 1.75rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AccessLearn</h1>
+                <span style="font-size: 2.5rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📚</span>
+                <h1 style="margin: 0; font-size: 2rem; font-family: var(--font-display); background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AccessLearn</h1>
             </div>
-            <a href="index.html" class="btn btn-ghost">← Back to Login</a>
+            <a href="index.html" class="btn btn-ghost btn-3d">← Back to Login</a>
         </nav>
     </header>
 
     <!-- Registration Form -->
     <section style="padding: 40px 0;">
-        <div class="container" style="max-width: 600px;">
-            <div class="card animate-scale-in">
-                <h2 style="text-align: center; margin-bottom: 15px;">Create Your Account</h2>
-                <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">
-                    Join AccessLearn and start your learning journey with secure authentication
+        <div class="container" style="max-width: 650px;">
+            <div class="card animate-scale-in" style="padding: 50px;">
+                <h2 style="text-align: center; margin-bottom: 15px; font-family: var(--font-display); font-size: 2.5rem; color: var(--primary-purple);">Create Your Account</h2>
+                <p style="text-align: center; color: var(--text-medium); margin-bottom: 40px; font-size: 1.1rem; font-weight: 500;">
+                    Join AccessLearn and start your extraordinary learning journey!
                 </p>
 
                 <form id="registration-form">
                     <!-- Username -->
-                    <div style="margin-bottom: 25px;">
-                        <label for="reg-username" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                            Username <span style="color: var(--error-color);">*</span>
-                        </label>
-                        <input type="text" id="reg-username" required
-                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
-                               placeholder="Choose a unique username">
-                        <small style="color: var(--text-muted); display: block; margin-top: 5px;">
-                            3-20 characters, letters and numbers only
-                        </small>
+                    <div class="input-group">
+                        <label for="reg-username">Choose a Cool Username <span style="color: var(--error-color);">*</span></label>
+                        <input type="text" id="reg-username" required placeholder="Ex: SuperLearner123">
+                        <small style="color: var(--text-light); display: block; margin-top: 8px;">3-20 characters, letters and numbers only</small>
                     </div>
 
                     <!-- Full Name -->
-                    <div style="margin-bottom: 25px;">
-                        <label for="reg-name" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                            Full Name <span style="color: var(--error-color);">*</span>
-                        </label>
-                        <input type="text" id="reg-name" required
-                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
-                               placeholder="Enter your full name">
+                    <div class="input-group">
+                        <label for="reg-name">Your Full Name <span style="color: var(--error-color);">*</span></label>
+                        <input type="text" id="reg-name" required placeholder="Ex: Jane Doe">
                     </div>
 
                     <!-- Email -->
-                    <div style="margin-bottom: 25px;">
-                        <label for="reg-email" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                            Email Address <span style="color: var(--error-color);">*</span>
-                        </label>
-                        <input type="email" id="reg-email" required
-                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
-                               placeholder="your.email@example.com">
+                    <div class="input-group">
+                        <label for="reg-email">Your Email Address <span style="color: var(--error-color);">*</span></label>
+                        <input type="email" id="reg-email" required placeholder="your.email@example.com">
                     </div>
 
                     <!-- Password -->
-                    <div style="margin-bottom: 25px;">
-                        <label for="reg-password" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                            Password <span style="color: var(--error-color);">*</span>
-                        </label>
+                    <div class="input-group">
+                        <label for="reg-password">Create a Strong Password <span style="color: var(--error-color);">*</span></label>
                         <div style="position: relative;">
-                            <input type="password" id="reg-password" required
-                                   style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; padding-right: 45px;"
-                                   placeholder="Create a strong password">
+                            <input type="password" id="reg-password" required placeholder="At least 8 characters">
                             <button type="button" onclick="togglePassword('reg-password')" 
-                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+                                    style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.5rem;">
                                 👁️
                             </button>
                         </div>
-                        <div id="password-strength" style="margin-top: 10px; font-size: 0.9rem;"></div>
-                        <small style="color: var(--text-muted); display: block; margin-top: 5px;">
-                            At least 8 characters, include uppercase, lowercase, number, and special character
-                        </small>
+                        <div id="password-strength" style="margin-top: 10px; font-size: 0.95rem;"></div>
                     </div>
 
                     <!-- Confirm Password -->
-                    <div style="margin-bottom: 30px;">
-                        <label for="reg-confirm-password" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                            Confirm Password <span style="color: var(--error-color);">*</span>
-                        </label>
+                    <div class="input-group">
+                        <label for="reg-confirm-password">Confirm Your Password <span style="color: var(--error-color);">*</span></label>
                         <div style="position: relative;">
-                            <input type="password" id="reg-confirm-password" required
-                                   style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; padding-right: 45px;"
-                                   placeholder="Re-enter your password">
+                            <input type="password" id="reg-confirm-password" required placeholder="Type it again!">
                             <button type="button" onclick="togglePassword('reg-confirm-password')" 
-                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+                                    style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.5rem;">
                                 👁️
                             </button>
                         </div>
-                        <div id="password-match" style="margin-top: 5px; font-size: 0.9rem;"></div>
+                        <div id="password-match" style="margin-top: 8px; font-size: 0.95rem;"></div>
                     </div>
 
                     <!-- Error Message -->
-                    <div id="registration-error" style="display: none; background: rgba(239, 68, 68, 0.1); color: var(--error-color); padding: 12px; border-radius: var(--radius-md); margin-bottom: 20px; text-align: center;"></div>
+                    <div id="registration-error" style="display: none; background: rgba(239, 68, 68, 0.1); color: var(--error-color); padding: 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; font-weight: 600;"></div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-primary btn-lg hover-lift" style="width: 100%;">
-                        Create Account
+                    <button type="submit" class="btn btn-primary btn-lg btn-3d" style="width: 100%; font-size: 1.3rem;">
+                        Create My Account! 🚀
                     </button>
 
                     <!-- Login Link -->
-                    <p style="text-align: center; margin-top: 25px; color: var(--text-muted);">
-                        Already have an account? <a href="index.html" style="color: var(--primary-color); font-weight: 600;">Sign in</a>
+                    <p style="text-align: center; margin-top: 30px; color: var(--text-medium); font-size: 1.1rem;">
+                        Already have an account? <a href="index.html" style="color: var(--primary-orange); font-weight: 800; text-decoration: none;">Sign in here</a>
                     </p>
                 </form>
             </div>

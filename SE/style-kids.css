@@ -6,7 +6,7 @@
 /* =========================================
    GOOGLE FONTS IMPORT
    ========================================= */
-@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Quicksand:wght@300;400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Quicksand:wght@300;400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&family=Lexend:wght@300;400;500;600;700;800;900&display=swap');
 
 /* =========================================
    CSS CUSTOM PROPERTIES (VARIABLES)
@@ -31,7 +31,7 @@
     --surface-color: #FFFFFF;
     --surface-elevated: #F8FAFC;
     --text-color: #1E293B;
-    --text-muted: #64748B;
+    --text-muted: #475569;
     --border-color: rgba(0, 0, 0, 0.1);
     --error-color: #EF4444;
     --success-color: #10B981;
@@ -65,17 +65,17 @@
         radial-gradient(at 0% 0%, hsla(343,100%,76%,0.3) 0px, transparent 50%);
     
     /* Glass Effect */
-    --glass-bg: rgba(255, 255, 255, 0.25);
-    --glass-border: rgba(255, 255, 255, 0.4);
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.6);
     --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     --glass-blur: blur(12px);
     
     /* UI Colors */
     --white: #FFFFFF;
-    --off-white: #FAFAFA;
-    --text-dark: #1E293B;
-    --text-medium: #475569;
-    --text-light: #94A3B8;
+    --off-white: #F8FAFC;
+    --text-dark: #0F172A;
+    --text-medium: #334155;
+    --text-light: #64748B;
     --border-light: rgba(0, 0, 0, 0.05);
     
     /* 3D Shadows */
@@ -84,44 +84,19 @@
         0 2px 4px rgba(0,0,0,0.07),
         0 4px 8px rgba(0,0,0,0.07);
     --shadow-3d-md: 
-        0 2px 4px rgba(0,0,0,0.07),
-        0 4px 8px rgba(0,0,0,0.07),
-        0 8px 16px rgba(0,0,0,0.07),
-        0 16px 32px rgba(0,0,0,0.07);
-    --shadow-3d-lg: 
-        0 4px 8px rgba(0,0,0,0.07),
-        0 8px 16px rgba(0,0,0,0.07),
-        0 16px 32px rgba(0,0,0,0.07),
-        0 32px 64px rgba(0,0,0,0.07);
-    --shadow-3d-xl: 
-        0 8px 16px rgba(0,0,0,0.1),
-        0 16px 32px rgba(0,0,0,0.1),
-        0 32px 64px rgba(0,0,0,0.1),
-        0 64px 128px rgba(0,0,0,0.1);
-    
-    /* Glow Shadows */
-    --glow-purple: 0 0 20px rgba(139, 92, 246, 0.5), 0 0 40px rgba(139, 92, 246, 0.3), 0 0 60px rgba(139, 92, 246, 0.1);
-    --glow-pink: 0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3), 0 0 60px rgba(236, 72, 153, 0.1);
-    --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.5), 0 0 40px rgba(6, 182, 212, 0.3), 0 0 60px rgba(6, 182, 212, 0.1);
-    --glow-orange: 0 0 20px rgba(251, 146, 60, 0.5), 0 0 40px rgba(251, 146, 60, 0.3), 0 0 60px rgba(251, 146, 60, 0.1);
-    
-    /* Border Radius */
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    --radius-xl: 32px;
-    --radius-2xl: 40px;
-    --radius-full: 9999px;
+        0 2px 4px rgba(0,0,0,0.1),
+        0 4px 8px rgba(0,0,0,0.1),
+        0 8px 16px rgba(0,0,0,0.1);
     
     /* Typography */
     --font-display: 'Bubblegum Sans', cursive;
-    --font-heading: 'Fredoka', 'Poppins', sans-serif;
-    --font-body: 'Poppins', 'Quicksand', sans-serif;
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Lexend', 'Quicksand', sans-serif;
     
-    /* Timing Functions */
-    --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    --ease-elastic: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    /* Visibility Helpers */
+    --text-shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+    --text-shadow-md: 0 2px 4px rgba(0,0,0,0.2);
+    --text-shadow-lg: 0 4px 8px rgba(0,0,0,0.3);
 }
 
 /* =========================================
@@ -976,6 +951,103 @@ select:focus {
 .achievement-locked {
     opacity: 0.5;
     filter: grayscale(1);
+}
+
+/* =========================================
+   DYSLEXIA CENTER SPECIAL STYLES
+   ========================================= */
+.hero-dyslexia {
+    text-align: center;
+    padding: 60px 40px;
+    background: var(--gradient-aurora);
+    border-radius: var(--radius-2xl);
+    color: white;
+    margin-bottom: 50px;
+    box-shadow: var(--shadow-3d-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-dyslexia h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    text-shadow: var(--text-shadow-md);
+    animation: popIn 0.8s var(--ease-bounce);
+}
+
+.hero-dyslexia p {
+    font-size: 1.4rem;
+    max-width: 800px;
+    margin: 0 auto;
+    opacity: 0.95;
+    font-weight: 500;
+    text-shadow: var(--text-shadow-sm);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 60px;
+}
+
+.feature-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: 40px 30px;
+    text-align: center;
+    transition: all 0.4s var(--ease-elastic);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.feature-card:hover {
+    transform: translateY(-15px) scale(1.03);
+    border-color: var(--primary-cyan);
+    box-shadow: var(--glow-cyan), var(--shadow-3d-lg);
+}
+
+.feature-icon {
+    font-size: 4rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+    transition: transform 0.3s var(--ease-bounce);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.feature-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--primary-purple);
+    margin-bottom: 10px;
+}
+
+.feature-description {
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Dyslexia Mode (Accessible Font) */
+.dyslexia-mode {
+    font-family: 'OpenDyslexic', 'Lexend', sans-serif !important;
+}
+
+@font-face {
+    font-family: 'OpenDyslexic';
+    src: url('https://antijingoist.github.io/opendyslexic/fonts/OpenDyslexic-Regular.otf');
 }
 
 /* =========================================

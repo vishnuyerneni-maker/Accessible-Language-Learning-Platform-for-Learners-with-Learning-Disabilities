@@ -18,14 +18,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
-    <!-- Decorative Elements -->
-    <div class="blob" style="background: var(--primary-yellow); width: 300px; height: 300px; top: -100px; left: -100px;"></div>
-    <div class="blob" style="background: var(--primary-purple); width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: -5s;"></div>
-    <div class="cloud" style="top: 100px; left: 10%; animation: float 8s infinite ease-in-out;"></div>
-    <div class="cloud" style="top: 250px; right: 15%; animation: float 10s infinite ease-in-out; animation-delay: -2s;"></div>
-    <div class="deco-icon" style="top: 150px; left: 20%;">⭐</div>
-    <div class="deco-icon" style="bottom: 100px; right: 25%;">🎨</div>
-    <div class="deco-icon" style="top: 400px; left: 5%;">🚀</div>
+    <!-- Animated Background Blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    
+    <!-- Floating Decorative Icons -->
+    <div class="deco-icon" style="top: 100px; left: 5%; animation-delay: 0s;">⭐</div>
+    <div class="deco-icon" style="top: 200px; right: 10%; animation-delay: -2s;">🎨</div>
+    <div class="deco-icon" style="bottom: 150px; left: 15%; animation-delay: -4s;">🚀</div>
+    <div class="deco-icon" style="top: 400px; right: 5%; animation-delay: -1s;">🎯</div>
+    <div class="deco-icon" style="bottom: 300px; right: 20%; animation-delay: -3s;">✨</div>
 
     <!-- Accessibility Toolbar -->
     <aside class="a11y-toolbar animate-slide-in-right" aria-label="Accessibility Tools">
@@ -37,10 +40,13 @@
 
     <!-- Modern Navigation Header -->
     <header style="padding: 30px 0;">
-        <nav class="container flex justify-between items-center">
-            <div class="flex items-center gap-md">
-                <span style="font-size: 2rem;">📚</span>
-                <h1 style="margin: 0; font-size: 1.75rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AccessLearn</h1>
+        <nav class="navbar container animate-fade-in-down">
+            <div style="display: flex; align-items: center; gap: 16px;">
+                <span style="font-size: 2.5rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📚</span>
+                <h1 style="margin: 0; font-size: 2rem;">AccessLearn</h1>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <a href="register.html" class="btn btn-ghost btn-sm">Sign Up</a>
             </div>
         </nav>
     </header>

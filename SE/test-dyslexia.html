@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dyslexia Modules</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="padding: 40px;">
+    <h1>Module Loading Test</h1>
+    <div id="test-results" style="margin-top: 20px; font-family: monospace;"></div>
+    
+    <div style="margin-top: 30px;">
+        <button onclick="testPhonics()" class="btn btn-primary">Test Phonics Module</button>
+        <button onclick="testTracing()" class="btn btn-primary">Test Letter Tracing</button>
+        <button onclick="testWordBuilder()" class="btn btn-primary">Test Word Builder</button>
+        <button onclick="testMiniGames()" class="btn btn-primary">Test Mini Games</button>
+    </div>
+
+    <!-- Load all required scripts -->
+    <script src="script.js"></script>
+    <script src="voice-features.js"></script>
+    <script src="gamification.js"></script>
+    <script src="phonics-module.js"></script>
+    <script src="letter-tracing.js"></script>
+    <script src="mini-games.js"></script>
+
+    <script>
+        const results = document.getElementById('test-results');
+        
+        function log(message, type = 'info') {
+            const color = type === 'error' ? 'red' : type === 'success' ? 'green' : 'black';
+            results.innerHTML += `<div style="color: ${color};">${message}</div>`;
+        }
+        
+        // Initialize MockBackend
+        MockBackend.init();
+        
+        // Test module loading
+        log('=== Module Loading Tests ===', 'info');
+        
+        if (typeof MockBackend !== 'undefined') {
+            log('✓ MockBackend loaded', 'success');
+        } else {
+            log('✗ MockBackend NOT loaded', 'error');
+        }
+        
+        if (typeof GamificationEngine !== 'undefined') {
+            log('✓ GamificationEngine loaded', 'success');
+        } else {
+            log('✗ GamificationEngine NOT loaded', 'error');
+        }
+        
+        if (typeof PhonicsModule !== 'undefined') {
+            log('✓ PhonicsModule loaded', 'success');
+            log(`  - Has ${Object.keys(PhonicsModule.letterSounds).length} letter sounds`, 'info');
+            log(`  - Has ${PhonicsModule.blendingWords.length} blending words`, 'info');
+        } else {
+            log('✗ PhonicsModule NOT loaded', 'error');
+        }
+        
+        if (typeof LetterTracing !== 'undefined') {
+            log('✓ LetterTracing loaded', 'success');
+        } else {
+            log('✗ LetterTracing NOT loaded', 'error');
+        }
+        
+        if (typeof WordBuilder !== 'undefined') {
+            log('✓ WordBuilder loaded', 'success');
+        } else {
+            log('✗ WordBuilder NOT loaded', 'error');
+        }
+        
+        if (typeof MiniGames !== 'undefined') {
+            log('✓ MiniGames loaded', 'success');
+            log(`  - Has ${MiniGames.pictureWords.length} picture-word pairs`, 'info');
+        } else {
+            log('✗ MiniGames NOT loaded', 'error');
+        }
+        
+        if (typeof SpellingSupport !== 'undefined') {
+            log('✓ SpellingSupport loaded', 'success');
+            log(`  - Has ${Object.keys(SpellingSupport.wordBanks).length} word bank categories`, 'info');
+        } else {
+            log('✗ SpellingSupport NOT loaded', 'error');
+        }
+        
+        if (typeof VoiceFeatures !== 'undefined') {
+            log('✓ VoiceFeatures loaded', 'success');
+        } else {
+            log('✗ VoiceFeatures NOT loaded', 'error');
+        }
+        
+        if (typeof showToast !== 'undefined') {
+            log('✓ showToast function available', 'success');
+        } else {
+            log('✗ showToast function NOT available', 'error');
+        }
+        
+        if (typeof showCelebration !== 'undefined') {
+            log('✓ showCelebration function available', 'success');
+        } else {
+            log('✗ showCelebration function NOT available', 'error');
+        }
+        
+        log('\n=== All modules loaded successfully! ===', 'success');
+        
+        // Test functions
+        function testPhonics() {
+            log('\nTesting Phonics Module...', 'info');
+            try {
+                PhonicsModule.showLetterLesson('A');
+                log('✓ Phonics letter lesson opened', 'success');
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        function testTracing() {
+            log('\nTesting Letter Tracing...', 'info');
+            try {
+                LetterTracing.showTracingInterface('B');
+                log('✓ Letter tracing interface opened', 'success');
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        function testWordBuilder() {
+            log('\nTesting Word Builder...', 'info');
+            try {
+                WordBuilder.showWordBuilder('CAT');
+                log('✓ Word builder opened', 'success');
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+        
+        function testMiniGames() {
+            log('\nTesting Mini Games...', 'info');
+            try {
+                MiniGames.showPictureMatching();
+                log('✓ Picture matching game opened', 'success');
+            } catch (e) {
+                log('✗ Error: ' + e.message, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

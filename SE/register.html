@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - AccessLearn</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
+</head>
+<body>
+    <!-- Accessibility Toolbar -->
+    <aside class="a11y-toolbar animate-slide-in-right" aria-label="Accessibility Tools">
+        <button id="a11y-theme" class="a11y-btn">🌗 Theme</button>
+        <button id="a11y-font" class="a11y-btn">Aa Font</button>
+        <button id="a11y-size-up" class="a11y-btn">A+</button>
+        <button id="a11y-size-down" class="a11y-btn">A-</button>
+    </aside>
+
+    <!-- Header -->
+    <header style="padding: 30px 0;">
+        <nav class="container flex justify-between items-center">
+            <div class="flex items-center gap-md">
+                <span style="font-size: 2rem;">📚</span>
+                <h1 style="margin: 0; font-size: 1.75rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">AccessLearn</h1>
+            </div>
+            <a href="index.html" class="btn btn-ghost">← Back to Login</a>
+        </nav>
+    </header>
+
+    <!-- Registration Form -->
+    <section style="padding: 40px 0;">
+        <div class="container" style="max-width: 600px;">
+            <div class="card animate-scale-in">
+                <h2 style="text-align: center; margin-bottom: 15px;">Create Your Account</h2>
+                <p style="text-align: center; color: var(--text-muted); margin-bottom: 40px;">
+                    Join AccessLearn and start your learning journey with secure authentication
+                </p>
+
+                <form id="registration-form">
+                    <!-- Username -->
+                    <div style="margin-bottom: 25px;">
+                        <label for="reg-username" style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Username <span style="color: var(--error-color);">*</span>
+                        </label>
+                        <input type="text" id="reg-username" required
+                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
+                               placeholder="Choose a unique username">
+                        <small style="color: var(--text-muted); display: block; margin-top: 5px;">
+                            3-20 characters, letters and numbers only
+                        </small>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div style="margin-bottom: 25px;">
+                        <label for="reg-name" style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Full Name <span style="color: var(--error-color);">*</span>
+                        </label>
+                        <input type="text" id="reg-name" required
+                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
+                               placeholder="Enter your full name">
+                    </div>
+
+                    <!-- Email -->
+                    <div style="margin-bottom: 25px;">
+                        <label for="reg-email" style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Email Address <span style="color: var(--error-color);">*</span>
+                        </label>
+                        <input type="email" id="reg-email" required
+                               style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem;"
+                               placeholder="your.email@example.com">
+                    </div>
+
+                    <!-- Password -->
+                    <div style="margin-bottom: 25px;">
+                        <label for="reg-password" style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Password <span style="color: var(--error-color);">*</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" id="reg-password" required
+                                   style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; padding-right: 45px;"
+                                   placeholder="Create a strong password">
+                            <button type="button" onclick="togglePassword('reg-password')" 
+                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+                                👁️
+                            </button>
+                        </div>
+                        <div id="password-strength" style="margin-top: 10px; font-size: 0.9rem;"></div>
+                        <small style="color: var(--text-muted); display: block; margin-top: 5px;">
+                            At least 8 characters, include uppercase, lowercase, number, and special character
+                        </small>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div style="margin-bottom: 30px;">
+                        <label for="reg-confirm-password" style="display: block; margin-bottom: 8px; font-weight: 500;">
+                            Confirm Password <span style="color: var(--error-color);">*</span>
+                        </label>
+                        <div style="position: relative;">
+                            <input type="password" id="reg-confirm-password" required
+                                   style="width: 100%; padding: 12px 16px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; padding-right: 45px;"
+                                   placeholder="Re-enter your password">
+                            <button type="button" onclick="togglePassword('reg-confirm-password')" 
+                                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem;">
+                                👁️
+                            </button>
+                        </div>
+                        <div id="password-match" style="margin-top: 5px; font-size: 0.9rem;"></div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div id="registration-error" style="display: none; background: rgba(239, 68, 68, 0.1); color: var(--error-color); padding: 12px; border-radius: var(--radius-md); margin-bottom: 20px; text-align: center;"></div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary btn-lg hover-lift" style="width: 100%;">
+                        Create Account
+                    </button>
+
+                    <!-- Login Link -->
+                    <p style="text-align: center; margin-top: 25px; color: var(--text-muted);">
+                        Already have an account? <a href="index.html" style="color: var(--primary-color); font-weight: 600;">Sign in</a>
+                    </p>
+                </form>
+            </div>
+
+            <!-- Password Requirements Card -->
+            <div class="card" style="margin-top: 30px; background: var(--surface-elevated);">
+                <h4 style="margin-bottom: 15px;">🔐 Password Requirements</h4>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                    <li id="req-length" style="padding: 8px 0; color: var(--text-muted);">
+                        ○ At least 8 characters
+                    </li>
+                    <li id="req-uppercase" style="padding: 8px 0; color: var(--text-muted);">
+                        ○ One uppercase letter (A-Z)
+                    </li>
+                    <li id="req-lowercase" style="padding: 8px 0; color: var(--text-muted);">
+                        ○ One lowercase letter (a-z)
+                    </li>
+                    <li id="req-number" style="padding: 8px 0; color: var(--text-muted);">
+                        ○ One number (0-9)
+                    </li>
+                    <li id="req-special" style="padding: 8px 0; color: var(--text-muted);">
+                        ○ One special character (!@#$%^&*)
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="gamification.js"></script>
+    <script>
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        // Password strength validation
+        function validatePasswordStrength(password) {
+            const requirements = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            // Update requirement indicators
+            document.getElementById('req-length').innerHTML = requirements.length ? '✓ At least 8 characters' : '○ At least 8 characters';
+            document.getElementById('req-length').style.color = requirements.length ? 'var(--success-color)' : 'var(--text-muted)';
+            
+            document.getElementById('req-uppercase').innerHTML = requirements.uppercase ? '✓ One uppercase letter (A-Z)' : '○ One uppercase letter (A-Z)';
+            document.getElementById('req-uppercase').style.color = requirements.uppercase ? 'var(--success-color)' : 'var(--text-muted)';
+            
+            document.getElementById('req-lowercase').innerHTML = requirements.lowercase ? '✓ One lowercase letter (a-z)' : '○ One lowercase letter (a-z)';
+            document.getElementById('req-lowercase').style.color = requirements.lowercase ? 'var(--success-color)' : 'var(--text-muted)';
+            
+            document.getElementById('req-number').innerHTML = requirements.number ? '✓ One number (0-9)' : '○ One number (0-9)';
+            document.getElementById('req-number').style.color = requirements.number ? 'var(--success-color)' : 'var(--text-muted)';
+            
+            document.getElementById('req-special').innerHTML = requirements.special ? '✓ One special character (!@#$%^&*)' : '○ One special character (!@#$%^&*)';
+            document.getElementById('req-special').style.color = requirements.special ? 'var(--success-color)' : 'var(--text-muted)';
+
+            const allValid = Object.values(requirements).every(v => v);
+            
+            // Show strength indicator
+            const strengthDiv = document.getElementById('password-strength');
+            if (password.length === 0) {
+                strengthDiv.innerHTML = '';
+            } else if (allValid) {
+                strengthDiv.innerHTML = '<span style="color: var(--success-color); font-weight: bold;">✓ Strong password</span>';
+            } else {
+                const satisfied = Object.values(requirements).filter(v => v).length;
+                const strength = satisfied < 3 ? 'Weak' : satisfied < 5 ? 'Medium' : 'Good';
+                const color = satisfied < 3 ? 'var(--error-color)' : satisfied < 5 ? '#f59e0b' : 'var(--success-color)';
+                strengthDiv.innerHTML = `<span style="color: ${color}; font-weight: bold;">${strength} password</span>`;
+            }
+
+            return allValid;
+        }
+
+        // Check password match
+        function checkPasswordMatch() {
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const matchDiv = document.getElementById('password-match');
+
+            if (confirmPassword.length === 0) {
+                matchDiv.innerHTML = '';
+                return false;
+            }
+
+            if (password === confirmPassword) {
+                matchDiv.innerHTML = '<span style="color: var(--success-color);">✓ Passwords match</span>';
+                return true;
+            } else {
+                matchDiv.innerHTML = '<span style="color: var(--error-color);">✗ Passwords do not match</span>';
+                return false;
+            }
+        }
+
+        // Real-time validation
+        document.getElementById('reg-password').addEventListener('input', (e) => {
+            validatePasswordStrength(e.target.value);
+            if (document.getElementById('reg-confirm-password').value) {
+                checkPasswordMatch();
+            }
+        });
+
+        document.getElementById('reg-confirm-password').addEventListener('input', checkPasswordMatch);
+
+        // Handle registration
+        document.getElementById('registration-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('reg-username').value.trim();
+            const name = document.getElementById('reg-name').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const errorDiv = document.getElementById('registration-error');
+
+            // Validate username
+            if (username.length < 3 || username.length > 20) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Username must be 3-20 characters';
+                return;
+            }
+
+            if (!/^[a-zA-Z0-9]+$/.test(username)) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Username can only contain letters and numbers';
+                return;
+            }
+
+            // Validate password strength
+            if (!validatePasswordStrength(password)) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Password does not meet requirements';
+                return;
+            }
+
+            // Check password match
+            if (password !== confirmPassword) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Passwords do not match';
+                return;
+            }
+
+            // Check if username already exists
+            const users = JSON.parse(localStorage.getItem('app_users_db')) || [];
+            if (users.find(u => u.username === username)) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Username already exists. Please choose another.';
+                return;
+            }
+
+            // Check if email already exists
+            if (users.find(u => u.email === email)) {
+                errorDiv.style.display = 'block';
+                errorDiv.textContent = 'Email already registered. Please use another.';
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                id: 'u_' + Date.now(),
+                username: username,
+                password: password, // In production, this should be hashed
+                role: 'student',
+                name: name,
+                email: email,
+                progress: {},
+                recentActivity: [],
+                gamification: {
+                    xp: 0,
+                    level: 1,
+                    badges: [],
+                    currentStreak: 0,
+                    longestStreak: 0,
+                    lastLoginDate: null
+                },
+                mfaEnabled: false,
+                mfaSecret: null
+            };
+
+            // Add to database
+            users.push(newUser);
+            localStorage.setItem('app_users_db', JSON.stringify(users));
+
+            // Show success message
+            showToast('✅ Account created successfully! Please login.');
+            
+            // Redirect to login page after 2 seconds
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        });
+
+        // Initialize MockBackend
+        MockBackend.init();
+    </script>
+</body>
+</html>

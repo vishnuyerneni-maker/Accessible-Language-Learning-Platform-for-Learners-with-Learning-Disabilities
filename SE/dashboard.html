@@ -113,67 +113,38 @@
             </div>
         </div>
 
-        <!-- Courses Section - Extraordinary Design -->
-        <section class="courses-section animate-fade-in" style="margin-bottom: 50px;">
-            <!-- Section Header -->
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; flex-wrap: wrap; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <span style="font-size: 3rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">📖</span>
-                    <div>
-                        <h2 style="margin: 0; font-size: 2.5rem; font-family: var(--font-display); background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Your Courses</h2>
-                        <p style="margin: 5px 0 0 0; color: var(--text-medium); font-weight: 500;">Choose your learning adventure!</p>
-                    </div>
+        <!-- Two Column Layout -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px;">
+            
+            <!-- Left: Courses Section -->
+            <div>
+                <div class="flex justify-between items-center" style="margin-bottom: 25px;">
+                    <h2 style="margin: 0;">📖 Your Courses</h2>
+                    <span class="badge badge-outline">10 Courses</span>
                 </div>
-                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <button class="course-filter-btn active" data-filter="all" onclick="filterCourses('all')" style="padding: 10px 20px; border-radius: 25px; border: 2px solid var(--primary-orange); background: var(--primary-orange); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">All Courses</button>
-                    <button class="course-filter-btn" data-filter="dyslexia" onclick="filterCourses('dyslexia')" style="padding: 10px 20px; border-radius: 25px; border: 2px solid var(--primary-purple); background: transparent; color: var(--primary-purple); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">🧠 Dyslexia</button>
-                    <button class="course-filter-btn" data-filter="english" onclick="filterCourses('english')" style="padding: 10px 20px; border-radius: 25px; border: 2px solid var(--primary-cyan); background: transparent; color: var(--primary-cyan); font-weight: 600; cursor: pointer; transition: all 0.3s ease;">📚 English</button>
-                </div>
-            </div>
-
-            <!-- Popular This Week Banner -->
-            <div class="popular-banner animate-scale-in" style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); border-radius: 24px; padding: 25px 35px; margin-bottom: 35px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 15px 50px rgba(255, 107, 53, 0.35); flex-wrap: wrap; gap: 20px;">
-                <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="width: 80px; height: 80px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-                        <span style="font-size: 2.8rem;">🌟</span>
-                    </div>
-                    <div>
-                        <h3 style="margin: 0 0 8px 0; color: white; font-size: 1.6rem; font-family: var(--font-display); text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Popular This Week!</h3>
-                        <p style="margin: 0; color: rgba(255,255,255,0.95); font-weight: 600; font-size: 1.1rem;">Letter Recognition Fun - 1,234 students learning</p>
-                    </div>
-                </div>
-                <button class="btn" style="background: white; color: #FF6B35; font-weight: 700; padding: 14px 30px; border-radius: 30px; box-shadow: 0 6px 20px rgba(0,0,0,0.15); font-size: 1.1rem; border: none; cursor: pointer; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onclick="window.location.href='lesson_player.html?course=dyslexia_101'">
-                    Start Now 🚀
-                </button>
-            </div>
-
-            <!-- Course Grid - Extraordinary Cards -->
-            <div id="course-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px;">
-                <p>Loading courses...</p>
-            </div>
-        </section>
-
-        <!-- Two Column Layout for Badges & Activity -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 40px;">
-            <!-- Earned Badges Section -->
-            <div class="card animate-slide-in-left" style="padding: 30px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 24px;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                    <span style="font-size: 2.5rem;">🏆</span>
-                    <h3 style="margin: 0; font-family: var(--font-display); font-size: 1.8rem; color: var(--primary-orange);">Earned Badges</h3>
-                </div>
-                <div id="badges-container" style="display: flex; flex-wrap: wrap; gap: 15px; min-height: 100px;">
-                    <p style="color: var(--text-muted); font-size: 1rem;">Complete activities to earn badges!</p>
+                
+                <!-- Course Grid -->
+                <div id="course-grid" class="grid-2">
+                    <p>Loading courses...</p>
                 </div>
             </div>
             
-            <!-- Recent Activity Feed -->
-            <div class="card animate-slide-in-right" style="padding: 30px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); border-radius: 24px;">
-                <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 25px;">
-                    <span style="font-size: 2.5rem;">📊</span>
-                    <h3 style="margin: 0; font-family: var(--font-display); font-size: 1.8rem; color: var(--primary-purple);">Recent Activity</h3>
+            <!-- Right: Badges & Recent Activity -->
+            <div>
+                <!-- Earned Badges Section -->
+                <div class="card animate-slide-in-right" style="margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 20px;">🏆 Earned Badges</h3>
+                    <div id="badges-container" style="display: flex; flex-wrap: wrap; gap: 15px; min-height: 80px;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Complete activities to earn badges!</p>
+                    </div>
                 </div>
-                <div id="activity-feed" style="max-height: 300px; overflow-y: auto;">
-                    <p style="color: var(--text-muted); font-size: 1rem;">Your recent activities will appear here</p>
+                
+                <!-- Recent Activity Feed -->
+                <div class="card animate-slide-in-right delay-1">
+                    <h3 style="margin-bottom: 20px;">📊 Recent Activity</h3>
+                    <div id="activity-feed" style="max-height: 400px; overflow-y: auto;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Your recent activities will appear here</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -250,134 +221,60 @@
             document.getElementById('xp-progress-fill').style.width = progress.percentage + '%';
         }
         
-        function renderCourses(filter = 'all') {
+        function renderCourses() {
             const grid = document.getElementById('course-grid');
-            let courses = MockBackend.getCourses();
-            
-            // Apply filter
-            if (filter !== 'all') {
-                courses = courses.filter(c => c.category === filter);
-            }
+            const courses = MockBackend.getCourses();
             
             grid.innerHTML = '';
 
             if (courses.length === 0) {
-                grid.innerHTML = '<p style="text-align: center; color: var(--text-muted); grid-column: 1/-1; padding: 40px;">No courses found in this category.</p>';
+                grid.innerHTML = '<p>No courses available.</p>';
                 return;
             }
 
             courses.forEach((course, index) => {
                 const isLocked = course.locked;
-                const courseColor = course.color || '#FF6B35';
-                const progress = course.progress || 0;
-                const progressDegrees = (progress / 100) * 360;
+                const btnClass = isLocked ? 'btn-outline' : 'btn-primary';
+                const btnText = isLocked ? '🔒 Locked' : (course.progress > 0 ? '▶️ Resume' : '🚀 Start');
+                const btnAction = isLocked ? '' : `onclick="window.location.href='lesson_player.html?course=${course.id}'"`;                const btnState = isLocked ? 'disabled' : '';
                 
+                const gradients = [
+                    'var(--purple-gradient)',
+                    'var(--pink-gradient)',
+                    'var(--cyan-gradient)',
+                    'var(--card-gradient)',
+                    'var(--green-gradient)'
+                ];
+
                 const card = document.createElement('article');
-                card.className = 'course-card-extraordinary animate-fade-in';
-                card.setAttribute('data-category', course.category || 'english');
-                card.style.cssText = `
-                    background: white;
-                    border-radius: 24px;
-                    overflow: hidden;
-                    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                    cursor: pointer;
-                    animation-delay: ${index * 0.1}s;
-                    position: relative;
-                `;
-                
-                card.onmouseenter = function() {
-                    this.style.transform = 'translateY(-12px) scale(1.02)';
-                    this.style.boxShadow = '0 25px 60px rgba(0,0,0,0.15)';
-                };
-                card.onmouseleave = function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                    this.style.boxShadow = '0 10px 40px rgba(0,0,0,0.08)';
-                };
-                
+                card.className = 'card hover-lift animate-fade-in';
+                card.style.animationDelay = `${index * 0.1}s`;
                 card.innerHTML = `
-                    <!-- Card Header with Illustration -->
-                    <div style="background: ${courseColor}; height: 160px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <!-- Decorative circles -->
-                        <div style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: rgba(255,255,255,0.15); border-radius: 50%;"></div>
-                        <div style="position: absolute; bottom: -20px; left: -20px; width: 80px; height: 80px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-                        
-                        <!-- Main Icon -->
-                        <div style="position: relative; z-index: 2;">
-                            <div style="width: 90px; height: 90px; background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-                                <span style="font-size: 3.5rem; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">${course.image}</span>
-                            </div>
-                        </div>
-                        
-                        <!-- Category Badge -->
-                        <div style="position: absolute; top: 15px; left: 15px; background: rgba(255,255,255,0.9); padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; color: ${courseColor}; text-transform: uppercase; letter-spacing: 0.5px;">
-                            ${course.category === 'dyslexia' ? '🧠 Dyslexia' : '📚 English'}
-                        </div>
-                        
-                        ${isLocked ? `
-                            <div style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.7); padding: 8px 16px; border-radius: 20px; color: white; font-size: 0.85rem; font-weight: 600;">
-                                🔒 Locked
-                            </div>
-                        ` : ''}
-                        
-                        <!-- Progress Ring (if not locked) -->
-                        ${!isLocked && progress > 0 ? `
-                            <div style="position: absolute; bottom: -25px; right: 20px; width: 60px; height: 60px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.15);">
-                                <div style="width: 50px; height: 50px; border-radius: 50%; background: conic-gradient(${courseColor} ${progressDegrees}deg, #e5e7eb ${progressDegrees}deg); display: flex; align-items: center; justify-content: center;">
-                                    <div style="width: 38px; height: 38px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; color: ${courseColor};">
-                                        ${progress}%
-                                    </div>
-                                </div>
-                            </div>
-                        ` : ''}
+                    <div style="background: ${gradients[index % 3]}; height: 180px; border-radius: var(--radius-lg); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden;">
+                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.1);"></div>
+                        <div style="position: relative; z-index: 1;">${course.image}</div>
+                        ${isLocked ? '<div style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 20px; color: white; font-size: 0.85rem;">🔒 Locked</div>' : ''}
                     </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.3rem;">${course.title}</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.95rem; min-height: 48px;">${course.description}</p>
                     
-                    <!-- Card Content -->
-                    <div style="padding: 25px 20px 20px 20px;">
-                        <h3 style="margin: 0 0 10px 0; font-size: 1.25rem; font-weight: 700; color: #1a1a2e; font-family: var(--font-heading);">${course.title}</h3>
-                        <p style="margin: 0 0 20px 0; color: #64748b; font-size: 0.95rem; line-height: 1.5; min-height: 45px;">${course.description}</p>
-                        
-                        <!-- Course Stats -->
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; padding: 12px 15px; background: #f8fafc; border-radius: 12px;">
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 1.1rem;">📚</span>
-                                <span style="font-size: 0.85rem; color: #475569; font-weight: 500;">${course.totalModules} Modules</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 8px;">
-                                <span style="font-size: 1.1rem;">⭐</span>
-                                <span style="font-size: 0.85rem; color: #475569; font-weight: 500;">${course.category === 'dyslexia' ? 'Beginner' : 'All Levels'}</span>
-                            </div>
+                    <!-- Modern Progress Bar -->
+                    <div style="margin-bottom: 20px;">
+                        <div class="flex justify-between items-center" style="margin-bottom: 8px;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Progress</span>
+                            <span class="badge badge-success" style="font-size: 0.8rem;">${course.progress}%</span>
                         </div>
-                        
-                        <!-- Action Button -->
-                        <button 
-                            style="width: 100%; padding: 14px 20px; border: none; border-radius: 14px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; ${isLocked ? 'background: #e5e7eb; color: #9ca3af; cursor: not-allowed;' : `background: ${courseColor}; color: white; box-shadow: 0 4px 15px ${courseColor}40;`}"
-                            ${isLocked ? 'disabled' : `onclick="window.location.href='lesson_player.html?course=${course.id}'"`}
-                            ${!isLocked ? `onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 6px 25px ${courseColor}50';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 15px ${courseColor}40';"` : ''}
-                        >
-                            ${isLocked ? '🔒 Complete Previous Course' : (progress > 0 ? '▶️ Continue Learning' : '🚀 Start Adventure')}
-                        </button>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: ${course.progress}%;"></div>
+                        </div>
                     </div>
+
+                    <button class="btn ${btnClass} hover-lift" style="width: 100%;" ${btnAction} ${btnState}>
+                        ${btnText}
+                    </button>
                 `;
                 grid.appendChild(card);
             });
-        }
-        
-        // Filter courses function
-        function filterCourses(filter) {
-            // Update active button styles
-            document.querySelectorAll('.course-filter-btn').forEach(btn => {
-                const btnFilter = btn.getAttribute('data-filter');
-                if (btnFilter === filter) {
-                    btn.style.background = btn.style.borderColor;
-                    btn.style.color = 'white';
-                } else {
-                    btn.style.background = 'transparent';
-                    btn.style.color = btn.style.borderColor;
-                }
-            });
-            
-            renderCourses(filter);
         }
         
         function renderBadges(user) {

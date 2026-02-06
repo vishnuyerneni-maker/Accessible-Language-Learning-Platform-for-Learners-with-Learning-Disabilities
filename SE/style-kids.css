@@ -1556,6 +1556,525 @@ select:focus {
 }
 
 /* =========================================
+   EXTRAORDINARY COURSE CARDS SECTION
+   ========================================= */
+
+/* Course Section Header */
+.course-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.course-section-title {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--primary-orange);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-shadow: 2px 2px 0px rgba(255, 107, 53, 0.2);
+}
+
+.course-section-title .icon-bounce {
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.view-all-btn {
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--primary-orange);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-full);
+    border: 2px solid var(--primary-orange);
+    transition: all 0.3s ease;
+}
+
+.view-all-btn:hover {
+    background: var(--primary-orange);
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Course Cards Grid */
+.course-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Individual Course Card - Kids Learning App Style */
+.course-card-modern {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 
+        0 10px 40px rgba(255, 107, 53, 0.1),
+        0 6px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s var(--ease-elastic);
+    position: relative;
+    border: 3px solid transparent;
+}
+
+.course-card-modern:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 
+        0 20px 60px rgba(255, 107, 53, 0.2),
+        0 12px 30px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary-orange);
+}
+
+/* Course Card Illustration Header */
+.course-card-illustration {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.course-card-illustration.gradient-orange {
+    background: linear-gradient(135deg, #FF9A56 0%, #FF6B35 50%, #E85D04 100%);
+}
+
+.course-card-illustration.gradient-purple {
+    background: linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #7C3AED 100%);
+}
+
+.course-card-illustration.gradient-cyan {
+    background: linear-gradient(135deg, #67E8F9 0%, #06B6D4 50%, #0891B2 100%);
+}
+
+.course-card-illustration.gradient-pink {
+    background: linear-gradient(135deg, #F9A8D4 0%, #EC4899 50%, #DB2777 100%);
+}
+
+.course-card-illustration.gradient-green {
+    background: linear-gradient(135deg, #6EE7B7 0%, #10B981 50%, #059669 100%);
+}
+
+.course-card-illustration.gradient-yellow {
+    background: linear-gradient(135deg, #FDE047 0%, #FACC15 50%, #EAB308 100%);
+}
+
+/* Illustration Container - Book/Castle Style */
+.illustration-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.illustration-book {
+    position: relative;
+    width: 120px;
+    height: 100px;
+    background: white;
+    border-radius: 8px 20px 20px 8px;
+    box-shadow: 
+        -5px 5px 15px rgba(0, 0, 0, 0.2),
+        inset -5px 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.illustration-book::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 5px;
+    bottom: 5px;
+    width: 15px;
+    background: linear-gradient(90deg, #f0f0f0, #e0e0e0);
+    border-radius: 3px 0 0 3px;
+}
+
+.illustration-icon {
+    font-size: 4rem;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+    animation: float 4s ease-in-out infinite;
+    z-index: 1;
+}
+
+/* Decorative Elements on Card */
+.card-deco-star {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+.card-deco-star:nth-child(1) { top: 15px; right: 20px; animation-delay: 0s; }
+.card-deco-star:nth-child(2) { top: 40px; right: 50px; animation-delay: 0.5s; }
+.card-deco-star:nth-child(3) { bottom: 20px; left: 20px; animation-delay: 1s; }
+
+/* Free/Premium Badge */
+.course-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.course-badge.free {
+    background: linear-gradient(135deg, #10B981, #059669);
+    color: white;
+}
+
+.course-badge.premium {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+}
+
+.course-badge.new {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: white;
+}
+
+.course-badge.popular {
+    background: linear-gradient(135deg, #EC4899, #DB2777);
+    color: white;
+}
+
+/* Locked Overlay */
+.course-locked-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.course-card-modern.locked .course-locked-overlay {
+    opacity: 1;
+}
+
+.lock-icon {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Course Card Body */
+.course-card-body {
+    padding: 25px;
+    background: white;
+}
+
+.course-card-category {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary-orange);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.course-card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+
+.course-card-description {
+    font-size: 0.95rem;
+    color: var(--text-medium);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    min-height: 48px;
+}
+
+/* Course Meta Info */
+.course-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 15px;
+    border-top: 2px dashed rgba(0, 0, 0, 0.08);
+    margin-bottom: 20px;
+}
+
+.course-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: var(--text-medium);
+}
+
+.course-meta-item .meta-icon {
+    font-size: 1.2rem;
+}
+
+/* Course Progress */
+.course-progress-wrapper {
+    margin-bottom: 20px;
+}
+
+.course-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.course-progress-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-medium);
+}
+
+.course-progress-percent {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--primary-orange);
+}
+
+.course-progress-bar {
+    height: 12px;
+    background: rgba(255, 107, 53, 0.15);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.course-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #FF6B35, #FFD93D);
+    border-radius: 10px;
+    transition: width 1s var(--ease-elastic);
+    position: relative;
+}
+
+.course-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        transparent 100%
+    );
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Course Action Button */
+.course-action-btn {
+    width: 100%;
+    padding: 16px 24px;
+    border: none;
+    border-radius: 16px;
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s var(--ease-elastic);
+    position: relative;
+    overflow: hidden;
+}
+
+.course-action-btn.btn-start {
+    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    color: white;
+    box-shadow: 0 6px 0 #D35400, 0 8px 20px rgba(255, 107, 53, 0.3);
+}
+
+.course-action-btn.btn-start:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 #D35400, 0 12px 30px rgba(255, 107, 53, 0.4);
+}
+
+.course-action-btn.btn-start:active {
+    transform: translateY(3px);
+    box-shadow: 0 3px 0 #D35400, 0 4px 10px rgba(255, 107, 53, 0.2);
+}
+
+.course-action-btn.btn-resume {
+    background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+    color: white;
+    box-shadow: 0 6px 0 #5B21B6, 0 8px 20px rgba(139, 92, 246, 0.3);
+}
+
+.course-action-btn.btn-resume:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 #5B21B6, 0 12px 30px rgba(139, 92, 246, 0.4);
+}
+
+.course-action-btn.btn-locked {
+    background: linear-gradient(135deg, #9CA3AF, #6B7280);
+    color: white;
+    box-shadow: 0 6px 0 #4B5563, 0 8px 20px rgba(107, 114, 128, 0.3);
+    cursor: not-allowed;
+}
+
+/* Shine Effect on Button */
+.course-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.course-action-btn:hover::before {
+    left: 100%;
+}
+
+/* Heart/Favorite Button */
+.course-favorite-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.course-favorite-btn:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 20px rgba(236, 72, 153, 0.3);
+}
+
+.course-favorite-btn.active {
+    background: linear-gradient(135deg, #EC4899, #DB2777);
+    color: white;
+}
+
+/* Popular This Week Section */
+.popular-section {
+    margin-top: 50px;
+    padding: 30px;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 30px;
+    border: 2px solid var(--glass-border);
+}
+
+.popular-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.popular-card:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.15);
+}
+
+.popular-card-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.popular-card-content {
+    flex: 1;
+}
+
+.popular-card-title {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--primary-orange);
+    margin-bottom: 5px;
+}
+
+.popular-card-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-medium);
+    margin-bottom: 8px;
+}
+
+.popular-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.8rem;
+    color: var(--text-light);
+}
+
+/* Chapters Badge */
+.chapters-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 12px;
+    background: rgba(255, 107, 53, 0.1);
+    color: var(--primary-orange);
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* =========================================
    ADDITIONAL UTILITY CLASSES
    ========================================= */
 

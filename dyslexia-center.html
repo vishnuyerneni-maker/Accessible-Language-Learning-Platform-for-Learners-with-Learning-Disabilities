@@ -4,78 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dyslexia Learning Center - AccessLearn</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-kids.css">
     <link rel="stylesheet" href="animations.css">
-    <style>
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 40px 0;
-        }
-        
-        .feature-card {
-            background: var(--surface-color);
-            padding: 40px;
-            border-radius: var(--radius-xl);
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 3px solid transparent;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--primary-color);
-        }
-        
-        .feature-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            display: block;
-        }
-        
-        .feature-title {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--text-main);
-        }
-        
-        .feature-description {
-            color: var(--text-muted);
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-        
-        .hero-dyslexia {
-            background: var(--primary-gradient);
-            color: white;
-            padding: 80px 40px;
-            border-radius: var(--radius-xl);
-            text-align: center;
-            margin-bottom: 50px;
-            animation: fadeIn 0.5s;
-        }
-        
-        .hero-dyslexia h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            animation: slideInDown 0.6s;
-        }
-        
-        .hero-dyslexia p {
-            font-size: 1.4rem;
-            opacity: 0.9;
-            max-width: 800px;
-            margin: 0 auto;
-            animation: fadeIn 1s;
-        }
-    </style>
 </head>
 <body>
+    <!-- Decorative Elements -->
+    <div class="blob" style="background: var(--primary-green); width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+    <div class="blob" style="background: var(--primary-yellow); width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: -2s;"></div>
+    <div class="cloud" style="top: 80px; left: 15%; animation: float 10s infinite ease-in-out;"></div>
+    <div class="cloud" style="top: 250px; right: 10%; animation: float 11s infinite ease-in-out; animation-delay: -5s;"></div>
+    <div class="deco-icon" style="top: 120px; right: 20%;">🍭</div>
+    <div class="deco-icon" style="bottom: 150px; left: 10%;">🎨</div>
+    <div class="deco-icon" style="top: 500px; left: 5%;">🧩</div>
+
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
@@ -90,78 +31,78 @@
         </div>
     </nav>
 
-    <div class="container" style="padding-top: 120px; padding-bottom: 60px;">
-        <div class="hero-dyslexia">
+    <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
+        <div class="hero-dyslexia animate-pop-in">
             <h1>🧠 Dyslexia Learning Center</h1>
-            <p>Special tools and activities designed to make learning easier, fun, and accessible for everyone</p>
+            <p>Special tools and activities designed to make learning easier, fun, and accessible for everyone. Let's start your adventure!</p>
         </div>
 
-        <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Choose an Activity</h2>
+        <h2 style="text-align: center; margin-bottom: 50px; font-size: 3rem; background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: var(--font-display);">Choose an Activity</h2>
 
         <div class="feature-grid">
             <!-- Phonics & Letter Sounds -->
-            <div class="feature-card" onclick="showPhonicsMenu()">
+            <div class="feature-card animate-scale-in" onclick="showPhonicsMenu()">
                 <span class="feature-icon">🔤</span>
                 <h3 class="feature-title">Phonics & Letter Sounds</h3>
                 <p class="feature-description">Learn letter sounds, practice blending, and build reading skills</p>
-                <button class="btn btn-primary btn-lg">Start Learning</button>
+                <button class="btn btn-primary btn-3d">Start Learning</button>
             </div>
 
             <!-- Letter Tracing -->
-            <div class="feature-card" onclick="showTracingMenu()">
+            <div class="feature-card animate-scale-in delay-1" onclick="showTracingMenu()">
                 <span class="feature-icon">✍️</span>
                 <h3 class="feature-title">Letter Tracing</h3>
                 <p class="feature-description">Practice writing letters with interactive tracing on canvas</p>
-                <button class="btn btn-primary btn-lg">Start Tracing</button>
+                <button class="btn btn-pink btn-3d">Start Tracing</button>
             </div>
 
             <!-- Word Builder -->
-            <div class="feature-card" onclick="showWordBuilderMenu()">
+            <div class="feature-card animate-scale-in delay-2" onclick="showWordBuilderMenu()">
                 <span class="feature-icon">🧩</span>
                 <h3 class="feature-title">Build Words</h3>
                 <p class="feature-description">Drag and drop letters to build words and learn spelling</p>
-                <button class="btn btn-primary btn-lg">Build Words</button>
+                <button class="btn btn-cyan btn-3d">Build Words</button>
             </div>
 
             <!-- Picture Matching -->
-            <div class="feature-card" onclick="MiniGames.showPictureMatching()">
+            <div class="feature-card animate-scale-in delay-3" onclick="MiniGames.showPictureMatching()">
                 <span class="feature-icon">🎯</span>
                 <h3 class="feature-title">Picture Matching</h3>
                 <p class="feature-description">Match pictures with their words in this fun memory game</p>
-                <button class="btn btn-primary btn-lg">Play Game</button>
+                <button class="btn btn-green btn-3d">Play Game</button>
             </div>
 
             <!-- Memory Game -->
-            <div class="feature-card" onclick="MiniGames.showMemoryGame()">
+            <div class="feature-card animate-scale-in delay-4" onclick="MiniGames.showMemoryGame()">
                 <span class="feature-icon">🧠</span>
                 <h3 class="feature-title">Memory Match</h3>
                 <p class="feature-description">Find matching pairs to improve memory and word recognition</p>
-                <button class="btn btn-primary btn-lg">Play Game</button>
+                <button class="btn btn-secondary btn-3d">Play Game</button>
             </div>
 
             <!-- Spelling Practice -->
-            <div class="feature-card" onclick="showSpellingMenu()">
+            <div class="feature-card animate-scale-in delay-5" onclick="showSpellingMenu()">
                 <span class="feature-icon">✏️</span>
                 <h3 class="feature-title">Spelling Practice</h3>
                 <p class="feature-description">Practice spelling with hints, word banks, and audio support</p>
-                <button class="btn btn-primary btn-lg">Practice Spelling</button>
+                <button class="btn btn-rainbow btn-3d">Practice Spelling</button>
             </div>
         </div>
 
         <!-- Quick Access Buttons -->
-        <div style="text-align: center; margin-top: 60px;">
-            <h3 style="margin-bottom: 30px; font-size: 2rem;">Quick Tools</h3>
+        <div style="text-align: center; margin-top: 80px;">
+            <h3 style="margin-bottom: 40px; font-size: 2.2rem; font-family: var(--font-display); color: var(--primary-orange);">Quick Support Tools</h3>
             <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
-                <button onclick="VoiceFeatures.readAloud()" class="btn btn-secondary btn-lg">
+                <button onclick="VoiceFeatures.readAloud()" class="btn btn-secondary btn-3d btn-lg animate-float">
                     🔊 Read This Page
                 </button>
-                <button onclick="VoiceFeatures.startListening()" class="btn btn-secondary btn-lg">
+                <button onclick="VoiceFeatures.startListening()" class="btn btn-cyan btn-3d btn-lg animate-float delay-1">
                     🎤 Voice Commands
                 </button>
-                <button onclick="toggleDyslexiaMode()" class="btn btn-secondary btn-lg">
+                <button onclick="toggleDyslexiaMode()" class="btn btn-pink btn-3d btn-lg animate-float delay-2">
                     👁️ Dyslexia Font
                 </button>
-                <button onclick="adjustFontSize()" class="btn btn-secondary btn-lg">
+                <button onclick="adjustFontSize()" class="btn btn-green btn-3d btn-lg animate-float delay-3">
                     🔍 Larger Text
                 </button>
             </div>

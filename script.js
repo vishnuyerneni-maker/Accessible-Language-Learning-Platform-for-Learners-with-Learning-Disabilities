@@ -12,7 +12,7 @@
 // === CONFIGURATION ===
 // WARNING: Exposing API keys in frontend code is unsafe for production.
 // This is done here strictly for a designated prototype environment.
-const GEMINI_API_KEY = "Private";
+const GEMINI_API_KEY = "AIzaSyA5xcQTKIB5nlCd0LHrvLJwN6Ndb84Svoo";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`;
 
 // === AI SERVICE ===
@@ -66,7 +66,7 @@ const MockBackend = {
                 title: 'English Greeting Basics',
                 description: 'Learn how to introduce yourself and ask simple questions.',
                 totalModules: 3,
-                image: '👋', // Emoji as placeholder image
+                image: '👋',
                 locked: false
             },
             {
@@ -75,14 +75,70 @@ const MockBackend = {
                 description: 'Practice understanding spoken phrases in noisy environments.',
                 totalModules: 4,
                 image: '👂',
-                locked: true // Requires 101 completion (logic simulated)
+                locked: true
             },
             {
                 id: 'course_103',
                 title: 'Vocabulary: Home & Family',
-                description: 'Essential words for daily life.',
+                description: 'Essential words for daily life and family conversations.',
                 totalModules: 5,
                 image: '🏠',
+                locked: true
+            },
+            {
+                id: 'course_104',
+                title: 'Business English',
+                description: 'Professional communication for workplace success.',
+                totalModules: 6,
+                image: '💼',
+                locked: true
+            },
+            {
+                id: 'course_105',
+                title: 'Travel Phrases',
+                description: 'Essential expressions for traveling abroad with confidence.',
+                totalModules: 5,
+                image: '✈️',
+                locked: true
+            },
+            {
+                id: 'course_106',
+                title: 'Food & Restaurant',
+                description: 'Order food, read menus, and dine out like a native.',
+                totalModules: 4,
+                image: '🍴',
+                locked: true
+            },
+            {
+                id: 'course_107',
+                title: 'Shopping & Money',
+                description: 'Learn to shop, bargain, and handle transactions.',
+                totalModules: 4,
+                image: '🛒',
+                locked: true
+            },
+            {
+                id: 'course_108',
+                title: 'Health & Medical',
+                description: 'Describe symptoms and communicate with healthcare providers.',
+                totalModules: 5,
+                image: '⚕️',
+                locked: true
+            },
+            {
+                id: 'course_109',
+                title: 'Social Media English',
+                description: 'Internet slang, abbreviations, and online communication.',
+                totalModules: 3,
+                image: '📱',
+                locked: true
+            },
+            {
+                id: 'course_110',
+                title: 'Advanced Conversations',
+                description: 'Master complex dialogues and natural expressions.',
+                totalModules: 7,
+                image: '💬',
                 locked: true
             }
         ],
@@ -94,7 +150,11 @@ const MockBackend = {
                 role: 'student',
                 name: 'Student User',
                 email: 'student@example.com',
-                progress: { 'course_101': 0, 'course_102': 0, 'course_103': 0 },
+                progress: { 
+                    'course_101': 0, 'course_102': 0, 'course_103': 0,
+                    'course_104': 0, 'course_105': 0, 'course_106': 0,
+                    'course_107': 0, 'course_108': 0, 'course_109': 0, 'course_110': 0
+                },
                 recentActivity: []
             },
             {
@@ -216,7 +276,121 @@ const MockBackend = {
             text: `Completed Quiz: ${quizName} - Score: ${score}%`,
             time: new Date().toLocaleString()
         });
+        
+        // Gamification: Award XP for quiz
+        if (typeof GamificationEngine !== 'undefined') {
+            GamificationEngine.onQuizComplete(user, score);
+        }
+        
         this.saveUser(user);
+    },
+    
+    // ============================================
+    // OAuth Support Methods
+    // ============================================
+    
+    /**
+     * Find user by email address
+     */
+    findUserByEmail(email) {
+        const users = JSON.parse(localStorage.getItem('app_users_db'));
+        return users.find(u => u.email === email);
+    },
+    
+    /**
+     * Create a new user from OAuth data
+     */
+    createOAuthUser(oauthData) {
+        const users = JSON.parse(localStorage.getItem('app_users_db'));
+        
+        const newUser = {
+            id: 'u_oauth_' + Date.now(),
+            username: oauthData.email.split('@')[0],
+            password: null, // OAuth users don't have passwords
+            role: 'student',
+            name: oauthData.name,
+            email: oauthData.email,
+            oauthProvider: oauthData.provider,
+            oauthId: oauthData.id,
+            profilePicture: oauthData.picture || oauthData.profile?.picture,
+            progress: { 'course_101': 0, 'course_102': 0, 'course_103': 0 },
+            recentActivity: [
+                {
+                    text: `Account created via ${oauthData.provider}`,
+                    time: new Date().toLocaleString()
+                }
+            ],
+            gamification: {
+                xp: 0,
+                level: 1,
+                lessonsCompleted: 0,
+                coursesCompleted: 0,
+                perfectQuizzes: 0,
+                currentStreak: 0,
+                longestStreak: 0,
+                lastLoginDate: null,
+                badges: [],
+                lessonsToday: 0,
+                lastLessonDate: null
+            }
+        };
+        
+        users.push(newUser);
+        localStorage.setItem('app_users_db', JSON.stringify(users));
+        
+        return newUser;
+    },
+    
+    /**
+     * Update user progress with gamification
+     */
+    updateProgressWithGamification(courseId, percent) {
+        const user = this.getCurrentUser();
+        
+        // Only update if new percentage is higher
+        if (!user.progress[courseId] || percent > user.progress[courseId]) {
+            user.progress[courseId] = percent;
+            
+            // Log activity
+            user.recentActivity.unshift({
+                text: `Updated progress in ${courseId} to ${percent}%`,
+                time: new Date().toLocaleString()
+            });
+            
+            // Gamification: Award XP for lesson completion
+            if (typeof GamificationEngine !== 'undefined') {
+                GamificationEngine.onLessonComplete(user);
+            }
+            
+            // Unlock next course logic
+            if (courseId === 'course_101' && percent === 100) {
+                this.unlockCourse('course_102');
+                user.recentActivity.unshift({
+                    text: `🎊 Unlocked: Active Listening Skills`,
+                    time: new Date().toLocaleString()
+                });
+                
+                // Gamification: Award XP for course completion
+                if (typeof GamificationEngine !== 'undefined') {
+                    GamificationEngine.onCourseComplete(user);
+                }
+            }
+            
+            this.saveUser(user);
+        }
+    },
+    
+    /**
+     * Handle daily login with streak tracking
+     */
+    handleDailyLogin() {
+        const user = this.getCurrentUser();
+        if (!user || user.role !== 'student') return;
+        
+        if (typeof GamificationEngine !== 'undefined') {
+            GamificationEngine.updateStreak(user);
+            this.saveUser(user);
+        }
     }
 };
 
@@ -226,6 +400,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // === Initialize Data ===
     MockBackend.init();
+    
+    // === Handle Daily Login Streak ===
+    MockBackend.handleDailyLogin();
 
     // === Event Listeners for Toolbar ===
     const themeBtn = document.getElementById('a11y-theme');

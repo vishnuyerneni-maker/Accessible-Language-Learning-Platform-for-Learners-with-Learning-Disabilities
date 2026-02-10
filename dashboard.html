@@ -3,94 +3,367 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Accessible Learn</title>
+    <title>Dashboard - AccessLearn</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="animations.css">
 </head>
 <body>
 
     <!-- ACCESSIBILITY TOOLBAR -->
-    <aside class="a11y-toolbar" aria-label="Accessibility Tools">
+    <aside class="a11y-toolbar animate-slide-in-right" aria-label="Accessibility Tools">
         <button id="a11y-theme" class="a11y-btn">🌗 Theme</button>
         <button id="a11y-font" class="a11y-btn">Aa Font</button>
         <button id="a11y-size-up" class="a11y-btn">A+</button>
         <button id="a11y-size-down" class="a11y-btn">A-</button>
     </aside>
 
-    <!-- Header / Navigation -->
-    <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
-        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="color: var(--primary-color); margin: 0;">My Dashboard</h2>
-            <nav>
-                <span>Welcome, <strong>Student</strong></span>
-                <a href="profile.html" class="btn btn-outline" style="margin-left: 10px; padding: 5px 15px; font-size: 0.9rem;">My Profile</a>
-                <a href="index.html" class="btn btn-outline" style="margin-left: 5px; padding: 5px 15px; font-size: 0.9rem;">Log Out</a>
+    <!-- Modern Header with Gradient -->
+    <header style="background: var(--glass-bg); backdrop-filter: var(--backdrop-blur); -webkit-backdrop-filter: var(--backdrop-blur); padding: 20px 0; border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-md);">
+        <div class="container flex justify-between items-center">
+            <div class="flex items-center gap-md">
+                <span style="font-size: 1.5rem;">📚</span>
+                <h2 style="margin: 0; font-size: 1.5rem; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">AccessLearn</h2>
+            </div>
+            <nav class="flex items-center gap-md">
+                <span style="font-size: 0.9rem; color: var(--text-muted);">Welcome, <strong id="user-name" style="color: var(--text-main);">Student</strong></span>
+                <a href="profile.html" class="btn btn-ghost btn-sm">👤 Profile</a>
+                <button onclick="logout()" class="btn btn-outline btn-sm">🚪 Logout</button>
             </nav>
         </div>
     </header>
 
-    <main class="container" style="margin-top: 30px;">
+    <!-- Main Dashboard Content -->
+    <main id="main-content" class="container" style="margin: 40px auto; max-width: 1400px;">
         
-        <!-- Welcome Section -->
-        <section style="margin-bottom: 30px;">
-            <h1>Continue Learning</h1>
-            <p style="color: var(--text-muted);">Pick up where you left off.</p>
+        <!-- Hero Welcome Section with Gradient Background -->
+        <section class="card-gradient animate-fade-in" style="padding: 40px; margin-bottom: 40px; border-radius: var(--radius-xl); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255,255,255,0.1); border-radius: 50%; filter: blur(60px);"></div>
+            <div style="position: relative; z-index: 1;">
+                <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: white;">Welcome Back! 👋</h1>
+                <p style="font-size: 1.2rem; margin: 0; opacity: 0.9;">Let's continue your learning journey</p>
+            </div>
         </section>
 
-        <!-- Course Grid (Dynamic) -->
-        <div id="course-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-            <!-- Courses will be loaded here by JS -->
-            <p>Loading courses...</p>
+        <!-- Dyslexia Learning Center Feature Card -->
+        <div class="card animate-bounce" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; margin-bottom: 30px; border-radius: var(--radius-xl); cursor: pointer; transition: all 0.3s;" onclick="window.location.href='dyslexia-center.html'" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <span style="font-size: 3rem;">🧠</span>
+                        <h2 style="margin: 0; font-size: 2rem; color: white;">Dyslexia Learning Center</h2>
+                    </div>
+                    <p style="margin: 0; font-size: 1.1rem; opacity: 0.95; line-height: 1.6;">
+                        Special tools designed for dyslexia learners: Letter tracing, phonics practice, word building games, picture matching, and more!
+                    </p>
+                </div>
+                <div style="font-size: 3rem; opacity: 0.8;">→</div>
+            </div>
         </div>
+
+        <!-- Gamification Stats Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
+            <!-- XP Card -->
+            <div class="stat-card card-glass hover-lift animate-scale-in" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none;">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-value" id="user-xp" style="color: white;">0</div>
+                <div class="stat-label" style="color: rgba(255,255,255,0.9);">Total XP</div>
+            </div>
+            
+            <!-- Level Card -->
+            <div class="stat-card card-glass hover-lift animate-scale-in delay-1" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none;">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-value" id="user-level" style="color: white;">1</div>
+                <div class="stat-label" id="user-level-title" style="color: rgba(255,255,255,0.9);">Beginner</div>
+            </div>
+            
+            <!-- Streak Card -->
+            <div class="stat-card card-glass hover-lift animate-scale-in delay-2" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white; border: none;">
+                <div class="stat-icon streak-fire">🔥</div>
+                <div class="stat-value" id="user-streak" style="color: white;">0</div>
+                <div class="stat-label" style="color: rgba(255,255,255,0.9);">Day Streak</div>
+            </div>
+            
+            <!-- Badges Card -->
+            <div class="stat-card card-glass hover-lift animate-scale-in delay-3" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: white; border: none;">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value" id="user-badges" style="color: white;">0</div>
+                <div class="stat-label" style="color: rgba(255,255,255,0.9);">Badges Earned</div>
+            </div>
+        </div>
+
+        <!-- XP Progress Bar to Next Level -->
+        <div class="card animate-fade-in delay-2" style="margin-bottom: 40px; padding: 30px;">
+            <div class="flex justify-between items-center" style="margin-bottom: 15px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 1.25rem;">Level Progress</h3>
+                    <p style="margin: 5px 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Keep learning to level up!</p>
+                </div>
+                <div class="badge" id="xp-to-next">0 / 100 XP</div>
+            </div>
+            <div class="progress-bar" style="height: 20px;">
+                <div id="xp-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px;">
+            
+            <!-- Left: Courses Section -->
+            <div>
+                <div class="flex justify-between items-center" style="margin-bottom: 25px;">
+                    <h2 style="margin: 0;">📖 Your Courses</h2>
+                    <span class="badge badge-outline">10 Courses</span>
+                </div>
+                
+                <!-- Course Grid -->
+                <div id="course-grid" class="grid-2">
+                    <p>Loading courses...</p>
+                </div>
+            </div>
+            
+            <!-- Right: Badges & Recent Activity -->
+            <div>
+                <!-- Earned Badges Section -->
+                <div class="card animate-slide-in-right" style="margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 20px;">🏆 Earned Badges</h3>
+                    <div id="badges-container" style="display: flex; flex-wrap: wrap; gap: 15px; min-height: 80px;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Complete activities to earn badges!</p>
+                    </div>
+                </div>
+                
+                <!-- Recent Activity Feed -->
+                <div class="card animate-slide-in-right delay-1">
+                    <h3 style="margin-bottom: 20px;">📊 Recent Activity</h3>
+                    <div id="activity-feed" style="max-height: 400px; overflow-y: auto;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">Your recent activities will appear here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
+    <!-- Floating Action Buttons -->
+    <div style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 15px; z-index: 999;">
+        <!-- Voice Assistant Button -->
+        <button onclick="startVoiceAssistant()" class="btn btn-primary hover-lift animate-float" style="width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; box-shadow: var(--shadow-xl); padding: 0;" title="Voice Assistant - Say a command">
+            🎤
+        </button>
+        
+        <!-- Read Aloud Button -->
+        <button onclick="readPageAloud()" class="btn btn-secondary hover-lift" style="width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; box-shadow: var(--shadow-xl); padding: 0; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);" title="Read This Page Aloud">
+            🔊
+        </button>
+        
+        <!-- MFA Setup Button -->
+        <button onclick="setupMFA()" class="btn btn-ghost hover-lift" style="width: 60px; height: 60px; border-radius: 50%; font-size: 1.5rem; box-shadow: var(--shadow-lg); padding: 0;" title="Setup Microsoft Authenticator">
+            🔐
+        </button>
+    </div>
+
     <script src="script.js"></script>
+    <script src="gamification.js"></script>
+    <script src="mfa-auth.js"></script>
+    <script src="voice-features.js"></script>
     <script>
-        // Dashboard Specific Logic
+        // Dashboard Logic
         document.addEventListener('DOMContentLoaded', () => {
-            renderDashboard();
+            loadDashboard();
         });
 
-        function renderDashboard() {
+        function loadDashboard() {
+            const user = MockBackend.getCurrentUser();
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Initialize gamification for user
+            GamificationEngine.initializeUser(user);
+            
+            // Update user display
+            document.getElementById('user-name').textContent = user.name || user.username;
+            
+            // Render gamification stats
+            renderGamificationStats(user);
+            
+            // Render courses
+            renderCourses();
+            
+            // Render badges
+            renderBadges(user);
+            
+            // Render activity feed
+            renderActivity(user);
+        }
+        
+        function renderGamificationStats(user) {
+            const gamData = user.gamification || {};
+            
+            // Update stat cards
+            document.getElementById('user-xp').textContent = gamData.xp || 0;
+            document.getElementById('user-level').textContent = gamData.level || 1;
+            document.getElementById('user-level-title').textContent = GamificationEngine.getLevelTitle(gamData.level || 1);
+            document.getElementById('user-streak').textContent = gamData.currentStreak || 0;
+            document.getElementById('user-badges').textContent = (gamData.badges || []).length;
+            
+            // XP Progress to next level
+            const progress = GamificationEngine.getXPProgress(user);
+            document.getElementById('xp-to-next').textContent = `${progress.current} / ${progress.required} XP`;
+            document.getElementById('xp-progress-fill').style.width = progress.percentage + '%';
+        }
+        
+        function renderCourses() {
             const grid = document.getElementById('course-grid');
             const courses = MockBackend.getCourses();
             
-            grid.innerHTML = ''; // Clear loading text
+            grid.innerHTML = '';
 
             if (courses.length === 0) {
                 grid.innerHTML = '<p>No courses available.</p>';
                 return;
             }
 
-            courses.forEach(course => {
+            courses.forEach((course, index) => {
                 const isLocked = course.locked;
                 const btnClass = isLocked ? 'btn-outline' : 'btn-primary';
-                const btnText = isLocked ? 'Locked 🔒' : (course.progress > 0 ? 'Resume Lesson' : 'Start Lesson');
-                const btnAction = isLocked ? '' : `onclick="window.location.href='lesson_player.html?course=${course.id}'"`;
-                const btnState = isLocked ? 'disabled' : '';
+                const btnText = isLocked ? '🔒 Locked' : (course.progress > 0 ? '▶️ Resume' : '🚀 Start');
+                const btnAction = isLocked ? '' : `onclick="window.location.href='lesson_player.html?course=${course.id}'"`;                const btnState = isLocked ? 'disabled' : '';
+                
+                const gradients = [
+                    'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                    'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+                ];
 
-                const cardHtml = `
-                    <article class="card">
-                        <div style="background-color: #eee; height: 150px; border-radius: var(--radius-md); margin-bottom: 15px; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            ${course.image}
+                const card = document.createElement('article');
+                card.className = 'card hover-lift animate-fade-in';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.innerHTML = `
+                    <div style="background: ${gradients[index % 3]}; height: 180px; border-radius: var(--radius-lg); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden;">
+                        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.1);"></div>
+                        <div style="position: relative; z-index: 1;">${course.image}</div>
+                        ${isLocked ? '<div style="position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); padding: 8px 15px; border-radius: 20px; color: white; font-size: 0.85rem;">🔒 Locked</div>' : ''}
+                    </div>
+                    <h3 style="margin-bottom: 10px; font-size: 1.3rem;">${course.title}</h3>
+                    <p style="margin-bottom: 20px; color: var(--text-muted); font-size: 0.95rem; min-height: 48px;">${course.description}</p>
+                    
+                    <!-- Modern Progress Bar -->
+                    <div style="margin-bottom: 20px;">
+                        <div class="flex justify-between items-center" style="margin-bottom: 8px;">
+                            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Progress</span>
+                            <span class="badge badge-success" style="font-size: 0.8rem;">${course.progress}%</span>
                         </div>
-                        <h3>${course.title}</h3>
-                        <p style="margin-bottom: 15px; min-height: 48px;">${course.description}</p>
-                        
-                        <!-- Progress Bar -->
-                        <div style="background: #e0e0e0; border-radius: 10px; height: 10px; margin-bottom: 15px;">
-                            <div style="background: var(--secondary-color); width: ${course.progress}%; height: 100%; border-radius: 10px; transition: width 0.5s;"></div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill" style="width: ${course.progress}%;"></div>
                         </div>
-                        <p style="font-size: 0.8rem; margin-bottom: 15px;">
-                            ${course.progress}% Completed
-                        </p>
+                    </div>
 
-                        <button class="btn ${btnClass}" style="width: 100%;" ${btnAction} ${btnState}>
-                            ${btnText}
-                        </button>
-                    </article>
+                    <button class="btn ${btnClass} hover-lift" style="width: 100%;" ${btnAction} ${btnState}>
+                        ${btnText}
+                    </button>
                 `;
-                grid.innerHTML += cardHtml;
+                grid.appendChild(card);
             });
+        }
+        
+        function renderBadges(user) {
+            const container = document.getElementById('badges-container');
+            const earnedBadges = GamificationEngine.getEarnedBadges(user);
+            
+            if (earnedBadges.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Complete activities to earn badges!</p>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            earnedBadges.forEach(badge => {
+                const badgeEl = document.createElement('div');
+                badgeEl.className = 'celebration-badge';
+                badgeEl.style.cssText = 'text-align: center; padding: 15px; background: var(--surface-elevated); border-radius: var(--radius-md); transition: transform 0.2s;';
+                badgeEl.onmouseenter = () => badgeEl.style.transform = 'scale(1.1)';
+                badgeEl.onmouseleave = () => badgeEl.style.transform = 'scale(1)';
+                badgeEl.innerHTML = `
+                    <div style="font-size: 2.5rem; margin-bottom: 5px;">${badge.icon}</div>
+                    <div style="font-size: 0.8rem; font-weight: 600;">${badge.name}</div>
+                `;
+                badgeEl.title = badge.description;
+                container.appendChild(badgeEl);
+            });
+        }
+        
+        function renderActivity(user) {
+            const feed = document.getElementById('activity-feed');
+            const activities = user.recentActivity || [];
+            
+            if (activities.length === 0) {
+                feed.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Your recent activities will appear here</p>';
+                return;
+            }
+            
+            feed.innerHTML = '';
+            activities.slice(0, 10).forEach((activity, index) => {
+                const activityEl = document.createElement('div');
+                activityEl.style.cssText = 'padding: 15px; border-left: 3px solid var(--primary-color); margin-bottom: 10px; background: var(--surface-elevated); border-radius: var(--radius-sm);';
+                activityEl.className = 'animate-fade-in';
+                activityEl.style.animationDelay = `${index * 0.05}s`;
+                
+                const icon = activity.type === 'xp' ? '⚡' : activity.type === 'badge' ? '🏆' : activity.type === 'level_up' ? '🎉' : '📝';
+                
+                activityEl.innerHTML = `
+                    <div style="display: flex; align-items: start; gap: 10px;">
+                        <div style="font-size: 1.5rem;">${icon}</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 0.9rem; margin-bottom: 3px;">${activity.text}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">${activity.time}</div>
+                        </div>
+                    </div>
+                `;
+                feed.appendChild(activityEl);
+            });
+        }
+        
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                MockBackend.logout();
+                showToast('Logged out successfully');
+                setTimeout(() => window.location.href = 'index.html', 500);
+            }
+        }
+        
+        // Floating button helper functions
+        function startVoiceAssistant() {
+            if (typeof VoiceInput !== 'undefined') {
+                VoiceInput.startListening();
+            } else {
+                alert('Voice recognition requires Chrome, Edge, or Safari browser');
+            }
+        }
+        
+        function readPageAloud() {
+            if (typeof VoiceFeatures !== 'undefined') {
+                VoiceFeatures.readTextWithHighlight('main-content');
+            } else {
+                showToast('Text-to-speech is loading...');
+                setTimeout(() => {
+                    if (typeof VoiceFeatures !== 'undefined') {
+                        VoiceFeatures.readTextWithHighlight('main-content');
+                    }
+                }, 1000);
+            }
+        }
+        
+        function setupMFA() {
+            const user = MockBackend.getCurrentUser();
+            if (!user) {
+                showToast('Please log in first');
+                return;
+            }
+            if (typeof MFAAuth !== 'undefined') {
+                MFAAuth.showQRCodeModal(user.username);
+            } else {
+                showToast('MFA feature is loading...');
+            }
         }
     </script>
 </body>

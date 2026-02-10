@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,15 +19,18 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
         .option-btn:hover {
             background-color: var(--background-color);
             border-color: var(--primary-color);
         }
+
         .option-btn.correct {
             background-color: #d4edda;
             border-color: #28a745;
             color: #155724;
         }
+
         .option-btn.wrong {
             background-color: #f8d7da;
             border-color: #dc3545;
@@ -34,6 +38,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- ACCESSIBILITY TOOLBAR -->
@@ -44,23 +49,26 @@
         <button id="a11y-size-down" class="a11y-btn">A-</button>
     </aside>
 
-    <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
+    <header
+        style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
         <div class="container">
             <a href="dashboard.html" class="btn btn-outline">&larr; Quit Quiz</a>
         </div>
     </header>
 
     <main class="container" style="max-width: 800px; margin-top: 40px;">
-        
+
         <div class="card">
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
                 <span style="font-weight: bold; color: var(--primary-color);">Question 1 of 3</span>
-                <span>Score: <span id="score">0</span></span>
+                <span>Score: <span id="score">0%</span></span>
             </div>
 
-            <h2 id="question-text" style="font-size: 1.5rem; margin-bottom: 30px;">
-                <span id="loading-indicator">✨ AI is generating your quiz question...</span>
-            </h2>
+            <div id="loading-indicator" style="font-size: 1.5rem; margin-bottom: 30px; font-weight: bold;">
+                ✨ AI is generating your quiz question...
+            </div>
+
+            <h2 id="question-text" style="font-size: 1.5rem; margin-bottom: 30px;"></h2>
 
             <div id="options-container" style="display: none;">
                 <!-- Options will be injected here -->
@@ -68,83 +76,291 @@
 
             <div id="feedback" style="margin-top: 20px; font-weight: bold; min-height: 1.5rem;"></div>
 
-            <button class="btn btn-primary" style="margin-top: 20px; display: none;" id="next-btn" onclick="nextQuestion()">Finish Quiz &rarr;</button>
+            <button class="btn btn-primary" style="margin-top: 20px; display: none;" id="next-btn">Next Question
+                &rarr;</button>
         </div>
 
     </main>
 
     <script src="script.js"></script>
+    <script src="voice-features.js"></script>
     <script>
         let currentScore = 0;
+        let totalQuestions = 3;
+        let currentQuestionIndex = 0;
+        let correctAnswersCount = 0;
+
         let correctAnswerIndex = 0;
         let currentExplanation = "";
-        const QUIZ_TOPIC = "English Greetings"; 
+        let currentTargetSentence = "";
+        let currentQuestionType = "multiple_choice";
+
+        // Parse URL Params
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('courseId') || 'course_101';
+        let QUIZ_TOPIC = "English Greetings";
 
         // Load Question on Init
         document.addEventListener('DOMContentLoaded', async () => {
-             const questionData = await GeminiService.generateQuizQuestion(QUIZ_TOPIC);
-             renderQuestion(questionData);
+            // Initialize Voice
+            if (typeof VoiceInput !== 'undefined') VoiceInput.init();
+
+            // Ensure Backend is valid
+            if (typeof MockBackend !== 'undefined' && MockBackend.init) {
+                MockBackend.init(); // Ensure data exists
+            }
+
+            // Fetch course details to set topic
+            const courses = MockBackend.getCourses();
+            if (courses && courses.length > 0) {
+                const course = courses.find(c => c.id === courseId);
+                if (course) {
+                    QUIZ_TOPIC = course.title; // Set AI topic to Course Title
+                    document.title = `Quiz - ${course.title}`;
+                }
+            } else {
+                console.warn("No courses found, using default topic.");
+            }
+
+            loadNextQuestion();
         });
+
+        async function loadNextQuestion() {
+            if (currentQuestionIndex >= totalQuestions) {
+                finishQuiz();
+                return;
+            }
+
+            // Update UI
+            document.getElementById('score').innerText = (currentQuestionIndex === 0) ? "0%" : `${Math.round((correctAnswersCount / currentQuestionIndex) * 100)}%`;
+            document.querySelector('.card > div:first-child > span:first-child').innerText = `Question ${currentQuestionIndex + 1} of ${totalQuestions}`;
+
+            // Reset state
+            document.getElementById('loading-indicator').style.display = 'block';
+            document.getElementById('loading-indicator').innerText = '✨ Loading question...';
+            document.getElementById('options-container').style.display = 'none';
+            document.getElementById('next-btn').style.display = 'none';
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('question-text').innerText = '';
+
+            try {
+                // Attempt to get question from service
+                let questionData = null;
+                try {
+                    questionData = await GeminiService.generateQuizQuestion(QUIZ_TOPIC);
+                } catch (e) {
+                    console.warn("AI Service failed, using local fallback");
+                }
+
+                // FORCE FALLBACK if service returns null or fails
+                if (!questionData) {
+                    const localQuestions = [
+                        {
+                            type: "multiple_choice",
+                            question: `What is a key concept in ${QUIZ_TOPIC}?`,
+                            options: ["Learning", "Sleeping", "Running", "Eating"],
+                            correctIndex: 0,
+                            explanation: "Learning is the main goal!"
+                        },
+                        {
+                            type: "multiple_choice",
+                            question: "Which is correct?",
+                            options: ["Wrong", "Incorrect", "Right", "Bad"],
+                            correctIndex: 2,
+                            explanation: "Right is correct."
+                        },
+                        {
+                            type: "speak_sentence",
+                            targetSentence: "I can do this",
+                            explanation: "Say the sentence to practice."
+                        }
+                    ];
+                    // Pick one based on index to ensure variety in 3-question set
+                    questionData = localQuestions[currentQuestionIndex % localQuestions.length];
+                }
+
+                renderQuestion(questionData);
+
+            } catch (err) {
+                console.error("Critical Quiz Error:", err);
+                // Ultimate safety net
+                renderQuestion({
+                    type: "multiple_choice",
+                    question: "Emergency Question: Is this working?",
+                    options: ["Yes", "No", "Maybe", "Sort of"],
+                    correctIndex: 0,
+                    explanation: "If you see this, the safe mode worked."
+                });
+            }
+        }
+
+        function useOfflineQuestion() {
+            const offlineQ = {
+                type: "multiple_choice",
+                question: "What is a basic greeting?",
+                options: ["Hello", "Run", "Jump", "Sleep"],
+                correctIndex: 0,
+                explanation: "Hello is a greeting."
+            };
+            renderQuestion(offlineQ);
+        }
+
 
         function renderQuestion(data) {
             document.getElementById('loading-indicator').style.display = 'none';
             document.getElementById('options-container').style.display = 'block';
-            
+
             document.getElementById('question-text').innerText = data.question;
-            correctAnswerIndex = data.correctIndex;
+            currentQuestionType = data.type || "multiple_choice";
             currentExplanation = data.explanation;
 
             const container = document.getElementById('options-container');
             container.innerHTML = ''; // Clear old
 
-            data.options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                // Add A) B) C) prefixes
-                const prefix = String.fromCharCode(65 + index); 
-                btn.innerText = `${prefix}) ${opt}`;
-                btn.onclick = () => checkAnswer(btn, index === correctAnswerIndex);
-                container.appendChild(btn);
-            });
+            if (currentQuestionType === "speak_sentence") {
+                // RENDER VOICE QUESTION
+                currentTargetSentence = data.targetSentence;
+
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 30px; background: var(--surface-hover); border-radius: var(--radius-lg);">
+                        <h3 style="margin-bottom: 20px; color: var(--primary-color);">"${currentTargetSentence}"</h3>
+                        
+                        <button id="mic-btn" class="btn btn-secondary btn-lg" style="width: 80px; height: 80px; border-radius: 50%; font-size: 2rem;">
+                            🎤
+                        </button>
+                        <p id="listening-status" style="margin-top: 15px; color: var(--text-muted);">Click microphone and speak</p>
+                        
+                        <div id="spoken-result" style="margin-top: 20px; font-weight: bold; min-height: 1.5rem;"></div>
+                    </div>
+                `;
+
+                // Add mic listener
+                document.getElementById('mic-btn').onclick = startVoiceCheck;
+
+            } else {
+                // RENDER MULTIPLE CHOICE
+                correctAnswerIndex = data.correctIndex;
+
+                data.options.forEach((opt, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    // Add A) B) C) prefixes
+                    const prefix = String.fromCharCode(65 + index);
+                    btn.innerText = `${prefix}) ${opt}`;
+                    btn.onclick = () => checkAnswer(btn, index === correctAnswerIndex);
+                    container.appendChild(btn);
+                });
+            }
         }
 
+        // --- MULTIPLE CHOICE CHECK ---
         function checkAnswer(btn, isCorrect) {
-            // Disable all buttons
-            const buttons = document.querySelectorAll('.option-btn');
-            buttons.forEach(b => b.disabled = true);
+            disableAllButtons();
 
             if (isCorrect) {
                 btn.classList.add('correct');
-                document.getElementById('feedback').innerHTML = `Correct! Well done.<br><span style="font-weight:normal; color:#555;">${currentExplanation}</span>`;
-                document.getElementById('feedback').style.color = "green";
-                currentScore = 100;
-                document.getElementById('score').innerText = currentScore;
-                showToast("Correct Answer!");
+                showFeedback(true, "Correct! Well done.");
+                correctAnswersCount++;
             } else {
                 btn.classList.add('wrong');
                 // Find correct button to highlight it
-                buttons[correctAnswerIndex].classList.add('correct');
-                
-                document.getElementById('feedback').innerHTML = `Incorrect.<br><span style="font-weight:normal; color:#555;">${currentExplanation}</span>`;
-                document.getElementById('feedback').style.color = "red";
-                showToast("Incorrect.");
+                const buttons = document.querySelectorAll('.option-btn');
+                if (buttons[correctAnswerIndex]) buttons[correctAnswerIndex].classList.add('correct');
+                showFeedback(false, "Incorrect.");
             }
-
-            document.getElementById('next-btn').style.display = 'inline-block';
+            currentQuestionIndex++;
         }
 
-        function nextQuestion() {
+        // --- VOICE CHECK ---
+        function startVoiceCheck() {
+            const statusEl = document.getElementById('listening-status');
+            const resultEl = document.getElementById('spoken-result');
+            const micBtn = document.getElementById('mic-btn');
+
+            statusEl.innerText = "Listening...";
+
+            VoiceInput.startListening((transcript, isFinal) => {
+                if (isFinal) {
+                    statusEl.innerText = "Processing...";
+                    resultEl.innerText = `You said: "${transcript}"`;
+
+                    // Fuzzy Match
+                    const cleanSpoken = transcript.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+                    const cleanTarget = currentTargetSentence.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+
+                    // Simple inclusion or exact match
+                    if (cleanSpoken.includes(cleanTarget) || cleanTarget.includes(cleanSpoken) || getLevenshteinDistance(cleanSpoken, cleanTarget) < 3) {
+                        showFeedback(true, "Great pronunciation!");
+                        correctAnswersCount++;
+                        document.getElementById('mic-btn').style.background = "#28a745"; // Green
+                    } else {
+                        showFeedback(false, `Not quite. Try saying: "${currentTargetSentence}"`);
+                        document.getElementById('mic-btn').style.background = "#dc3545"; // Red
+                    }
+                    currentQuestionIndex++;
+
+                    // Show Next Button
+                    const nextBtn = document.getElementById('next-btn');
+                    nextBtn.style.display = 'inline-block';
+                    nextBtn.innerText = (currentQuestionIndex < totalQuestions) ? "Next Question →" : "Finish Quiz →";
+                    nextBtn.onclick = loadNextQuestion;
+                }
+            });
+        }
+
+        function disableAllButtons() {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(b => b.disabled = true);
+            const micBtn = document.getElementById('mic-btn');
+            if (micBtn) micBtn.disabled = true;
+        }
+
+        function showFeedback(isSuccess, message) {
+            const feedbackEl = document.getElementById('feedback');
+            feedbackEl.innerHTML = `${message}<br><span style="font-weight:normal; color:#555;">${currentExplanation}</span>`;
+            feedbackEl.style.color = isSuccess ? "green" : "red";
+            if (isSuccess) showToast("Correct!");
+
+            // Show Next Button
+            const nextBtn = document.getElementById('next-btn');
+            nextBtn.style.display = 'inline-block';
+            nextBtn.innerText = (currentQuestionIndex < totalQuestions) ? "Next Question →" : "Finish Quiz →";
+            nextBtn.onclick = loadNextQuestion;
+        }
+
+        function finishQuiz() {
+            const finalScore = Math.round((correctAnswersCount / totalQuestions) * 100);
+
             // Submit Score to Backend
-            MockBackend.submitQuiz(`AI Quiz: ${QUIZ_TOPIC}`, currentScore);
-            
+            MockBackend.submitQuiz(`AI Quiz: ${QUIZ_TOPIC}`, finalScore);
+
             // Also update course progress if they passed
-            if (currentScore > 50) {
-                MockBackend.updateProgress('course_101', 100);
+            if (finalScore > 50) {
+                MockBackend.updateProgress(courseId, 100);
             }
 
-            alert(`Quiz Complete! Score: ${currentScore}%\nResult saved to your profile.`);
+            alert(`Quiz Complete!\n\nYou answered ${correctAnswersCount} out of ${totalQuestions} correctly.\nFinal Score: ${finalScore}%`);
             window.location.href = 'dashboard.html';
+        }
+
+        // Helper for simple fuzzy matching
+        function getLevenshteinDistance(a, b) {
+            if (a.length == 0) return b.length;
+            if (b.length == 0) return a.length;
+            var matrix = [];
+            var i;
+            for (i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+            var j;
+            for (j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+            for (i = 1; i <= b.length; i++) {
+                for (j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) == a.charAt(j - 1)) { matrix[i][j] = matrix[i - 1][j - 1]; }
+                    else { matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)); }
+                }
+            }
+            return matrix[b.length][a.length];
         }
     </script>
 </body>
+
 </html>

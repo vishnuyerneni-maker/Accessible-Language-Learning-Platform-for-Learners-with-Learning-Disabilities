@@ -30,6 +30,27 @@ const MFAAuth = {
         
         return otpauthUrl;
     },
+    
+    /**
+     * Alias for compatibility
+     */
+    generateQRData(username, secret) {
+        return this.generateQRCode(username, secret);
+    },
+    
+    /**
+     * Enable MFA for a user
+     */
+    enableMFA(username, secret) {
+        const users = JSON.parse(localStorage.getItem('app_users_db')) || [];
+        const user = users.find(u => u.username === username);
+        if (user) {
+            user.mfaSecret = secret;
+            user.mfaEnabled = true;
+            localStorage.setItem('app_users_db', JSON.stringify(users));
+            localStorage.setItem('app_current_session', JSON.stringify(user));
+        }
+    },
 
     /**
      * Display QR code in modal
@@ -103,7 +124,7 @@ const MFAAuth = {
      * Verify OTP code
      */
     verifyOTP(secret, token) {
-        // Simple TOTP verification (30-second window)
+        // TOTP verification with proper HMAC-SHA1 (30-second window)
         const epoch = Math.floor(Date.now() / 1000);
         const timeStep = 30;
         const counter = Math.floor(epoch / timeStep);
@@ -120,27 +141,195 @@ const MFAAuth = {
     },
 
     /**
-     * Generate TOTP token (simplified implementation)
+     * Generate TOTP token (RFC 6238 compatible)
      */
     generateTOTP(secret, counter) {
-        // Simplified TOTP generation
-        // In production, use a proper TOTP library like otplib
-        const hash = this.simpleHash(secret + counter.toString());
-        const code = (hash % 1000000).toString().padStart(6, '0');
-        return code;
+        try {
+            // Decode base32 secret
+            const key = this.base32Decode(secret);
+            
+            // Convert counter to 8-byte array
+            const buffer = new ArrayBuffer(8);
+            const view = new DataView(buffer);
+            view.setUint32(4, counter, false);
+            
+            // Generate HMAC-SHA1
+            const hmac = this.hmacSha1(key, new Uint8Array(buffer));
+            
+            // Dynamic truncation
+            const offset = hmac[hmac.length - 1] & 0x0f;
+            const binary = ((hmac[offset] & 0x7f) << 24) |
+                          ((hmac[offset + 1] & 0xff) << 16) |
+                          ((hmac[offset + 2] & 0xff) << 8) |
+                          (hmac[offset + 3] & 0xff);
+            
+            const otp = binary % 1000000;
+            return otp.toString().padStart(6, '0');
+        } catch (e) {
+            console.error('TOTP generation error:', e);
+            return '000000';
+        }
     },
 
     /**
-     * Simple hash function (for demo purposes)
+     * Base32 decode
      */
-    simpleHash(str) {
-        let hash = 0;
-        for (let i = 0; i < str.length; i++) {
-            const char = str.charCodeAt(i);
-            hash = ((hash << 5) - hash) + char;
-            hash = hash & hash;
+    base32Decode(base32) {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        let bits = '';
+        let value = 0;
+        
+        base32 = base32.toUpperCase().replace(/=+$/, '');
+        
+        for (let i = 0; i < base32.length; i++) {
+            const val = alphabet.indexOf(base32.charAt(i));
+            if (val === -1) continue;
+            bits += val.toString(2).padStart(5, '0');
         }
-        return Math.abs(hash);
+        
+        const bytes = [];
+        for (let i = 0; i + 8 <= bits.length; i += 8) {
+            bytes.push(parseInt(bits.substr(i, 8), 2));
+        }
+        
+        return new Uint8Array(bytes);
+    },
+
+    /**
+     * HMAC-SHA1 implementation
+     */
+    hmacSha1(key, message) {
+        const blockSize = 64;
+        
+        // Ensure key is the right length
+        if (key.length > blockSize) {
+            key = this.sha1(key);
+        }
+        if (key.length < blockSize) {
+            const newKey = new Uint8Array(blockSize);
+            newKey.set(key);
+            key = newKey;
+        }
+        
+        // Create inner and outer padding
+        const oKeyPad = new Uint8Array(blockSize);
+        const iKeyPad = new Uint8Array(blockSize);
+        
+        for (let i = 0; i < blockSize; i++) {
+            oKeyPad[i] = 0x5c ^ key[i];
+            iKeyPad[i] = 0x36 ^ key[i];
+        }
+        
+        // Concatenate and hash
+        const innerData = new Uint8Array(iKeyPad.length + message.length);
+        innerData.set(iKeyPad);
+        innerData.set(message, iKeyPad.length);
+        const innerHash = this.sha1(innerData);
+        
+        const outerData = new Uint8Array(oKeyPad.length + innerHash.length);
+        outerData.set(oKeyPad);
+        outerData.set(innerHash, oKeyPad.length);
+        
+        return this.sha1(outerData);
+    },
+
+    /**
+     * SHA1 implementation
+     */
+    sha1(data) {
+        // Convert to array if needed
+        if (!(data instanceof Uint8Array)) {
+            data = new Uint8Array(data);
+        }
+        
+        // Prepare message
+        const msgLen = data.length;
+        const bitLen = msgLen * 8;
+        
+        // Padding
+        const paddedLen = Math.ceil((msgLen + 9) / 64) * 64;
+        const padded = new Uint8Array(paddedLen);
+        padded.set(data);
+        padded[msgLen] = 0x80;
+        
+        // Add length
+        const view = new DataView(padded.buffer);
+        view.setUint32(paddedLen - 4, bitLen & 0xffffffff, false);
+        
+        // Initialize hash values
+        let h0 = 0x67452301;
+        let h1 = 0xEFCDAB89;
+        let h2 = 0x98BADCFE;
+        let h3 = 0x10325476;
+        let h4 = 0xC3D2E1F0;
+        
+        // Process chunks
+        for (let chunk = 0; chunk < paddedLen; chunk += 64) {
+            const w = new Uint32Array(80);
+            
+            // Break chunk into sixteen 32-bit big-endian words
+            for (let i = 0; i < 16; i++) {
+                w[i] = view.getUint32(chunk + i * 4, false);
+            }
+            
+            // Extend into 80 words
+            for (let i = 16; i < 80; i++) {
+                w[i] = this.rotateLeft(w[i-3] ^ w[i-8] ^ w[i-14] ^ w[i-16], 1);
+            }
+            
+            // Initialize working variables
+            let a = h0, b = h1, c = h2, d = h3, e = h4;
+            
+            // Main loop
+            for (let i = 0; i < 80; i++) {
+                let f, k;
+                if (i < 20) {
+                    f = (b & c) | ((~b) & d);
+                    k = 0x5A827999;
+                } else if (i < 40) {
+                    f = b ^ c ^ d;
+                    k = 0x6ED9EBA1;
+                } else if (i < 60) {
+                    f = (b & c) | (b & d) | (c & d);
+                    k = 0x8F1BBCDC;
+                } else {
+                    f = b ^ c ^ d;
+                    k = 0xCA62C1D6;
+                }
+                
+                const temp = (this.rotateLeft(a, 5) + f + e + k + w[i]) & 0xffffffff;
+                e = d;
+                d = c;
+                c = this.rotateLeft(b, 30);
+                b = a;
+                a = temp;
+            }
+            
+            // Add chunk hash to result
+            h0 = (h0 + a) & 0xffffffff;
+            h1 = (h1 + b) & 0xffffffff;
+            h2 = (h2 + c) & 0xffffffff;
+            h3 = (h3 + d) & 0xffffffff;
+            h4 = (h4 + e) & 0xffffffff;
+        }
+        
+        // Produce final hash
+        const hash = new Uint8Array(20);
+        const hashView = new DataView(hash.buffer);
+        hashView.setUint32(0, h0, false);
+        hashView.setUint32(4, h1, false);
+        hashView.setUint32(8, h2, false);
+        hashView.setUint32(12, h3, false);
+        hashView.setUint32(16, h4, false);
+        
+        return hash;
+    },
+
+    /**
+     * Rotate left
+     */
+    rotateLeft(n, shift) {
+        return ((n << shift) | (n >>> (32 - shift))) & 0xffffffff;
     },
 
     /**

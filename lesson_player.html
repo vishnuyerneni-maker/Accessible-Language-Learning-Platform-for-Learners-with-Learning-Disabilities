@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lesson - English Basics</title>
     <link rel="stylesheet" href="style.css">
-    
+
     <!-- Inline styles for player-specific layout -->
     <style>
         .lesson-layout {
@@ -14,7 +15,7 @@
             gap: 40px;
             align-items: start;
         }
-        
+
         .visual-aid {
             width: 100%;
             height: auto;
@@ -23,7 +24,8 @@
         }
 
         .text-content {
-            font-size: 1.2rem; /* Larger default for readability */
+            font-size: 1.2rem;
+            /* Larger default for readability */
             line-height: 1.8;
         }
 
@@ -40,6 +42,7 @@
         }
     </style>
 </head>
+
 <body>
 
     <!-- ACCESSIBILITY TOOLBAR -->
@@ -50,22 +53,24 @@
         <button id="a11y-size-down" class="a11y-btn">A-</button>
     </aside>
 
-    <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
+    <header
+        style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="dashboard.html" class="btn btn-outline" style="font-size: 0.9rem;">&larr; Back to Dashboard</a>
-            <h3 style="margin: 0; color: var(--text-muted);">Module 1: Greetings</h3>
+            <h3 id="course-title-header" style="margin: 0; color: var(--text-muted);">Module 1: Greetings</h3>
             <div><!-- Spacer --></div>
         </div>
     </header>
 
     <main class="container" style="margin-top: 40px;">
-        
+
         <div class="card lesson-layout">
-            
+
             <!-- LEFT: Visual Aid (Multi-modal) -->
             <div>
                 <!-- Using a placeholder image for prototype -->
-                <div style="background-color: #ddd; height: 300px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #666;">
+                <div
+                    style="background-color: #ddd; height: 300px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #666;">
                     [ Illustration of Two People Shaking Hands ]
                 </div>
                 <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
@@ -76,7 +81,7 @@
             <!-- RIGHT: Text Content & Audio -->
             <div>
                 <h1 id="lesson-title" style="margin-bottom: 20px;">Saying "Hello"</h1>
-                
+
                 <div id="lesson-text" class="text-content">
                     <p>In English, there are many ways to say hello.</p>
                     <p>The most common way is simply to say <strong>"Hello"</strong> or <strong>"Hi"</strong>.</p>
@@ -88,9 +93,11 @@
                     <button class="btn btn-primary" onclick="speakText('lesson-text')">
                         🔊 Read Aloud
                     </button>
-                    <button class="btn btn-outline" onclick="alert('Microphone integration coming in Module 5.')">
+                    <button class="btn btn-outline" onclick="startPracticeMode()">
                         🎙️ Practice Speaking
                     </button>
+                    <p id="practice-status" style="margin-left: 10px; color: var(--text-muted); display: none;">
+                        Listening...</p>
                 </div>
             </div>
 
@@ -105,16 +112,223 @@
     </main>
 
     <script src="script.js"></script>
+    <script src="voice-features.js"></script>
     <script>
+        // Parse URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('courseId') || 'course_101'; // Default if missing
+
+        let currentCourse = null;
+
+        // Initialize Voice features
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.VoiceInput) VoiceInput.init();
+            loadLessonDetails();
+        });
+
+        function startPracticeMode() {
+            const statusEl = document.getElementById('practice-status');
+            statusEl.style.display = 'inline-block';
+            statusEl.innerText = "Listening...";
+
+            VoiceInput.startListening((transcript, isFinal) => {
+                if (isFinal) {
+                    statusEl.innerText = `You said: "${transcript}"`;
+                    showToast(`You said: ${transcript}`);
+                }
+            });
+        }
+
+        function loadLessonDetails() {
+            // Get course info from MockBackend
+            const courses = MockBackend.getCourses();
+            currentCourse = courses.find(c => c.id === courseId);
+
+            if (currentCourse) {
+                // Update Title
+                document.title = `Lesson - ${currentCourse.title}`;
+                document.getElementById('course-title-header').innerText = `Module 1: ${currentCourse.title}`;
+                document.getElementById('lesson-title').innerText = currentCourse.title;
+
+                // --- DYNAMIC CONTENT SWITCHER ---
+                const lessonTextEl = document.getElementById('lesson-text');
+                const visualAidContainer = document.querySelector('.card.lesson-layout > div:first-child');
+
+                if (courseId === 'dyslexia_101') {
+                    // Letter Tracing Magic
+                    visualAidContainer.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #fce38a, #f38181); height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;">
+                            <div style="font-size: 8rem; font-weight: bold; text-shadow: 2px 2px 10px rgba(0,0,0,0.2);">Aa</div>
+                            <div style="font-size: 1.2rem;">"A is for Apple"</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.1 - Letter A</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p>Welcome to <strong>Letter Tracing Magic</strong>!</p>
+                        <p>Today we are learning the letter <strong>A</strong>.</p>
+                        <p>The letter A makes the sound <em>/æ/</em> like in <strong>Apple</strong>, <strong>Ant</strong>, and <strong>Alligator</strong>.</p>
+                        <p>Practice saying "Aa" out loud!</p>
+                    `;
+                }
+                else if (courseId === 'dyslexia_102') {
+                    // Phonics Sound Safari
+                    visualAidContainer.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #11998e, #38ef7d); height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;">
+                            <div style="font-size: 6rem;">🦁</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 10px;">L is for Lion</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.2 - Jungle Sounds</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p>Welcome to the <strong>Phonics Sound Safari</strong>!</p>
+                        <p>Listen closely to the sounds of the jungle.</p>
+                        <p>Can you hear the <strong>Lion</strong>? It starts with the letter <strong>L</strong>.</p>
+                        <p>L makes the sound <em>/l/</em>. Let's roar together!</p>
+                    `;
+                }
+                else if (courseId === 'course_colors') {
+                    // Colors & Shapes
+                    visualAidContainer.innerHTML = `
+                        <div style="background: white; height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="display: flex; gap: 20px;">
+                                <div style="width: 80px; height: 80px; background-color: #ff5252; border-radius: 50%;"></div>
+                                <div style="width: 80px; height: 80px; background-color: #448aff;"></div>
+                                <div style="width: 80px; height: 80px; background-color: #ffd740; clip-path: polygon(50% 0%, 0% 100%, 100% 100%);"></div>
+                            </div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: #333;">Red Circle, Blue Square, Yellow Triangle</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.3 - Basic Shapes</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                         <p>Let's paint the world with <strong>Colors</strong>!</p>
+                         <p>This is a <span style="color: #ff5252; font-weight: bold;">Red Circle</span>.</p>
+                         <p>This is a <span style="color: #448aff; font-weight: bold;">Blue Square</span>.</p>
+                         <p>Can you find something <strong>Blue</strong> in your room?</p>
+                    `;
+                }
+                else if (courseId === 'course_numbers') {
+                    // Numbers 1-10
+                    visualAidContainer.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #667eea, #764ba2); height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; text-align: center; padding: 20px;">
+                            <div style="font-size: 6rem; font-weight: bold;">1 2 3</div>
+                            <div style="font-size: 1.5rem; margin-top: 10px;">One, Two, Three!</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.4 - Counting</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p>Counting is fun! Let's count to three.</p>
+                        <p><strong>1 (One)</strong> - Like one sun in the sky ☀️</p>
+                        <p><strong>2 (Two)</strong> - Like two shoes on your feet 👟👟</p>
+                        <p><strong>3 (Three)</strong> - Like three wheels on a tricycle 🚲</p>
+                    `;
+                }
+                else if (courseId === 'course_animals') {
+                    // Amazing Animals
+                    visualAidContainer.innerHTML = `
+                        <div style="background: url('https://images.unsplash.com/photo-1534567176735-8427ddbf9b40?auto=format&fit=crop&w=800&q=80') center/cover; height: 300px; border-radius: var(--radius-lg); display: flex; align-items: flex-end; justify-content: center; padding: 20px; position: relative;">
+                            <div style="background: rgba(0,0,0,0.6); color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold;">
+                                A Cute Cat 🐱
+                            </div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.5 - Animals</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p>Animals are our friends!</p>
+                        <p>The <strong>Cat</strong> says <em>"Meow"</em>. 🐱</p>
+                        <p>The <strong>Dog</strong> says <em>"Woof"</em>. 🐶</p>
+                        <p>Which animal do you like best?</p>
+                    `;
+                }
+                else if (courseId === 'course_102') {
+                    // Active Listening
+                    visualAidContainer.innerHTML = `
+                         <div style="background: #e3f2fd; height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="font-size: 5rem;">👂 📢</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: #1565c0;">Listen Carefully!</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.6 - Active Listening</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p><strong>Active Listening</strong> means paying close attention.</p>
+                        <p>When someone says <em>"Hello"</em>, you listen and say <em>"Hi!"</em> back.</p>
+                        <p>Try closing your eyes and listening to the sounds around you.</p>
+                    `;
+                }
+                else if (courseId === 'course_103') {
+                    // Home Vocabulary
+                    visualAidContainer.innerHTML = `
+                        <div style="background: #fff3e0; height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="font-size: 5rem;">🏠 🛋️ 🛏️</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: #e65100;">My Sweet Home</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.7 - Home Items</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p>Welcome <strong>Home</strong>!</p>
+                        <p>This is a <strong>Kitchen</strong> where we cook. 🍳</p>
+                        <p>This is a <strong>Bedroom</strong> where we sleep. 🛏️</p>
+                        <p>What is your favorite room?</p>
+                    `;
+                }
+                else if (courseId === 'course_104') {
+                    // Business English
+                    visualAidContainer.innerHTML = `
+                         <div style="background: #eceff1; height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="font-size: 5rem;">💼 🤝 📊</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: #37474f;">Professional Skills</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.8 - The Office</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p><strong>Professional Greetings</strong>:</p>
+                        <p>Instead of "Hi" or "Hey", we often use:</p>
+                        <ul>
+                            <li>"Good Morning"</li>
+                            <li>"How do you do?"</li>
+                            <li>"Pleased to meet you"</li>
+                        </ul>
+                        <p>Practice shaking hands firmly! 🤝</p>
+                    `;
+                }
+                else if (courseId === 'course_105') {
+                    // Travel Phrases
+                    visualAidContainer.innerHTML = `
+                        <div style="background: #e0f7fa; height: 300px; border-radius: var(--radius-lg); display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <div style="font-size: 5rem;">✈️ 🗺️ 🏨</div>
+                            <div style="font-size: 1.5rem; font-weight: bold; margin-top: 20px; color: #006064;">Ready to Fly?</div>
+                        </div>
+                        <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">Fig 1.9 - Travel Essentials</p>
+                    `;
+                    lessonTextEl.innerHTML = `
+                        <p><strong>Essential Travel Phrases</strong>:</p>
+                        <p>1. "Where is the bathroom?" 🚻</p>
+                        <p>2. "How much does this cost?" 💰</p>
+                        <p>3. "I would like water, please." 💧</p>
+                        <p>Safe travels! 🌍</p>
+                    `;
+                }
+                else if (courseId !== 'course_101') {
+                    // Default Fallback
+                    lessonTextEl.innerHTML = `
+                        <p>Welcome to <strong>${currentCourse.title}</strong>.</p>
+                        <p>In this lesson, we will explore the fundamentals of ${currentCourse.category}.</p>
+                        <p>Ready to start learning? Click the button below to proceed to the practice quiz!</p>
+                    `;
+                }
+            }
+        }
+
         function completeLesson() {
             // Mark progress as 80% (Lesson done, quiz remaining)
-            MockBackend.updateProgress('course_101', 80);
-            
+            MockBackend.updateProgress(courseId, 80);
+
             showToast("Lesson Completed! Progress Saved.");
             setTimeout(() => {
-                window.location.href = 'quiz.html';
+                // Redirect to quiz with the SAME course ID
+                window.location.href = `quiz.html?courseId=${courseId}`;
             }, 1000);
         }
     </script>
 </body>
+
 </html>

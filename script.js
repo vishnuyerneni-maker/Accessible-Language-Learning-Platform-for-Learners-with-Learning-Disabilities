@@ -19,13 +19,17 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
 const GeminiService = {
     async generateQuizQuestion(topic) {
         const prompt = `
-            Generate 1 multiple choice quiz question about "${topic}" for a beginner English learner.
+            Generate 1 quiz question about "${topic}" for a beginner English learner.
+            Randomly choose between a "multiple_choice" authentication or a "speak_sentence" question.
+            
             Return ONLY a raw JSON object (no markdown formatting, no backticks) with this structure:
             {
-                "question": "The question text",
-                "options": ["Option A", "Option B", "Option C", "Option D"],
-                "correctIndex": 0, // 0-3 indicating the correct option
-                "explanation": "A short, helpful explanation of why the correct answer is right."
+                "type": "multiple_choice" OR "speak_sentence",
+                "question": "The question text (e.g., 'What is this?' or 'Say this sentence:')",
+                "options": ["Option A", "Option B", "Option C", "Option D"], // Only for multiple_choice, null otherwise
+                "correctIndex": 0, // Only for multiple_choice
+                "targetSentence": "The sentence to speak", // Only for speak_sentence
+                "explanation": "A short, helpful explanation."
             }
         `;
 
@@ -39,19 +43,54 @@ const GeminiService = {
             });
 
             const data = await response.json();
+            // Check if candidate exists
+            if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+                throw new Error("Invalid API response format");
+            }
             const text = data.candidates[0].content.parts[0].text;
             // Clean up if model adds markdown blocks
             const cleanText = text.replace(/```json/g, '').replace(/```/g, '').trim();
             return JSON.parse(cleanText);
         } catch (error) {
             console.error("AI Generation Failed:", error);
-            // Fallback content if AI fails or quota exceeded
-            return {
-                question: "What is a common way to say hello? (Offline Fallback)",
-                options: ["Hi", "Bye", "See ya", "Nope"],
-                correctIndex: 0,
-                explanation: "'Hi' is a standard, friendly greeting in English."
-            };
+
+            // Fallback content pool
+            const fallbacks = [
+                {
+                    type: "multiple_choice",
+                    question: "Which of these is a color?",
+                    options: ["Apple", "Blue", "Car", "Dog"],
+                    correctIndex: 1,
+                    explanation: "Blue is a primary color."
+                },
+                {
+                    type: "multiple_choice",
+                    question: "What comes after the number 2?",
+                    options: ["1", "5", "3", "4"],
+                    correctIndex: 2,
+                    explanation: "The count is 1, 2, 3..."
+                },
+                {
+                    type: "speak_sentence",
+                    targetSentence: "I love learning",
+                    explanation: "Say this sentence clearly."
+                },
+                {
+                    type: "multiple_choice",
+                    question: "Which animal says 'Meow'?",
+                    options: ["Dog", "Cat", "Cow", "Duck"],
+                    correctIndex: 1,
+                    explanation: "Cats say meow!"
+                },
+                {
+                    type: "speak_sentence",
+                    targetSentence: "Hello friend",
+                    explanation: "A friendly greeting."
+                }
+            ];
+
+            // Return random fallback
+            return fallbacks[Math.floor(Math.random() * fallbacks.length)];
         }
     }
 };
@@ -70,87 +109,87 @@ const MockBackend = {
                 locked: false
             },
             {
+                id: 'dyslexia_101',
+                title: 'Letter Tracing Magic',
+                description: 'Master the alphabet with fun tracing exercises!',
+                totalModules: 26,
+                image: '✍️',
+                locked: false
+            },
+            {
+                id: 'dyslexia_102',
+                title: 'Phonics Sound Safari',
+                description: 'Listen and match sounds in the jungle.',
+                totalModules: 15,
+                image: '🦁',
+                locked: false
+            },
+            {
+                id: 'course_colors',
+                title: 'Colors & Shapes',
+                description: 'Explore the colorful world around you!',
+                totalModules: 4,
+                image: '🎨',
+                locked: false
+            },
+            {
+                id: 'course_numbers',
+                title: 'Numbers 1-10',
+                description: 'Count from one to ten with fun friends.',
+                totalModules: 5,
+                image: '🔢',
+                locked: false
+            },
+            {
+                id: 'course_animals',
+                title: 'Amazing Animals',
+                description: 'Roar, squeak, and jump with animals!',
+                totalModules: 6,
+                image: '🐯',
+                locked: false
+            },
+            {
                 id: 'course_102',
                 title: 'Active Listening Skills',
-                description: 'Practice understanding spoken phrases in noisy environments.',
+                description: 'Practice understanding spoken phrases.',
                 totalModules: 4,
                 image: '👂',
-                locked: true
+                locked: false
             },
             {
                 id: 'course_103',
-                title: 'Vocabulary: Home & Family',
-                description: 'Essential words for daily life and family conversations.',
+                title: 'Vocabulary: Home',
+                description: 'Essential words for daily life.',
                 totalModules: 5,
                 image: '🏠',
-                locked: true
+                locked: false
             },
             {
                 id: 'course_104',
                 title: 'Business English',
-                description: 'Professional communication for workplace success.',
+                description: 'Professional communication basics.',
                 totalModules: 6,
                 image: '💼',
-                locked: true
+                locked: false
             },
             {
                 id: 'course_105',
                 title: 'Travel Phrases',
-                description: 'Essential expressions for traveling abroad with confidence.',
+                description: 'Essential expressions for traveling.',
                 totalModules: 5,
                 image: '✈️',
-                locked: true
-            },
-            {
-                id: 'course_106',
-                title: 'Food & Restaurant',
-                description: 'Order food, read menus, and dine out like a native.',
-                totalModules: 4,
-                image: '🍴',
-                locked: true
-            },
-            {
-                id: 'course_107',
-                title: 'Shopping & Money',
-                description: 'Learn to shop, bargain, and handle transactions.',
-                totalModules: 4,
-                image: '🛒',
-                locked: true
-            },
-            {
-                id: 'course_108',
-                title: 'Health & Medical',
-                description: 'Describe symptoms and communicate with healthcare providers.',
-                totalModules: 5,
-                image: '⚕️',
-                locked: true
-            },
-            {
-                id: 'course_109',
-                title: 'Social Media English',
-                description: 'Internet slang, abbreviations, and online communication.',
-                totalModules: 3,
-                image: '📱',
-                locked: true
-            },
-            {
-                id: 'course_110',
-                title: 'Advanced Conversations',
-                description: 'Master complex dialogues and natural expressions.',
-                totalModules: 7,
-                image: '💬',
-                locked: true
+                locked: false
             }
         ],
         users: [
-             {
+            {
                 id: 'u_1',
                 username: 'student',
                 password: 'password123', // stored plain text for prototype simplicity
                 role: 'student',
                 name: 'Student User',
                 email: 'student@example.com',
-                progress: { 
+                progress: {
                     'course_101': 0, 'course_102': 0, 'course_103': 0,
                     'course_104': 0, 'course_105': 0, 'course_106': 0,
                     'course_107': 0, 'course_108': 0, 'course_109': 0, 'course_110': 0
@@ -169,11 +208,45 @@ const MockBackend = {
         ]
     },
 
-    // Initialize DB if empty
+    // Initialize DB if empty OR strictly sync new content
     init() {
-        if (!localStorage.getItem('app_courses')) {
+        let storedCourses = JSON.parse(localStorage.getItem('app_courses'));
+
+        if (!storedCourses) {
             localStorage.setItem('app_courses', JSON.stringify(this.seedData.courses));
+        } else {
+            // MERGE/SYNC LOGIC: Ensure new courses from seedData exist in localStorage
+            let hasChanges = false;
+            this.seedData.courses.forEach(seedCourse => {
+                const existingIndex = storedCourses.findIndex(c => c.id === seedCourse.id);
+
+                if (existingIndex === -1) {
+                    // Start new courses as unlocked if specified in seed (e.g. Colors, Numbers)
+                    storedCourses.push(seedCourse);
+                    hasChanges = true;
+                } else {
+                    // Update metadata but preserve user progress if any
+                    // CRITICAL: Ensure unlocked status in seed overrides locked status in storage
+                    // (Unless user manually unlocked it, which is fine, but we care about developer unlocks here)
+                    if (seedCourse.locked === false && storedCourses[existingIndex].locked === true) {
+                        storedCourses[existingIndex].locked = false;
+                        hasChanges = true;
+                    }
+
+                    // Update title/description/image to match latest code
+                    storedCourses[existingIndex].title = seedCourse.title;
+                    storedCourses[existingIndex].description = seedCourse.description;
+                    storedCourses[existingIndex].image = seedCourse.image;
+                    storedCourses[existingIndex].totalModules = seedCourse.totalModules;
+                    hasChanges = true;
+                }
+            });
+
+            if (hasChanges) {
+                localStorage.setItem('app_courses', JSON.stringify(storedCourses));
+            }
         }
+
         // We now store a list of users, not just one "currentUser" session
         if (!localStorage.getItem('app_users_db')) {
             localStorage.setItem('app_users_db', JSON.stringify(this.seedData.users));
@@ -184,7 +257,7 @@ const MockBackend = {
     login(username, password) {
         const users = JSON.parse(localStorage.getItem('app_users_db'));
         const user = users.find(u => u.username === username && u.password === password);
-        
+
         if (user) {
             // Set active session
             localStorage.setItem('app_current_session', JSON.stringify(user));
@@ -201,12 +274,12 @@ const MockBackend = {
     getCurrentUser() {
         return JSON.parse(localStorage.getItem('app_current_session'));
     },
-    
+
     // Save user state back to the MAIN "users db"
     saveUser(updatedUser) {
         // Update session
         localStorage.setItem('app_current_session', JSON.stringify(updatedUser));
-        
+
         // Update DB
         const users = JSON.parse(localStorage.getItem('app_users_db'));
         const index = users.findIndex(u => u.id === updatedUser.id);
@@ -218,25 +291,29 @@ const MockBackend = {
 
     // Get all courses with user progress attached
     getCourses() {
-        const courses = JSON.parse(localStorage.getItem('app_courses'));
+        // Safety check: if init hasn't run or storage is empty, return empty array
+        const rawCourses = localStorage.getItem('app_courses');
+        if (!rawCourses) return [];
+
+        const courses = JSON.parse(rawCourses);
         const user = this.getCurrentUser();
-        
+
         if (!user || user.role !== 'student') return courses;
 
         return courses.map(course => ({
             ...course,
-            progress: user.progress[course.id] || 0
+            progress: (user.progress && user.progress[course.id]) || 0
         }));
     },
 
     // Update progress for a specific course
     updateProgress(courseId, percent) {
         const user = this.getCurrentUser();
-        
+
         // Only update if new percentage is higher
         if (!user.progress[courseId] || percent > user.progress[courseId]) {
             user.progress[courseId] = percent;
-            
+
             // Log activity
             user.recentActivity.unshift({
                 text: `Updated progress in ${courseId} to ${percent}%`,
@@ -245,8 +322,8 @@ const MockBackend = {
 
             // Unlock next course logic (Simple simulation)
             if (courseId === 'course_101' && percent === 100) {
-                 this.unlockCourse('course_102');
-                 user.recentActivity.unshift({
+                this.unlockCourse('course_102');
+                user.recentActivity.unshift({
                     text: `🎊 Unlocked: Active Listening Skills`,
                     time: new Date().toLocaleString()
                 });
@@ -268,7 +345,7 @@ const MockBackend = {
     saveUser(user) {
         localStorage.setItem('app_user', JSON.stringify(user));
     },
-    
+
     // Add a simple quiz result
     submitQuiz(quizName, score) {
         const user = this.getCurrentUser();
@@ -276,19 +353,19 @@ const MockBackend = {
             text: `Completed Quiz: ${quizName} - Score: ${score}%`,
             time: new Date().toLocaleString()
         });
-        
+
         // Gamification: Award XP for quiz
         if (typeof GamificationEngine !== 'undefined') {
             GamificationEngine.onQuizComplete(user, score);
         }
-        
+
         this.saveUser(user);
     },
-    
+
     // ============================================
     // OAuth Support Methods
     // ============================================
-    
+
     /**
      * Find user by email address
      */
@@ -296,13 +373,13 @@ const MockBackend = {
         const users = JSON.parse(localStorage.getItem('app_users_db'));
         return users.find(u => u.email === email);
     },
-    
+
     /**
      * Create a new user from OAuth data
      */
     createOAuthUser(oauthData) {
         const users = JSON.parse(localStorage.getItem('app_users_db'));
-        
+
         const newUser = {
             id: 'u_oauth_' + Date.now(),
             username: oauthData.email.split('@')[0],
@@ -334,34 +411,34 @@ const MockBackend = {
                 lastLessonDate: null
             }
         };
-        
+
         users.push(newUser);
         localStorage.setItem('app_users_db', JSON.stringify(users));
-        
+
         return newUser;
     },
-    
+
     /**
      * Update user progress with gamification
      */
     updateProgressWithGamification(courseId, percent) {
         const user = this.getCurrentUser();
-        
+
         // Only update if new percentage is higher
         if (!user.progress[courseId] || percent > user.progress[courseId]) {
             user.progress[courseId] = percent;
-            
+
             // Log activity
             user.recentActivity.unshift({
                 text: `Updated progress in ${courseId} to ${percent}%`,
                 time: new Date().toLocaleString()
             });
-            
+
             // Gamification: Award XP for lesson completion
             if (typeof GamificationEngine !== 'undefined') {
                 GamificationEngine.onLessonComplete(user);
             }
-            
+
             // Unlock next course logic
             if (courseId === 'course_101' && percent === 100) {
                 this.unlockCourse('course_102');
@@ -369,24 +446,24 @@ const MockBackend = {
                     text: `🎊 Unlocked: Active Listening Skills`,
                     time: new Date().toLocaleString()
                 });
-                
+
                 // Gamification: Award XP for course completion
                 if (typeof GamificationEngine !== 'undefined') {
                     GamificationEngine.onCourseComplete(user);
                 }
             }
-            
+
             this.saveUser(user);
         }
     },
-    
+
     /**
      * Handle daily login with streak tracking
      */
     handleDailyLogin() {
         const user = this.getCurrentUser();
         if (!user || user.role !== 'student') return;
-        
+
         if (typeof GamificationEngine !== 'undefined') {
             GamificationEngine.updateStreak(user);
             this.saveUser(user);
@@ -397,10 +474,10 @@ const MockBackend = {
 document.addEventListener('DOMContentLoaded', () => {
     // === Initialize Accessibility Settings ===
     initAccessibility();
-    
+
     // === Initialize Data ===
     MockBackend.init();
-    
+
     // === Handle Daily Login Streak ===
     MockBackend.handleDailyLogin();
 
@@ -456,7 +533,7 @@ function toggleTheme() {
     // Apply and Save
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('siteTheme', newTheme);
-    
+
     // Feedback
     const themeNames = {
         'light': 'Light Mode',
@@ -473,11 +550,11 @@ function toggleTheme() {
 function toggleDyslexiaFont() {
     const body = document.body;
     body.classList.toggle('dyslexia-font');
-    
+
     // Save state
     const isEnabled = body.classList.contains('dyslexia-font');
     localStorage.setItem('dyslexiaFont', isEnabled);
-    
+
     showToast(isEnabled ? "Dyslexia-Friendly Font Enabled" : "Standard Font Enabled");
 }
 
@@ -488,7 +565,7 @@ function toggleDyslexiaFont() {
 function adjustFontSize(change) {
     const root = document.documentElement;
     const currentSize = parseInt(getComputedStyle(root).getPropertyValue('--base-font-size')) || 16;
-    
+
     // Limit font size range: 12px to 24px
     let newSize = currentSize + change;
     if (newSize < 12) newSize = 12;
@@ -497,7 +574,7 @@ function adjustFontSize(change) {
     // Apply and Save
     root.style.setProperty('--base-font-size', newSize + 'px');
     localStorage.setItem('fontSize', newSize);
-    
+
     showToast(`Font Size: ${newSize}px`);
 }
 
@@ -514,7 +591,7 @@ function speakText(elementId) {
     window.speechSynthesis.cancel();
 
     const utterance = new SpeechSynthesisUtterance(text);
-    
+
     // Use preferences if available (could be extended later)
     utterance.rate = 1.0; // Normal speed
     utterance.pitch = 1.0;

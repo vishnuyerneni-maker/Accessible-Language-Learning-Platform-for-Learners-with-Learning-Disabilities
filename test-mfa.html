@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test MFA Functions</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body style="padding: 40px;">
+    <h1>MFA Function Test Page</h1>
+    
+    <div style="margin: 30px 0;">
+        <h2>Test Results:</h2>
+        <div id="results" style="font-family: monospace; background: #f5f5f5; padding: 20px; border-radius: 8px;"></div>
+    </div>
+    
+    <div style="margin: 30px 0;">
+        <h2>Test QR Code Generation:</h2>
+        <button onclick="testQRCode()" class="btn btn-primary">Generate Test QR Code</button>
+        <div id="test-qr" style="margin-top: 20px; padding: 20px; background: white; display: inline-block;"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="mfa-auth.js"></script>
+    <script>
+        const results = document.getElementById('results');
+        
+        function log(message, type = 'info') {
+            const color = type === 'success' ? 'green' : type === 'error' ? 'red' : 'black';
+            results.innerHTML += `<div style="color: ${color};">${message}</div>`;
+        }
+        
+        // Test 1: Check if MFAAuth is loaded
+        log('=== Testing MFA Module ===', 'info');
+        if (typeof MFAAuth !== 'undefined') {
+            log('✓ MFAAuth module loaded', 'success');
+        } else {
+            log('✗ MFAAuth module NOT loaded', 'error');
+        }
+        
+        // Test 2: Check functions
+        const functions = ['generateSecret', 'generateQRCode', 'generateQRData', 'verifyOTP', 'enableMFA'];
+        functions.forEach(fn => {
+            if (typeof MFAAuth[fn] === 'function') {
+                log(`✓ Function ${fn} exists`, 'success');
+            } else {
+                log(`✗ Function ${fn} NOT found`, 'error');
+            }
+        });
+        
+        // Test 3: Check QRCode library
+        if (typeof QRCode !== 'undefined') {
+            log('✓ QRCode.js library loaded', 'success');
+        } else {
+            log('✗ QRCode.js library NOT loaded', 'error');
+        }
+        
+        // Test 4: Check MockBackend
+        if (typeof MockBackend !== 'undefined') {
+            log('✓ MockBackend loaded', 'success');
+            MockBackend.init();
+            log('✓ MockBackend initialized', 'success');
+        } else {
+            log('✗ MockBackend NOT loaded', 'error');
+        }
+        
+        // Test 5: Generate secret
+        try {
+            const secret = MFAAuth.generateSecret();
+            log(`✓ Generated secret: ${secret}`, 'success');
+        } catch (e) {
+            log(`✗ Error generating secret: ${e.message}`, 'error');
+        }
+        
+        // Test 6: Generate QR data
+        try {
+            const qrData = MFAAuth.generateQRData('testuser', 'TESTSECRET123456789012345678');
+            log(`✓ Generated QR data: ${qrData}`, 'success');
+        } catch (e) {
+            log(`✗ Error generating QR data: ${e.message}`, 'error');
+        }
+        
+        log('\n=== All Tests Complete ===', 'info');
+        
+        // Function to test QR code generation
+        function testQRCode() {
+            const container = document.getElementById('test-qr');
+            container.innerHTML = '<p>Generating QR code...</p>';
+            
+            try {
+                const secret = MFAAuth.generateSecret();
+                const qrData = MFAAuth.generateQRData('testuser', secret);
+                
+                container.innerHTML = '';
+                new QRCode(container, {
+                    text: qrData,
+                    width: 200,
+                    height: 200
+                });
+                
+                log('✓ QR Code generated successfully!', 'success');
+                log(`Secret: ${secret}`, 'info');
+            } catch (e) {
+                container.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+                log(`✗ Error generating QR: ${e.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>

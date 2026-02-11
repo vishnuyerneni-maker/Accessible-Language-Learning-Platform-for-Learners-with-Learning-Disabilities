@@ -29,7 +29,7 @@ try {
     // Initialize Firebase App
     app = firebase.initializeApp(firebaseConfig);
 
-    // Initialize Firebase Authentication
+    // Initialize Firebase  Authentication
     auth = firebase.auth();
 
     // Initialize Firestore Database
@@ -54,13 +54,14 @@ const FirebaseApp = {
     // Helper to get current timestamp
     timestamp() {
         return firebase.firestore.FieldValue.serverTimestamp();
-    },
+     },
 
     // Helper to get current user
     getCurrentUser() {
         return auth.currentUser;
-    }
+     }
 };
 
 // Make available globally
 window.FirebaseApp = FirebaseApp;
+

@@ -13,6 +13,7 @@ KEYFRAME ANIMATIONS
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -25,6 +26,7 @@ KEYFRAME ANIMATIONS
         opacity: 0;
         transform: translateX(-50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -37,6 +39,7 @@ KEYFRAME ANIMATIONS
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -49,6 +52,7 @@ KEYFRAME ANIMATIONS
         opacity: 0;
         transform: scale(0.8);
     }
+
     to {
         opacity: 1;
         transform: scale(1);
@@ -57,12 +61,19 @@ KEYFRAME ANIMATIONS
 
 /* Bounce */
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateY(0);
     }
+
     40% {
         transform: translateY(-20px);
     }
+
     60% {
         transform: translateY(-10px);
     }
@@ -74,10 +85,12 @@ KEYFRAME ANIMATIONS
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
     }
+
     70% {
         transform: scale(1.05);
         box-shadow: 0 0 0 20px rgba(124, 58, 237, 0);
     }
+
     100% {
         transform: scale(1);
         box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
@@ -86,9 +99,26 @@ KEYFRAME ANIMATIONS
 
 /* Shake */
 @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
 }
 
 /* Celebration Confetti */
@@ -97,6 +127,7 @@ KEYFRAME ANIMATIONS
         transform: translateY(0) rotate(0deg);
         opacity: 1;
     }
+
     100% {
         transform: translateY(100vh) rotate(720deg);
         opacity: 0;
@@ -108,6 +139,7 @@ KEYFRAME ANIMATIONS
     0% {
         background-position: -1000px 0;
     }
+
     100% {
         background-position: 1000px 0;
     }
@@ -118,6 +150,7 @@ KEYFRAME ANIMATIONS
     from {
         width: 0%;
     }
+
     to {
         width: var(--progress-value, 0%);
     }
@@ -125,9 +158,12 @@ KEYFRAME ANIMATIONS
 
 /* Floating */
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0px);
     }
+
     50% {
         transform: translateY(-15px);
     }
@@ -138,9 +174,11 @@ KEYFRAME ANIMATIONS
     0% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0% 50%;
     }
@@ -148,10 +186,13 @@ KEYFRAME ANIMATIONS
 
 /* Star Twinkle */
 @keyframes twinkle {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
         transform: scale(1);
     }
+
     50% {
         opacity: 0.3;
         transform: scale(0.8);
@@ -163,6 +204,7 @@ KEYFRAME ANIMATIONS
     0% {
         stroke-dashoffset: 100;
     }
+
     100% {
         stroke-dashoffset: 0;
     }
@@ -174,9 +216,11 @@ KEYFRAME ANIMATIONS
         opacity: 0;
         transform: scale(0) rotate(-180deg);
     }
+
     60% {
         transform: scale(1.2) rotate(20deg);
     }
+
     100% {
         opacity: 1;
         transform: scale(1) rotate(0deg);
@@ -220,11 +264,25 @@ KEYFRAME ANIMATIONS
 }
 
 /* Animation Delays */
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-.delay-5 { animation-delay: 0.5s; }
+.delay-1 {
+    animation-delay: 0.1s;
+}
+
+.delay-2 {
+    animation-delay: 0.2s;
+}
+
+.delay-3 {
+    animation-delay: 0.3s;
+}
+
+.delay-4 {
+    animation-delay: 0.4s;
+}
+
+.delay-5 {
+    animation-delay: 0.5s;
+}
 
 /* ============================================
    HOVER EFFECTS
@@ -263,28 +321,30 @@ KEYFRAME ANIMATIONS
     filter: brightness(1.1);
 }
 
+/* Hover bounce - only animates on hover */
+.hover-bounce-on-hover:hover {
+    animation: bounce 0.6s ease;
+}
+
+
 /* ============================================
    LOADING STATES
    ============================================ */
 
 .loading-shimmer {
-    background: linear-gradient(
-        90deg,
-        #f0f0f0 0%,
-        #e0e0e0 50%,
-        #f0f0f0 100%
-    );
+    background: linear-gradient(90deg,
+            #f0f0f0 0%,
+            #e0e0e0 50%,
+            #f0f0f0 100%);
     background-size: 200% 100%;
     animation: shimmer 1.5s infinite;
 }
 
 [data-theme="dark"] .loading-shimmer {
-    background: linear-gradient(
-        90deg,
-        #2a2a2a 0%,
-        #3a3a3a 50%,
-        #2a2a2a 100%
-    );
+    background: linear-gradient(90deg,
+            #2a2a2a 0%,
+            #3a3a3a 50%,
+            #2a2a2a 100%);
     background-size: 200% 100%;
 }
 
@@ -298,7 +358,9 @@ KEYFRAME ANIMATIONS
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ============================================
@@ -366,6 +428,7 @@ KEYFRAME ANIMATIONS
    ============================================ */
 
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {

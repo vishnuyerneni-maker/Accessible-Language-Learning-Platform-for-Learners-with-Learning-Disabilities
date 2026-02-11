@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +7,12 @@
     <link rel="stylesheet" href="style-kids.css">
     <link rel="stylesheet" href="animations.css">
 </head>
-
 <body>
     <!-- Decorative Elements -->
-    <div class="blob" style="background: var(--primary-green); width: 300px; height: 300px; top: -100px; left: -100px;">
-    </div>
-    <div class="blob"
-        style="background: var(--primary-yellow); width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: -2s;">
-    </div>
+    <div class="blob" style="background: var(--primary-green); width: 300px; height: 300px; top: -100px; left: -100px;"></div>
+    <div class="blob" style="background: var(--primary-yellow); width: 400px; height: 400px; bottom: -150px; right: -150px; animation-delay: -2s;"></div>
     <div class="cloud" style="top: 80px; left: 15%; animation: float 10s infinite ease-in-out;"></div>
-    <div class="cloud" style="top: 250px; right: 10%; animation: float 11s infinite ease-in-out; animation-delay: -5s;">
-    </div>
+    <div class="cloud" style="top: 250px; right: 10%; animation: float 11s infinite ease-in-out; animation-delay: -5s;"></div>
     <div class="deco-icon" style="top: 120px; right: 20%;">🍭</div>
     <div class="deco-icon" style="bottom: 150px; left: 10%;">🎨</div>
     <div class="deco-icon" style="top: 500px; left: 5%;">🧩</div>
@@ -40,13 +34,10 @@
     <div class="container" style="padding-top: 40px; padding-bottom: 60px;">
         <div class="hero-dyslexia animate-pop-in">
             <h1>🧠 Dyslexia Learning Center</h1>
-            <p>Special tools and activities designed to make learning easier, fun, and accessible for everyone. Let's
-                start your adventure!</p>
+            <p>Special tools and activities designed to make learning easier, fun, and accessible for everyone. Let's start your adventure!</p>
         </div>
 
-        <h2
-            style="text-align: center; margin-bottom: 50px; font-size: 3rem; background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: var(--font-display);">
-            Choose an Activity</h2>
+        <h2 style="text-align: center; margin-bottom: 50px; font-size: 3rem; background: var(--gradient-aurora); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-family: var(--font-display);">Choose an Activity</h2>
 
         <div class="feature-grid">
             <!-- Phonics & Letter Sounds -->
@@ -96,27 +87,16 @@
                 <p class="feature-description">Practice spelling with hints, word banks, and audio support</p>
                 <button class="btn btn-rainbow btn-3d">Practice Spelling</button>
             </div>
-
-            <!-- Speech Practice Lab -->
-            <div class="feature-card animate-scale-in delay-6" onclick="window.location.href='speech-practice.html'">
-                <span class="feature-icon">🎤</span>
-                <h3 class="feature-title">Speech Practice Lab</h3>
-                <p class="feature-description">Learn to speak with real-time feedback and pronunciation help</p>
-                <button class="btn btn-primary btn-3d">Start Speaking</button>
-            </div>
         </div>
 
         <!-- Quick Access Buttons -->
         <div style="text-align: center; margin-top: 80px;">
-            <h3
-                style="margin-bottom: 40px; font-size: 2.2rem; font-family: var(--font-display); color: var(--primary-orange);">
-                Quick Support Tools</h3>
+            <h3 style="margin-bottom: 40px; font-size: 2.2rem; font-family: var(--font-display); color: var(--primary-orange);">Quick Support Tools</h3>
             <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
                 <button onclick="VoiceFeatures.readAloud()" class="btn btn-secondary btn-3d btn-lg animate-float">
                     🔊 Read This Page
                 </button>
-                <button onclick="VoiceFeatures.startListening()"
-                    class="btn btn-cyan btn-3d btn-lg animate-float delay-1">
+                <button onclick="VoiceFeatures.startListening()" class="btn btn-cyan btn-3d btn-lg animate-float delay-1">
                     🎤 Voice Commands
                 </button>
                 <button onclick="toggleDyslexiaMode()" class="btn btn-pink btn-3d btn-lg animate-float delay-2">
@@ -143,7 +123,7 @@
         if (!currentUser) {
             window.location.href = 'index.html';
         }
-
+        
         // Logout function
         function logout() {
             MockBackend.logout();
@@ -154,7 +134,7 @@
         function showPhonicsMenu() {
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; animation: fadeIn 0.3s;';
-
+            
             const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
             const letterButtons = letters.map(l => `
                 <button onclick="PhonicsModule.showLetterLesson('${l}'); this.closest('div[style*=fixed]').remove();" 
@@ -162,7 +142,7 @@
                     ${l}
                 </button>
             `).join('');
-
+            
             modal.innerHTML = `
                 <div class="card" style="max-width: 900px; width: 90%; padding: 50px; animation: scaleIn 0.3s;">
                     <button onclick="this.closest('div[style*=fixed]').remove()" 
@@ -185,7 +165,7 @@
                     </div>
                 </div>
             `;
-
+            
             document.body.appendChild(modal);
         }
 
@@ -193,7 +173,7 @@
         function showTracingMenu() {
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; animation: fadeIn 0.3s;';
-
+            
             const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
             const letterButtons = letters.map(l => `
                 <button onclick="LetterTracing.showTracingInterface('${l}'); this.closest('div[style*=fixed]').remove();" 
@@ -201,7 +181,7 @@
                     ${l}
                 </button>
             `).join('');
-
+            
             modal.innerHTML = `
                 <div class="card" style="max-width: 900px; width: 90%; padding: 50px; animation: scaleIn 0.3s;">
                     <button onclick="this.closest('div[style*=fixed]').remove()" 
@@ -217,24 +197,24 @@
                     </div>
                 </div>
             `;
-
+            
             document.body.appendChild(modal);
         }
 
         // Word Builder Menu
         function showWordBuilderMenu() {
             const words = ['CAT', 'DOG', 'SUN', 'MOON', 'TREE', 'STAR', 'BOOK', 'BIRD', 'FISH', 'FLOWER'];
-
+            
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; animation: fadeIn 0.3s;';
-
+            
             const wordButtons = words.map(w => `
                 <button onclick="WordBuilder.showWordBuilder('${w}'); this.closest('div[style*=fixed]').remove();" 
                         class="btn btn-primary btn-lg" style="margin: 10px; font-size: 1.3rem;">
                     ${w}
                 </button>
             `).join('');
-
+            
             modal.innerHTML = `
                 <div class="card" style="max-width: 800px; width: 90%; padding: 50px; animation: scaleIn 0.3s;">
                     <button onclick="this.closest('div[style*=fixed]').remove()" 
@@ -250,7 +230,7 @@
                     </div>
                 </div>
             `;
-
+            
             document.body.appendChild(modal);
         }
 
@@ -258,7 +238,7 @@
         function showSpellingMenu() {
             const modal = document.createElement('div');
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: flex; align-items: center; justify-content: center; z-index: 9999; animation: fadeIn 0.3s;';
-
+            
             modal.innerHTML = `
                 <div class="card" style="max-width: 700px; width: 90%; padding: 50px; animation: scaleIn 0.3s;">
                     <button onclick="this.closest('div[style*=fixed]').remove()" 
@@ -293,14 +273,14 @@
                     </div>
                 </div>
             `;
-
+            
             document.body.appendChild(modal);
         }
 
         // Accessibility helpers
         function toggleDyslexiaMode() {
             document.body.classList.toggle('dyslexia-mode');
-            showToast(document.body.classList.contains('dyslexia-mode') ?
+            showToast(document.body.classList.contains('dyslexia-mode') ? 
                 '✓ Dyslexia font enabled' : '✓ Normal font restored');
         }
 
@@ -321,5 +301,4 @@
         });
     </script>
 </body>
-
 </html>

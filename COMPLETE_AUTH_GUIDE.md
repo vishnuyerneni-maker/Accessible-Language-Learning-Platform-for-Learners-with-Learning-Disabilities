@@ -29,7 +29,7 @@ Fill Registration Form:
     ↓
 Submit Form
     ↓
-✅ Account Created!
+Account Created!
     ↓
 Redirect to Login Page
 ```
@@ -40,7 +40,7 @@ Enter Username & Password
     ↓
 [Credentials Validated]
     ↓
-🔐 MFA Setup Modal Appears
+ MFA Setup Modal Appears
     ↓
 Scan QR Code with Microsoft Authenticator
     ↓
@@ -48,7 +48,7 @@ Enter 6-digit code from app
     ↓
 [Code Verified]
     ↓
-✅ MFA Enabled!
+MFA Enabled!
     ↓
 Redirect to Dashboard
 ```
@@ -59,13 +59,13 @@ Enter Username & Password
     ↓
 [Credentials Validated]
     ↓
-🔐 OTP Verification Modal Appears
+ OTP Verification Modal Appears
     ↓
 Enter current 6-digit code
     ↓
 [Code Verified]
     ↓
-✅ Login Successful!
+ Login Successful!
     ↓
 Access Dashboard
 ```
@@ -284,7 +284,7 @@ As you type, you'll see:
 
 ---
 
-## 🐛 Error Handling
+##  Error Handling
 
 ### Registration Errors:
 - ❌ Username too short/long
@@ -456,3 +456,4 @@ Your platform now has:
 **Ready to use! Run `START_APP.bat` and test the complete flow! 🚀**
 
 *AccessLearn - Secure Authentication System v2.0*
+

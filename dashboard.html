@@ -205,6 +205,19 @@
                     </div>
                     <span class="course-badge new" style="position: relative; top: 0; left: 0;">New</span>
                 </div>
+
+                <div class="popular-card" onclick="window.location.href='speech-practice.html'">
+                    <div class="popular-card-image gradient-pink">🎤</div>
+                    <div class="popular-card-content">
+                        <div class="popular-card-title">Speech Practice Lab</div>
+                        <div class="popular-card-subtitle">Learn to speak with real-time feedback</div>
+                        <div class="popular-card-meta">
+                            <span class="chapters-badge">📚 20 Sentences</span>
+                            <span>⭐ 5.0</span>
+                        </div>
+                    </div>
+                    <span class="course-badge new" style="position: relative; top: 0; left: 0;">New</span>
+                </div>
             </div>
         </section>
 
@@ -259,6 +272,7 @@
         </button>
     </div>
 
+    <script src="course_data.js"></script>
     <script src="script.js"></script>
     <script src="gamification.js"></script>
     <script src="mfa-auth.js"></script>
@@ -339,6 +353,12 @@
                 const gradient = gradients[index % gradients.length];
                 const badge = badges[index % badges.length];
 
+                // Get actual module count from COURSE_DATA if available
+                let chaptersCount = course.totalModules || 5;
+                if (typeof COURSE_DATA !== 'undefined' && COURSE_DATA[course.id]) {
+                    chaptersCount = COURSE_DATA[course.id].lessons.length;
+                }
+
                 const card = document.createElement('article');
                 card.className = `course-card-modern animate-fade-in ${isLocked ? 'locked' : ''}`;
                 card.style.animationDelay = `${index * 0.1}s`;
@@ -377,7 +397,7 @@
                         <div class="course-meta">
                             <div class="course-meta-item">
                                 <span class="meta-icon">📚</span>
-                                <span>${course.totalModules || 5} Chapters</span>
+                                <span>${chaptersCount} Chapters</span>
                             </div>
                             <div class="course-meta-item">
                                 <span class="meta-icon">⭐</span>

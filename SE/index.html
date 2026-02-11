@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AccessLearn - Extraordinary Learning Adventure</title>
-    
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="style-kids.css">
     <link rel="stylesheet" href="animations.css">
-    
+
     <!-- OAuth Libraries -->
     <!-- Microsoft MSAL -->
     <script src="https://alcdn.msauth.net/browser/2.30.0/js/msal-browser.min.js"></script>
@@ -17,12 +18,13 @@
     <!-- QR Code Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
+
 <body>
     <!-- Animated Background Blobs -->
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
-    
+
     <!-- Floating Decorative Icons -->
     <div class="deco-icon" style="top: 100px; left: 5%; animation-delay: 0s;">⭐</div>
     <div class="deco-icon" style="top: 200px; right: 10%; animation-delay: -2s;">🎨</div>
@@ -54,29 +56,37 @@
     <!-- Hero Section with Gradient Background -->
     <section style="position: relative; overflow: hidden; padding: 60px 0 80px; margin-bottom: 60px;">
         <!-- Animated Gradient Background -->
-        <div style="position: absolute; inset: 0; background: var(--primary-gradient); opacity: 0.05; z-index: -1;"></div>
-        
+        <div style="position: absolute; inset: 0; background: var(--primary-gradient); opacity: 0.05; z-index: -1;">
+        </div>
+
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 60px; align-items: center;">
-                
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 60px; align-items: center;">
+
                 <!-- Left: Welcome Message -->
                 <div class="animate-slide-in-left">
-                    <span class="badge badge-purple" style="margin-bottom: 25px; padding: 10px 25px; font-size: 1.1rem;">🎓 AI-Powered Adventure</span>
-                    <h2 style="font-size: 4.5rem; margin-bottom: 25px; line-height: 1; font-family: var(--font-display); color: var(--text-dark);">
+                    <span class="badge badge-purple"
+                        style="margin-bottom: 25px; padding: 10px 25px; font-size: 1.1rem;">🎓 AI-Powered
+                        Adventure</span>
+                    <h2
+                        style="font-size: 4.5rem; margin-bottom: 25px; line-height: 1; font-family: var(--font-display); color: var(--text-dark);">
                         Your Learning<br>
                         <span class="text-gradient" style="font-size: 5rem;">Adventure</span><br>
                         <span style="color: var(--primary-orange);">Starts Here!</span>
                     </h2>
-                    <p style="font-size: 1.4rem; margin-bottom: 40px; color: var(--text-medium); line-height: 1.6; font-weight: 500;">
-                        Discover a world of personalized learning with fun games, 
+                    <p
+                        style="font-size: 1.4rem; margin-bottom: 40px; color: var(--text-medium); line-height: 1.6; font-weight: 500;">
+                        Discover a world of personalized learning with fun games,
                         AI magic, and tools made just for YOU!
                     </p>
-                    
+
                     <!-- Feature Highlights -->
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; margin-top: 50px;">
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px; margin-top: 50px;">
                         <div class="animate-bounce delay-1">
                             <div style="font-size: 3rem; margin-bottom: 10px;">🎮</div>
-                            <h4 style="margin-bottom: 5px; font-size: 1.2rem; color: var(--primary-purple);">Fun Games</h4>
+                            <h4 style="margin-bottom: 5px; font-size: 1.2rem; color: var(--primary-purple);">Fun Games
+                            </h4>
                             <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Earn XP & Badges</p>
                         </div>
                         <div class="animate-bounce delay-2">
@@ -86,16 +96,20 @@
                         </div>
                         <div class="animate-bounce delay-3">
                             <div style="font-size: 3rem; margin-bottom: 10px;">🌈</div>
-                            <h4 style="margin-bottom: 5px; font-size: 1.2rem; color: var(--primary-cyan);">For Everyone</h4>
+                            <h4 style="margin-bottom: 5px; font-size: 1.2rem; color: var(--primary-cyan);">For Everyone
+                            </h4>
                             <p style="font-size: 0.95rem; color: var(--text-muted); margin: 0;">Super Accessible</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Right: Login Card -->
-                <div class="card animate-scale-in delay-2" style="background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--backdrop-blur); padding: 50px; border-radius: var(--radius-2xl);">
-                    <h3 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem; font-family: var(--font-display); color: var(--primary-purple);">Welcome Back!</h3>
-                    
+                <div class="card animate-scale-in delay-2"
+                    style="background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--backdrop-blur); padding: 50px; border-radius: var(--radius-2xl);">
+                    <h3
+                        style="text-align: center; margin-bottom: 40px; font-size: 2.5rem; font-family: var(--font-display); color: var(--primary-purple);">
+                        Welcome Back!</h3>
+
                     <!-- Traditional Login Form -->
                     <form id="login-form">
                         <div class="input-group">
@@ -108,14 +122,22 @@
                             <input type="password" id="password" placeholder="Type your password here..." required>
                         </div>
 
-                        <p id="login-error" style="color: var(--error-color); text-align: center; display: none; margin-bottom: 20px; padding: 15px; background: rgba(239, 68, 68, 0.1); border-radius: var(--radius-md); font-weight: 600;"></p>
+                        <p id="login-error"
+                            style="color: var(--error-color); text-align: center; display: none; margin-bottom: 20px; padding: 15px; background: rgba(239, 68, 68, 0.1); border-radius: var(--radius-md); font-weight: 600;">
+                        </p>
 
-                        <button type="submit" class="btn btn-primary btn-lg btn-3d" style="width: 100%; margin-top: 10px;">Let's Go! 🚀</button>
-                        
+                        <button type="submit" class="btn btn-primary btn-lg btn-3d"
+                            style="width: 100%; margin-top: 10px;">Let's Go! 🚀</button>
+
                         <div style="text-align: center; margin-top: 30px;">
-                            <p style="font-size: 1.1rem; color: var(--text-medium); margin: 0;">New here? <a href="register.html" style="color: var(--primary-orange); font-weight: 800; text-decoration: none;">Join the Fun!</a></p>
-                            <div style="margin-top: 20px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: var(--radius-md);">
-                                <p style="font-size: 0.9rem; color: var(--text-light); margin: 0;">Try this: student / password123</p>
+                            <p style="font-size: 1.1rem; color: var(--text-medium); margin: 0;">New here? <a
+                                    href="register.html"
+                                    style="color: var(--primary-orange); font-weight: 800; text-decoration: none;">Join
+                                    the Fun!</a></p>
+                            <div
+                                style="margin-top: 20px; padding: 10px; background: rgba(0,0,0,0.05); border-radius: var(--radius-md);">
+                                <p style="font-size: 0.9rem; color: var(--text-light); margin: 0;">Try this: student /
+                                    password123</p>
                             </div>
                         </div>
                     </form>
@@ -132,26 +154,31 @@
             <div class="card card-glass hover-lift animate-fade-in">
                 <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">🔥</div>
                 <h4 style="text-align: center; margin-bottom: 10px;">Stay Motivated</h4>
-                <p style="text-align: center; color: var(--text-muted); margin: 0;">Build learning streaks, earn badges, and level up as you progress</p>
+                <p style="text-align: center; color: var(--text-muted); margin: 0;">Build learning streaks, earn badges,
+                    and level up as you progress</p>
             </div>
             <div class="card card-glass hover-lift animate-fade-in delay-1">
                 <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">📊</div>
                 <h4 style="text-align: center; margin-bottom: 10px;">Track Progress</h4>
-                <p style="text-align: center; color: var(--text-muted); margin: 0;">Visual dashboards show your learning journey and achievements</p>
+                <p style="text-align: center; color: var(--text-muted); margin: 0;">Visual dashboards show your learning
+                    journey and achievements</p>
             </div>
             <div class="card card-glass hover-lift animate-fade-in delay-2">
                 <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">👥</div>
                 <h4 style="text-align: center; margin-bottom: 10px;">Parent Dashboard</h4>
-                <p style="text-align: center; color: var(--text-muted); margin: 0;">Parents can monitor their child's progress and engagement</p>
+                <p style="text-align: center; color: var(--text-muted); margin: 0;">Parents can monitor their child's
+                    progress and engagement</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer style="margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--border-color); background: var(--surface-color);">
+    <footer
+        style="margin-top: 100px; padding: 40px 0; border-top: 1px solid var(--border-color); background: var(--surface-color);">
         <div class="container">
             <div style="text-align: center;">
-                <p style="color: var(--text-muted); margin-bottom: 10px;">&copy; 2026 AccessLearn. Making education accessible for everyone.</p>
+                <p style="color: var(--text-muted); margin-bottom: 10px;">&copy; 2026 AccessLearn. Making education
+                    accessible for everyone.</p>
                 <div style="display: flex; justify-content: center; gap: 20px; font-size: 0.9rem;">
                     <a href="#" style="color: var(--text-muted);">Privacy Policy</a>
                     <a href="#" style="color: var(--text-muted);">Terms of Service</a>
@@ -170,33 +197,40 @@
     <script>
         // Store user role temporarily during MFA flow
         let pendingLoginRole = null;
-        
+
         // Handle Traditional Login
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
+
             const result = MockBackend.login(user, pass);
-            
+
             if (result.success) {
                 // Store the role for later redirect
                 pendingLoginRole = result.role;
-                
+
                 // Get current user to check MFA status
                 const currentUser = MockBackend.getCurrentUser();
-                
+
                 if (!currentUser) {
                     const errorEl = document.getElementById('login-error');
                     errorEl.style.display = 'block';
                     errorEl.innerText = 'Login error. Please try again.';
                     return;
                 }
-                
+
                 // Check if MFA is already set up
                 if (currentUser.mfaEnabled && currentUser.mfaSecret) {
-                    // User has MFA - show OTP verification
-                    showOTPVerification(currentUser);
+                    // USER REQUEST: Skip OTP for returning users
+                    showToast(`✨ Welcome back, ${currentUser.username}!`);
+                    setTimeout(() => {
+                        if (pendingLoginRole === 'parent') {
+                            window.location.href = 'parent_dashboard.html';
+                        } else {
+                            window.location.href = 'dashboard.html';
+                        }
+                    }, 1000);
                 } else {
                     // First time login - setup MFA
                     showMFASetup(currentUser);
@@ -209,16 +243,16 @@
                 setTimeout(() => errorEl.classList.remove('animate-shake'), 500);
             }
         });
-        
+
         // Show MFA setup for first-time users
         function showMFASetup(user) {
             const secret = MFAAuth.generateSecret();
             const qrData = MFAAuth.generateQRData(user.username, secret);
-            
+
             const modal = document.createElement('div');
             modal.id = 'mfa-setup-modal';
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s;';
-            
+
             modal.innerHTML = `
                 <div class="card" style="max-width: 500px; width: 90%; padding: 40px; text-align: center; animation: scaleIn 0.3s;">
                     <h2 style="margin-bottom: 20px;">🔐 Setup Microsoft Authenticator</h2>
@@ -254,9 +288,9 @@
                     </p>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
-            
+
             // Generate QR code
             setTimeout(() => {
                 new QRCode(document.getElementById('qr-code-container'), {
@@ -266,26 +300,26 @@
                 });
             }, 100);
         }
-        
+
         // Verify OTP during setup
-        window.verifySetupOTP = function(secret) {
+        window.verifySetupOTP = function (secret) {
             const otp = document.getElementById('setup-otp-input').value;
             const errorEl = document.getElementById('setup-error');
-            
+
             if (otp.length !== 6) {
                 errorEl.style.display = 'block';
                 errorEl.textContent = 'Please enter a 6-digit code';
                 return;
             }
-            
+
             if (MFAAuth.verifyOTP(secret, otp)) {
                 // Save MFA secret to user
                 const user = MockBackend.getCurrentUser();
                 MFAAuth.enableMFA(user.username, secret);
-                
+
                 // Close modal
                 document.getElementById('mfa-setup-modal').remove();
-                
+
                 // Show success and redirect
                 showToast('🎉 Microsoft Authenticator setup successful!');
                 setTimeout(() => {
@@ -305,13 +339,13 @@
                 }, 500);
             }
         };
-        
+
         // Show OTP verification for returning users
         function showOTPVerification(user) {
             const modal = document.createElement('div');
             modal.id = 'otp-verify-modal';
             modal.style.cssText = 'position: fixed; inset: 0; background: rgba(0,0,0,0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; animation: fadeIn 0.3s;';
-            
+
             modal.innerHTML = `
                 <div class="card" style="max-width: 450px; width: 90%; padding: 40px; text-align: center; animation: scaleIn 0.3s;">
                     <div style="font-size: 4rem; margin-bottom: 20px;">🔐</div>
@@ -344,26 +378,26 @@
                     </p>
                 </div>
             `;
-            
+
             document.body.appendChild(modal);
         }
-        
+
         // Verify OTP for login
-        window.verifyLoginOTP = function() {
+        window.verifyLoginOTP = function () {
             const otp = document.getElementById('verify-otp-input').value;
             const errorEl = document.getElementById('verify-error');
             const user = MockBackend.getCurrentUser();
-            
+
             if (otp.length !== 6) {
                 errorEl.style.display = 'block';
                 errorEl.textContent = 'Please enter a 6-digit code';
                 return;
             }
-            
+
             if (MFAAuth.verifyOTP(user.mfaSecret, otp)) {
                 // Close modal
                 document.getElementById('otp-verify-modal').remove();
-                
+
                 // Show success and redirect
                 showToast(`✨ Welcome back, ${user.username}!`);
                 setTimeout(() => {
@@ -383,13 +417,14 @@
                 }, 500);
             }
         };
-        
+
         // Cancel MFA verification and logout
-        window.cancelMFAVerification = function() {
+        window.cancelMFAVerification = function () {
             document.getElementById('otp-verify-modal').remove();
             MockBackend.logout();
             showToast('Login cancelled');
         };
     </script>
 </body>
+
 </html>

@@ -1,0 +1,12 @@
+Connected to MongoDB
+Found 10 courses:
+- _id: 698c9db447bea9f1dc50dee4, id: course_101, title: English Greeting Basics
+- _id: 698c9db447bea9f1dc50dee5, id: dyslexia_101, title: Letter Tracing Magic
+- _id: 698c9db447bea9f1dc50dee6, id: dyslexia_102, title: Phonics Sound Safari
+- _id: 698c9db447bea9f1dc50dee7, id: course_colors, title: Colors & Shapes
+- _id: 698c9db447bea9f1dc50dee8, id: course_numbers, title: Numbers 1-10
+- _id: 698c9db447bea9f1dc50dee9, id: course_animals, title: Amazing Animals
+- _id: 698c9db447bea9f1dc50deea, id: course_102, title: Active Listening Skills
+- _id: 698c9db447bea9f1dc50deeb, id: course_103, title: Vocabulary: Home
+- _id: 698c9db447bea9f1dc50deec, id: course_104, title: Business English
+- _id: 698c9db447bea9f1dc50deed, id: course_105, title: course_12345

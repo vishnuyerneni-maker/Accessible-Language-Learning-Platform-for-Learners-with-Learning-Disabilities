@@ -22,26 +22,26 @@
   --primary-color: #7c3aed;
   --primary-light: #a78bfa;
   --primary-dark: #5b21b6;
-  
+
   /* Secondary Gradient - Teal to Cyan */
   --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --secondary-color: #06b6d4;
   --secondary-light: #67e8f9;
   --secondary-dark: #0891b2;
-  
+
   /* Accent Colors */
   --accent-color: #f59e0b;
   --accent-pink: #ec4899;
   --accent-green: #10b981;
   --accent-red: #ef4444;
   --accent-orange: #fb923c;
-  
+
   /* Success, Warning, Error */
   --success-color: #10b981;
   --warning-color: #f59e0b;
   --error-color: #ef4444;
   --info-color: #3b82f6;
-  
+
   /* Neutral Colors - Light Theme */
   --background-color: #f8fafc;
   --background-gradient: linear-gradient(180deg, #f8fafc 0%, #e7e5ff 100%);
@@ -55,7 +55,7 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12);
   --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.15);
-  
+
   /* Glassmorphism */
   --glass-bg: rgba(255, 255, 255, 0.7);
   --glass-border: rgba(255, 255, 255, 0.18);
@@ -71,7 +71,7 @@
   --base-font-size: 16px;
   --line-height-base: 1.6;
   --line-height-heading: 1.2;
-  
+
   /* Font Weights */
   --font-light: 300;
   --font-normal: 400;
@@ -79,7 +79,7 @@
   --font-semibold: 600;
   --font-bold: 700;
   --font-extrabold: 800;
-  
+
   /* Spacing System (Enhanced) */
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -114,17 +114,17 @@
   --primary-color: #a78bfa;
   --primary-light: #c4b5fd;
   --primary-dark: #7c3aed;
-  
+
   --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   --secondary-color: #22d3ee;
   --secondary-light: #67e8f9;
   --secondary-dark: #06b6d4;
-  
+
   --accent-color: #fbbf24;
   --success-color: #34d399;
   --warning-color: #fbbf24;
   --error-color: #f87171;
-  
+
   --background-color: #0f172a;
   --background-gradient: linear-gradient(180deg, #0f172a 0%, #1e1b4b 100%);
   --surface-color: #1e293b;
@@ -137,7 +137,7 @@
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.5);
   --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.6);
-  
+
   --glass-bg: rgba(30, 41, 59, 0.7);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
@@ -152,7 +152,7 @@
   --success-color: #00FF00;
   --warning-color: #FFFF00;
   --error-color: #FF0000;
-  
+
   --background-color: #000000;
   --background-gradient: linear-gradient(180deg, #000000 0%, #1a1a1a 100%);
   --surface-color: #000000;
@@ -165,7 +165,7 @@
   --shadow-md: 0 0 0 3px #FFFFFF;
   --shadow-lg: 0 0 0 4px #FFFFFF;
   --shadow-xl: 0 0 0 5px #FFFFFF;
-  
+
   --glass-bg: rgba(0, 0, 0, 0.9);
   --glass-border: rgba(255, 255, 255, 1);
   --glass-shadow: 0 0 0 3px #FFFFFF;
@@ -198,7 +198,12 @@ body {
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family-heading);
   font-weight: var(--font-bold);
   line-height: var(--line-height-heading);
@@ -206,12 +211,30 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--spacing-md);
 }
 
-h1 { font-size: 2.5rem; font-weight: var(--font-extrabold); }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
-h5 { font-size: 1.125rem; }
-h6 { font-size: 1rem; }
+h1 {
+  font-size: 2.5rem;
+  font-weight: var(--font-extrabold);
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
 
 p {
   margin-bottom: var(--spacing-md);
@@ -270,16 +293,45 @@ body.dyslexia-font * {
 }
 
 /* Flexbox Utilities */
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.flex-row { flex-direction: row; }
-.flex-wrap { flex-wrap: wrap; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.justify-between { justify-content: space-between; }
-.gap-sm { gap: var(--spacing-sm); }
-.gap-md { gap: var(--spacing-md); }
-.gap-lg { gap: var(--spacing-lg); }
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-sm {
+  gap: var(--spacing-sm);
+}
+
+.gap-md {
+  gap: var(--spacing-md);
+}
+
+.gap-lg {
+  gap: var(--spacing-lg);
+}
 
 /* Grid Utilities */
 .grid {
@@ -566,12 +618,10 @@ body.dyslexia-font * {
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent);
   animation: shimmer 2s infinite;
 }
 
@@ -580,10 +630,8 @@ body.dyslexia-font * {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: conic-gradient(
-    var(--primary-color) var(--progress, 0%),
-    var(--border-color) 0%
-  );
+  background: conic-gradient(var(--primary-color) var(--progress, 0%),
+      var(--border-color) 0%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -682,14 +730,22 @@ body.dyslexia-font * {
 /* =========================================
    RESPONSIVE DESIGN
    ========================================= */
+/* =========================================
+   RESPONSIVE DESIGN (ENHANCED)
+   ========================================= */
 @media (max-width: 1024px) {
   :root {
     --base-font-size: 15px;
   }
-  
-  h1 { font-size: 2rem; }
-  h2 { font-size: 1.75rem; }
-  
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
   .container {
     padding: 0 var(--spacing-md);
   }
@@ -701,11 +757,19 @@ body.dyslexia-font * {
     --spacing-lg: 16px;
     --spacing-xl: 24px;
   }
-  
-  h1 { font-size: 1.75rem; }
-  h2 { font-size: 1.5rem; }
-  h3 { font-size: 1.25rem; }
-  
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+
   .a11y-toolbar {
     top: auto;
     bottom: 10px;
@@ -715,45 +779,82 @@ body.dyslexia-font * {
     justify-content: center;
     padding: var(--spacing-sm);
   }
-  
+
   .a11y-btn {
     flex: 1;
     min-width: 60px;
     padding: 8px;
     font-size: 0.8rem;
   }
-  
+
   .btn {
     padding: 10px 20px;
   }
-  
+
   .card {
     padding: var(--spacing-lg);
   }
-  
+
   .grid-2,
   .grid-3 {
     grid-template-columns: 1fr;
   }
-  
+
   .toast {
     min-width: 250px;
     max-width: 90%;
   }
+
+  /* Quiz Specifics */
+  .option-btn {
+    padding: 12px;
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
+  body {
+    padding-bottom: 100px;
+    /* Prevent content from being hidden behind fixed toolbar */
+  }
+
   :root {
     --spacing-md: 12px;
     --spacing-lg: 16px;
   }
-  
+
   .container {
     padding: 0 var(--spacing-sm);
   }
-  
+
   .btn-lg {
     padding: 12px 24px;
     font-size: 1rem;
+    width: 100%;
+    /* Full width buttons on mobile */
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  /* Quiz layout adjustments */
+  main.container {
+    margin-top: 20px !important;
+  }
+
+  .card {
+    padding: 15px;
+  }
+
+  /* Header adjustments */
+  header .container {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-outline {
+    width: 100%;
+    text-align: center;
   }
 }

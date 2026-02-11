@@ -82,6 +82,7 @@
 
     </main>
 
+    <script src="course_data.js"></script>
     <script src="script.js"></script>
     <script src="voice-features.js"></script>
     <script>
@@ -144,52 +145,46 @@
             document.getElementById('question-text').innerText = '';
 
             try {
-                // Attempt to get question from service
+                // Determine source for questionData
                 let questionData = null;
-                try {
-                    questionData = await GeminiService.generateQuizQuestion(QUIZ_TOPIC);
-                } catch (e) {
-                    console.warn("AI Service failed, using local fallback");
+
+                // 1. Check if we have curated questions for this course
+                if (typeof COURSE_DATA !== 'undefined' && COURSE_DATA[courseId] && COURSE_DATA[courseId].quiz) {
+                    const curatedPool = COURSE_DATA[courseId].quiz;
+                    // Pick uniquely if possible, or random from pool
+                    questionData = curatedPool[currentQuestionIndex % curatedPool.length];
                 }
 
-                // FORCE FALLBACK if service returns null or fails
+                // 2. Fallback to AI if no curated pool OR for extra variety if needed
                 if (!questionData) {
-                    const localQuestions = [
-                        {
-                            type: "multiple_choice",
-                            question: `What is a key concept in ${QUIZ_TOPIC}?`,
-                            options: ["Learning", "Sleeping", "Running", "Eating"],
-                            correctIndex: 0,
-                            explanation: "Learning is the main goal!"
-                        },
-                        {
-                            type: "multiple_choice",
-                            question: "Which is correct?",
-                            options: ["Wrong", "Incorrect", "Right", "Bad"],
-                            correctIndex: 2,
-                            explanation: "Right is correct."
-                        },
-                        {
-                            type: "speak_sentence",
-                            targetSentence: "I can do this",
-                            explanation: "Say the sentence to practice."
-                        }
-                    ];
-                    // Pick one based on index to ensure variety in 3-question set
-                    questionData = localQuestions[currentQuestionIndex % localQuestions.length];
+                    try {
+                        questionData = await GeminiService.generateQuizQuestion(QUIZ_TOPIC);
+                    } catch (e) {
+                        console.warn("AI Service failed, using ultimate fallback");
+                    }
+                }
+
+                // 3. ULTIMATE SAFETY FALLBACK (if both curated and AI fail)
+                if (!questionData) {
+                    questionData = {
+                        type: "multiple_choice",
+                        question: "Great job! Is learning fun?",
+                        options: ["Yes!", "Absolutely", "Of course", "Always"],
+                        correctIndex: 0,
+                        explanation: "Learning is always fun!"
+                    };
                 }
 
                 renderQuestion(questionData);
 
             } catch (err) {
                 console.error("Critical Quiz Error:", err);
-                // Ultimate safety net
                 renderQuestion({
                     type: "multiple_choice",
-                    question: "Emergency Question: Is this working?",
-                    options: ["Yes", "No", "Maybe", "Sort of"],
+                    question: "Safe Mode: Ready for the next one?",
+                    options: ["Yes", "Sure", "OK", "Continue"],
                     correctIndex: 0,
-                    explanation: "If you see this, the safe mode worked."
+                    explanation: "An error occurred, but we can keep going!"
                 });
             }
         }

@@ -18,7 +18,7 @@
 
     <header style="background-color: var(--surface-color); padding: 15px 0; border-bottom: 1px solid var(--border-color);">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
-            <h2 style="color: var(--primary-color);">Parent Portal</h2>
+            <h2 style="color: var(--primary-color);">Parent Portal </h2>
             <nav>
                 <span>Welcome, <strong>Mr. Parent</strong></span>
                 <a href="index.html" class="btn btn-outline" style="margin-left: 15px; padding: 5px 15px; font-size: 0.9rem;">Log Out</a>
@@ -36,7 +36,7 @@
             <div class="card">
                 <h3>Linked Student: Alex</h3>
                 <p><strong>Current Level:</strong> Beginner</p>
-                <p><strong>Last Active:</strong> Today, 10:30 AM</p>
+                <p><strong>Last Active:</strong> Today, 10:30 AM </p>
                 <hr style="margin: 15px 0; border: 0; border-top: 1px solid var(--border-color);">
                 <button class="btn btn-outline" style="width: 100%;">View Full Profile</button>
             </div>
@@ -84,7 +84,7 @@
                 return;
             }
 
-            // Show last 5 activities
+            //  Show last 5 activities
             user.recentActivity.slice(0, 5).forEach(act => {
                 list.innerHTML += `<li>${act.text} <span style="font-size:0.8em; color:#999;">(${act.time})</span></li>`;
             });
@@ -92,3 +92,4 @@
     </script>
 </body>
 </html>
+

@@ -7,6 +7,7 @@ import './styles/animations.css'
 import App from './App.jsx'
 
 import { AccessibilityProvider } from './context/AccessibilityContext.jsx'
+import './i18n';
 import { MockBackend } from './utils/MockBackend'
 
 MockBackend.init();

@@ -14,10 +14,29 @@ export const RhymeLab = ({ onClose }) => {
         let isMounted = true;
 
         // 1. Ensure Global Callback exists
-        window.onYouTubeIframeAPIReady = () => {
-            console.log("YouTube API Ready");
-            if (isMounted) initPlayer();
-        };
+        const loadYouTubeAPI = () => {
+  return new Promise((resolve) => {
+    if (window.YT && window.YT.Player) {
+      resolve(window.YT);
+      return;
+    }
+
+    const existingScript = document.querySelector(
+      'script[src="https://www.youtube.com/iframe_api"]'
+    );
+
+    if (!existingScript) {
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.body.appendChild(tag);
+    }
+
+    window.onYouTubeIframeAPIReady = () => {
+      resolve(window.YT);
+    };
+  });
+};
+
 
         // 2. Load Script if not present
         if (!window.YT) {

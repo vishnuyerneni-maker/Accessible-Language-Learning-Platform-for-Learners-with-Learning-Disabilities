@@ -1,0 +1,72 @@
+{
+    "landing": {
+        "hero": {
+            "badge": "🎓 AI-Powered Adventure",
+            "line1": "Your Learning",
+            "highlight": "Adventure",
+            "line2": "Starts Here!",
+            "subtitle": "Discover a world of personalized learning with fun games, AI magic, and tools made just for YOU!"
+        },
+        "features": {
+            "games": {
+                "title": "Fun Games",
+                "desc": "Earn XP & Badges"
+            },
+            "ai": {
+                "title": "AI Magic",
+                "desc": "Quizzes for You"
+            },
+            "accessible": {
+                "title": "For Everyone",
+                "desc": "Super Accessible"
+            }
+        },
+        "login": {
+            "welcome": "Welcome Back!",
+            "username_label": "Your Username",
+            "username_placeholder": "Type your username here...",
+            "password_label": "Your Password",
+            "password_placeholder": "Type your password here...",
+            "submit": "Let's Go! 🚀",
+            "new_user": "New here? <1>Join the Fun!</1>",
+            "quick_start": "Quick Start:"
+        },
+        "mfa": {
+            "title": "Authenticator Code",
+            "desc": "Enter the 6-digit code from your app.",
+            "label": "6-Digit Code",
+            "submit": "Verify & Log In 🛡️",
+            "back": "← Back to Login"
+        },
+        "why_choose": "Why Choose AccessLearn?",
+        "benefits": {
+            "motivated": {
+                "title": "Stay Motivated",
+                "desc": "Build learning streaks, earn badges, and level up as you progress"
+            },
+            "progress": {
+                "title": "Track Progress",
+                "desc": "Visual dashboards show your learning journey and achievements"
+            },
+            "parent": {
+                "title": "Parent Dashboard",
+                "desc": "Parents can monitor their child's progress and engagement"
+            }
+        }
+    },
+    "layout": {
+        "title": "AccessLearn",
+        "join": "Join Now! 🚀",
+        "welcome": "Welcome, <1>{{name}}</1>",
+        "admin_panel": "[Admin Panel]",
+        "guardian_dashboard": "[Guardian Dashboard]",
+        "dashboard": "🏠 Dashboard",
+        "guardian_hub": "🏠 Guardian Hub",
+        "profile": "👤 Profile",
+        "logout": "🚪 Logout",
+        "footer": "© 2026 AccessLearn. Making education accessible for everyone.",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "contact": "Contact Us"
+    }
+}

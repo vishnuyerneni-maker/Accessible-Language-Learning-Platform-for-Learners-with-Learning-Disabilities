@@ -1,0 +1,72 @@
+{
+    "landing": {
+        "hero": {
+            "badge": "🎓 Aventura Impulsada por IA",
+            "line1": "Tu Aprendizaje",
+            "highlight": "Aventura",
+            "line2": "¡Comienza Aquí!",
+            "subtitle": "¡Descubre un mundo de aprendizaje personalizado con juegos divertidos, magia de IA y herramientas hechas solo para TI!"
+        },
+        "features": {
+            "games": {
+                "title": "Juegos Divertidos",
+                "desc": "Gana XP e Insignias"
+            },
+            "ai": {
+                "title": "Magia de IA",
+                "desc": "Cuestionarios para Ti"
+            },
+            "accessible": {
+                "title": "Para Todos",
+                "desc": "Súper Accesible"
+            }
+        },
+        "login": {
+            "welcome": "¡Bienvenido de Nuevo!",
+            "username_label": "Tu Nombre de Usuario",
+            "username_placeholder": "Escribe tu nombre de usuario aquí...",
+            "password_label": "Tu Contraseña",
+            "password_placeholder": "Escribe tu contraseña aquí...",
+            "submit": "¡Vamos! 🚀",
+            "new_user": "¿Nuevo aquí? <1>¡Únete a la Diversión!</1>",
+            "quick_start": "Inicio Rápido:"
+        },
+        "mfa": {
+            "title": "Código de Autenticación",
+            "desc": "Ingresa el código de 6 dígitos de tu aplicación.",
+            "label": "Código de 6 Dígitos",
+            "submit": "Verificar e Iniciar Sesión 🛡️",
+            "back": "← Volver al Inicio de Sesión"
+        },
+        "why_choose": "¿Por qué elegir AccessLearn?",
+        "benefits": {
+            "motivated": {
+                "title": "Mantente Motivado",
+                "desc": "Crea rachas de aprendizaje, gana insignias y sube de nivel a medida que progresas"
+            },
+            "progress": {
+                "title": "Sigue tu Progreso",
+                "desc": "Tableros visuales muestran tu viaje de aprendizaje y logros"
+            },
+            "parent": {
+                "title": "Panel para Padres",
+                "desc": "Los padres pueden monitorear el progreso y la participación de sus hijos"
+            }
+        }
+    },
+    "layout": {
+        "title": "AccessLearn",
+        "join": "¡Únete Ahora! 🚀",
+        "welcome": "Bienvenido, <1>{{name}}</1>",
+        "admin_panel": "[Panel de Admin]",
+        "guardian_dashboard": "[Panel de Tutor]",
+        "dashboard": "🏠 Tablero",
+        "guardian_hub": "🏠 Centro de Tutor",
+        "profile": "👤 Perfil",
+        "logout": "🚪 Salir",
+        "footer": "© 2026 AccessLearn. Haciendo la educación accesible para todos.",
+        "privacy": "Política de Privacidad",
+        "terms": "Términos de Servicio",
+        "contact": "Contáctanos"
+    }
+}

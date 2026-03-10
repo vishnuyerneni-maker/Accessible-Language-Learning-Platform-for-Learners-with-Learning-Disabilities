@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeakSmart — Project Documentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-2: #1a1a28;
+            --border: #2a2a3d;
+            --text: #e4e4f0;
+            --text-muted: #8888a0;
+            --cyan: #06b6d4;
+            --purple: #7c3aed;
+            --pink: #ec4899;
+            --green: #22c55e;
+            --orange: #f97316;
+            --yellow: #eab308;
+            --radius: 16px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+        .header {
+            background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
+            border-bottom: 1px solid var(--border);
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.8rem; font-weight: 900; background: linear-gradient(135deg, var(--cyan), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header p { color: var(--text-muted); margin-top: 10px; font-size: 1.1rem; }
+
+        .image-wrapper {
+            width: 100%;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .image-wrapper img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .image-wrapper img:hover {
+            transform: scale(1.01);
+        }
+
+        .tabs {
+            display: flex; gap: 4px; padding: 16px 20px; background: var(--surface);
+            border-bottom: 1px solid var(--border); overflow-x: auto; justify-content: center; flex-wrap: wrap;
+        }
+        .tab {
+            padding: 12px 24px; border: 1px solid var(--border); border-radius: 12px;
+            background: transparent; color: var(--text-muted); cursor: pointer; font-weight: 700;
+            font-size: 0.9rem; transition: all 0.3s; white-space: nowrap; font-family: inherit;
+        }
+        .tab:hover { border-color: var(--cyan); color: var(--text); }
+        .tab.active { background: rgba(6,182,212,0.1); border-color: var(--cyan); color: var(--cyan); }
+
+        .content { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; margin-bottom: 24px; }
+        h2 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; color: var(--cyan); }
+        h3 { font-size: 1.4rem; font-weight: 700; margin: 24px 0 12px; color: var(--purple); }
+        h4 { font-size: 1.1rem; font-weight: 700; margin: 16px 0 8px; color: var(--text); }
+        p, li { color: var(--text-muted); font-size: 0.95rem; }
+
+        .endpoint {
+            background: var(--surface-2); border: 1px solid var(--border); border-radius: 12px;
+            padding: 20px; margin: 12px 0; transition: all 0.3s;
+        }
+        .endpoint:hover { border-color: var(--cyan); transform: translateY(-2px); }
+        .method { display: inline-block; padding: 4px 12px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; margin-right: 12px; font-family: 'JetBrains Mono', monospace; }
+        .method.get { background: rgba(34,197,94,0.15); color: var(--green); }
+        .method.post { background: rgba(6,182,212,0.15); color: var(--cyan); }
+        .method.put { background: rgba(249,115,22,0.15); color: var(--orange); }
+        .method.delete { background: rgba(236,72,153,0.15); color: var(--pink); }
+        .path { font-family: 'JetBrains Mono', monospace; font-weight: 600; font-size: 0.95rem; color: var(--text); }
+        .auth-badge { display: inline-block; padding: 2px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; margin-left: 10px; }
+        .auth-badge.public { background: rgba(34,197,94,0.1); color: var(--green); }
+        .auth-badge.private { background: rgba(249,115,22,0.1); color: var(--orange); }
+        .auth-badge.admin { background: rgba(236,72,153,0.1); color: var(--pink); }
+        .desc { margin-top: 8px; font-size: 0.85rem; color: var(--text-muted); }
+
+        code { font-family: 'JetBrains Mono', monospace; background: rgba(6,182,212,0.1); padding: 2px 8px; border-radius: 6px; font-size: 0.85rem; color: var(--cyan); }
+        pre { background: var(--surface-2); padding: 20px; border-radius: 12px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; border: 1px solid var(--border); margin: 12px 0; }
+
+        .diagram-container { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; margin: 24px 0; overflow-x: auto; }
+        .diagram-container .mermaid { display: flex; justify-content: center; }
+        .diagram-title { font-size: 1.3rem; font-weight: 800; margin-bottom: 20px; color: var(--purple); text-align: center; text-transform: uppercase; letter-spacing: 0.05em; }
+
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+        th { background: var(--surface-2); padding: 14px; text-align: left; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); border-bottom: 2px solid var(--border); }
+        td { padding: 14px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+        tr:hover td { background: rgba(6,182,212,0.03); }
+
+        ul, ol { padding-left: 24px; margin: 10px 0; }
+        li { margin: 6px 0; }
+
+        .tree { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; line-height: 1.8; white-space: pre; color: var(--text-muted); }
+        .tree span { color: var(--cyan); font-weight: 600; }
+
+        .role-card { display: inline-block; padding: 6px 16px; border-radius: 8px; font-weight: 700; font-size: 0.8rem; margin: 4px; }
+        .role-student { background: rgba(6,182,212,0.1); color: var(--cyan); }
+        .role-teacher { background: rgba(124,58,237,0.1); color: var(--purple); }
+        .role-admin { background: rgba(236,72,153,0.1); color: var(--pink); }
+        .role-parent { background: rgba(249,115,22,0.1); color: var(--orange); }
+
+        .env-table td:first-child { font-family: 'JetBrains Mono', monospace; color: var(--cyan); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>📘 SpeakSmart Documentation</h1>
+    <p>Comprehensive API Reference, User Guide, Developer Docs, Architecture & UML Diagrams</p>
+</div>
+
+<div class="tabs" id="tabs">
+    <button class="tab active" data-tab="api">API Reference</button>
+    <button class="tab" data-tab="user">User Guide</button>
+    <button class="tab" data-tab="dev">Developer Guide</button>
+    <button class="tab" data-tab="arch">Architecture</button>
+    <button class="tab" data-tab="db">Database Diagram</button>
+    <button class="tab" data-tab="structure">Project Structure</button>
+    <button class="tab" data-tab="class">Class Diagram</button>
+    <button class="tab" data-tab="usecase">Use Case Diagram</button>
+    <button class="tab" data-tab="sequence">Sequence Diagrams</button>
+    <button class="tab" data-tab="activity">Activity Diagram</button>
+    <button class="tab" data-tab="object">Object Diagram</button>
+</div>
+
+<div class="content">
+
+<!-- ===================== API REFERENCE ===================== -->
+<div class="section active" id="api">
+    <h2>🔌 API Reference</h2>
+    <p>Base URL: <code>http://localhost:5002/api</code> | All protected routes require <code>Authorization: Bearer &lt;token&gt;</code></p>
+
+    <h3>Authentication (/api/auth)</h3>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/register</span><span class="auth-badge public">Public</span><div class="desc">Register a new user. Body: <code>{ username, email, password, role?, name? }</code> → Returns user object + JWT token.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/login</span><span class="auth-badge public">Public</span><div class="desc">Login with credentials. Body: <code>{ username, password }</code> → Returns user + token, or <code>mfaRequired: true</code> if MFA enabled.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/login-mfa</span><span class="auth-badge public">Public</span><div class="desc">Complete MFA login. Body: <code>{ userId, code }</code> → Returns user + token after verifying TOTP code.</div></div>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/auth/profile</span><span class="auth-badge private">Auth Required</span><div class="desc">Get current user's profile (decoded from JWT). Returns full user object without password.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/mfa/generate-public</span><span class="auth-badge public">Public</span><div class="desc">Generate a public MFA secret during registration. Body: <code>{ username }</code> → Returns <code>{ secret, qr_code }</code>.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/mfa/generate</span><span class="auth-badge private">Auth Required</span><div class="desc">Generate MFA secret for authenticated user. Returns <code>{ secret, qr_code }</code>.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/mfa/verify</span><span class="auth-badge private">Auth Required</span><div class="desc">Verify a TOTP code. Body: <code>{ code, secret }</code> → Returns <code>{ verified: true/false }</code>.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/mfa/enable</span><span class="auth-badge private">Auth Required</span><div class="desc">Enable MFA for the user. Body: <code>{ secret, code }</code> → Stores MFA secret and enables MFA.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/auth/mfa/disable</span><span class="auth-badge private">Auth Required</span><div class="desc">Disable MFA for the user. Removes MFA secret and sets <code>mfaEnabled: false</code>.</div></div>
+
+    <h3>Users (/api/users)</h3>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/users</span><span class="auth-badge admin">Admin/Teacher</span><div class="desc">Get all users. Returns array of user objects (without passwords).</div></div>
+    <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/api/users/:id</span><span class="auth-badge admin">Admin/Teacher</span><div class="desc">Delete a user by MongoDB _id.</div></div>
+    <div class="endpoint"><span class="method put">PUT</span><span class="path">/api/users/progress</span><span class="auth-badge private">Auth Required</span><div class="desc">Update course progress. Body: <code>{ courseId, percent }</code> → Awards XP, checks badges, returns gamification data.</div></div>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/users/child/:id</span><span class="auth-badge private">Auth Required</span><div class="desc">Get linked children's progress (parent only). Returns array of child user profiles.</div></div>
+    <div class="endpoint"><span class="method put">PUT</span><span class="path">/api/users/child/lock</span><span class="auth-badge private">Auth Required</span><div class="desc">Toggle course lock for a child. Body: <code>{ childId, courseId }</code> → Returns updated parentSettings.</div></div>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/users/stats</span><span class="auth-badge private">Auth Required</span><div class="desc">Get system statistics: totalUsers, totalCourses, activeStudents, totalXP, avgProgress, completionRates.</div></div>
+
+    <h3>Courses (/api/courses)</h3>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/courses</span><span class="auth-badge private">Auth Required</span><div class="desc">Get all courses. Supports query params for filtering by category.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/courses</span><span class="auth-badge admin">Admin/Teacher</span><div class="desc">Create a new course. Body: <code>{ id, title, description, totalModules, image, category }</code>.</div></div>
+    <div class="endpoint"><span class="method put">PUT</span><span class="path">/api/courses/:id</span><span class="auth-badge admin">Admin/Teacher</span><div class="desc">Update a course by _id or custom id. Body: partial course object.</div></div>
+    <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/api/courses/:id</span><span class="auth-badge admin">Admin/Teacher</span><div class="desc">Delete a course by _id or custom id.</div></div>
+
+    <h3>Forum (/api/forum)</h3>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/forum</span><span class="auth-badge private">Auth Required</span><div class="desc">Get all forum posts sorted by newest first. Returns array with embedded replies.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/forum</span><span class="auth-badge private">Auth Required</span><div class="desc">Create a forum post. Body: <code>{ title, content, tags? }</code>.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/forum/:id/reply</span><span class="auth-badge private">Auth Required</span><div class="desc">Add a reply to a forum post. Body: <code>{ content }</code>.</div></div>
+
+    <h3>Announcements (/api/announcements)</h3>
+    <div class="endpoint"><span class="method get">GET</span><span class="path">/api/announcements</span><span class="auth-badge private">Auth Required</span><div class="desc">Get all active announcements sorted by newest first.</div></div>
+    <div class="endpoint"><span class="method post">POST</span><span class="path">/api/announcements</span><span class="auth-badge admin">Admin Only</span><div class="desc">Create an announcement. Body: <code>{ text }</code>.</div></div>
+    <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/api/announcements/:id</span><span class="auth-badge admin">Admin Only</span><div class="desc">Delete a single announcement by _id.</div></div>
+    <div class="endpoint"><span class="method delete">DELETE</span><span class="path">/api/announcements</span><span class="auth-badge admin">Admin Only</span><div class="desc">Clear all announcements.</div></div>
+</div>
+
+<!-- ===================== USER GUIDE ===================== -->
+<div class="section" id="user">
+    <h2>👤 User Guide</h2>
+    <div class="card">
+        <h3>Roles Overview</h3>
+        <p>SpeakSmart supports 4 user roles, each with distinct capabilities:</p>
+        <table>
+            <thead><tr><th>Role</th><th>Dashboard</th><th>Key Capabilities</th></tr></thead>
+            <tbody>
+                <tr><td><span class="role-card role-student">Student</span></td><td>Student Dashboard</td><td>View courses, take quizzes, speech practice, NLP writing lab, AI assistant, track XP/badges/streaks, forum</td></tr>
+                <tr><td><span class="role-card role-teacher">Teacher</span></td><td>Teacher Dashboard</td><td>View analytics, manage courses (CRUD), view student progress, push announcements, manage users</td></tr>
+                <tr><td><span class="role-card role-admin">Admin</span></td><td>Admin Dashboard</td><td>Full system control: manage all users, create/delete courses, push announcements, view system stats</td></tr>
+                <tr><td><span class="role-card role-parent">Guardian</span></td><td>Guardian Dashboard</td><td>Monitor child progress, lock/unlock courses, view activity reports, manage linked children</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>Student Features</h3>
+        <ul>
+            <li><strong>Course Library</strong> — Browse courses with categories (General, Dyslexia, Speech). Start courses, view progress.</li>
+            <li><strong>Lesson Player</strong> — Interactive lessons with concept cards, slide navigation, text-to-speech read-aloud.</li>
+            <li><strong>Quiz System</strong> — Multiple choice, written AI-evalulated, and voice pronunciation questions.</li>
+            <li><strong>Speech Practice Lab</strong> — Record your pronunciation, get word-by-word accuracy with Levenshtein scoring.</li>
+            <li><strong>NLP Writing Lab</strong> — AI-powered writing exercises with grammar and content evaluation.</li>
+            <li><strong>AI Writing Assistant</strong> — Real-time AI tutoring and writing feedback.</li>
+            <li><strong>Gamification</strong> — Earn XP, level up (8 levels), collect 8 badges, maintain daily streaks.</li>
+            <li><strong>Discussion Forum</strong> — Create posts, add replies, tag discussions.</li>
+            <li><strong>Multi-Factor Auth (MFA)</strong> — Enable TOTP-based MFA from your profile for enhanced security.</li>
+            <li><strong>Hindi Language Support</strong> — Toggle between English and Hindi for full bilingual UX.</li>
+        </ul>
+    </div>
+    <div class="card">
+        <h3>Quick Access Test Accounts</h3>
+        <table>
+            <thead><tr><th>Username</th><th>Password</th><th>Role</th></tr></thead>
+            <tbody>
+                <tr><td><code>student1a</code></td><td><code>password123</code></td><td><span class="role-card role-student">Student</span></td></tr>
+                <tr><td><code>teacher1</code></td><td><code>password123</code></td><td><span class="role-card role-teacher">Teacher</span></td></tr>
+                <tr><td><code>admin</code></td><td><code>admin123</code></td><td><span class="role-card role-admin">Admin</span></td></tr>
+                <tr><td><code>parent1</code></td><td><code>password123</code></td><td><span class="role-card role-parent">Guardian</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ===================== DEVELOPER GUIDE ===================== -->
+<div class="section" id="dev">
+    <h2>⚙️ Developer Guide</h2>
+    <div class="card">
+        <h3>Tech Stack</h3>
+        <table>
+            <thead><tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Frontend</td><td>React 18 + Vite</td><td>SPA with hot module reload</td></tr>
+                <tr><td>Routing</td><td>React Router v6</td><td>Client-side navigation + protected routes</td></tr>
+                <tr><td>State</td><td>React Context API</td><td>Auth state, user data, theme</td></tr>
+                <tr><td>HTTP</td><td>Axios</td><td>API calls with interceptors for JWT</td></tr>
+                <tr><td>i18n</td><td>react-i18next</td><td>English + Hindi translations</td></tr>
+                <tr><td>Backend</td><td>Node.js + Express</td><td>RESTful API server</td></tr>
+                <tr><td>Database</td><td>MongoDB Atlas + Mongoose</td><td>Cloud NoSQL database</td></tr>
+                <tr><td>Auth</td><td>JWT + bcryptjs + Speakeasy</td><td>Token auth + password hashing + TOTP MFA</td></tr>
+                <tr><td>Testing</td><td>Vitest + Playwright</td><td>Unit/Integration + E2E testing</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>Environment Variables</h3>
+        <table class="env-table">
+            <thead><tr><th>Variable</th><th>Location</th><th>Description</th></tr></thead>
+            <tbody>
+                <tr><td>MONGO_URI</td><td>backend/.env</td><td>MongoDB Atlas connection string</td></tr>
+                <tr><td>JWT_SECRET</td><td>backend/.env</td><td>Secret key for signing JWTs</td></tr>
+                <tr><td>PORT</td><td>backend/.env</td><td>Backend server port (default: 5002)</td></tr>
+                <tr><td>FRONTEND_URL</td><td>backend/.env</td><td>Frontend origin for CORS (production)</td></tr>
+                <tr><td>VITE_API_URL</td><td>.env</td><td>Backend API base URL (e.g. https://api.example.com/api)</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card">
+        <h3>Setup Instructions</h3>
+        <pre>
+# 1. Clone & install
+git clone &lt;repo-url&gt;
+cd react-app
+npm install
+cd backend && npm install && cd ..
+
+# 2. Create backend/.env
+MONGO_URI=mongodb+srv://...
+JWT_SECRET=your_jwt_secret
+PORT=5002
+
+# 3. Seed the database
+cd backend && node seed.js && cd ..
+
+# 4. Run development servers
+# Terminal 1: Backend
+cd backend && node server.js
+# Terminal 2: Frontend
+npm run dev
+        </pre>
+    </div>
+</div>
+
+<!-- ===================== ARCHITECTURE ===================== -->
+<div class="section" id="arch">
+    <h2>🏗️ System Architecture</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Three-Tier Architecture Diagram</div>
+        <div class="image-wrapper">
+            <img src="diagrams/architecture_diagram.png" alt="System Architecture Diagram">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== DATABASE DIAGRAM ===================== -->
+<div class="section" id="db">
+    <h2>🗄️ Database / ER Diagram</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Entity-Relationship Diagram — MongoDB Collections</div>
+        <div class="image-wrapper">
+            <img src="diagrams/er_diagram.png" alt="Database ER Diagram">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== PROJECT STRUCTURE ===================== -->
+<div class="section" id="structure">
+    <h2>📁 Project Structure</h2>
+    <div class="card">
+        <div class="tree">
+<span>react-app/</span>
+├── <span>src/</span>
+│   ├── <span>pages/</span>
+│   │   ├── HomePage.jsx         — Landing page with hero, features, CTA
+│   │   ├── LoginPage.jsx        — Login form with quick-access test accounts
+│   │   ├── RegisterPage.jsx     — Registration with optional MFA setup
+│   │   ├── StudentDashboard.jsx — XP, streaks, courses, announcements
+│   │   ├── TeacherDashboard.jsx — Analytics, course management
+│   │   ├── AdminDashboard.jsx   — Full system management panel
+│   │   ├── GuardianDashboard.jsx— Child monitoring, course locking
+│   │   ├── CourseLibrary.jsx    — Browse & filter all courses
+│   │   ├── LessonPlayer.jsx    — Slide-based lesson with TTS
+│   │   ├── Quiz.jsx            — MCQ, voice practice, written answers
+│   │   ├── SpeechPractice.jsx  — Pronunciation practice with scoring
+│   │   ├── NLPWritingLab.jsx   — AI writing exercises
+│   │   ├── AIWritingAssistant.jsx — Interactive AI tutor
+│   │   ├── DiscussionForum.jsx — Forum with posts and replies
+│   │   ├── ProfilePage.jsx     — User profile with MFA settings
+│   │   └── ProgressPage.jsx    — Detailed XP/badge/level tracking
+│   ├── <span>components/</span>
+│   │   ├── DashboardLayout.jsx  — Layout wrapper with sidebar
+│   │   ├── Sidebar.jsx          — Navigation sidebar
+│   │   ├── ProtectedRoute.jsx   — Role-based route guard
+│   │   ├── IconMapping.jsx      — Dynamic icon renderer
+│   │   └── ThemeToggle.jsx      — Light/dark mode switcher
+│   ├── <span>context/</span>
+│   │   └── AuthContext.jsx      — Global auth state (login, logout, user)
+│   ├── <span>utils/</span>
+│   │   ├── api.js               — Axios instance + all API service modules
+│   │   ├── voice.js             — VoiceFeatures (TTS) + VoiceInput (STT)
+│   │   └── GeminiService.js     — Google Gemini AI integration
+│   ├── <span>data/</span>
+│   │   └── course_data.js       — Static course content & quiz definitions
+│   ├── App.jsx                  — Root component + route definitions
+│   └── main.jsx                 — Entry point
+├── <span>backend/</span>
+│   ├── <span>controllers/</span>
+│   │   ├── authController.js    — register, login, MFA, profile
+│   │   ├── userController.js    — CRUD, progress, child, stats
+│   │   ├── courseController.js  — CRUD for courses
+│   │   ├── forumController.js   — posts + replies
+│   │   └── announcementController.js — CRUD announcements
+│   ├── <span>models/</span>
+│   │   ├── User.js              — User schema with gamification
+│   │   ├── Course.js            — Course schema with categories
+│   │   ├── ForumPost.js         — Post + Reply schemas
+│   │   └── Announcement.js     — Announcement schema
+│   ├── <span>routes/</span>
+│   │   ├── authRoutes.js, userRoutes.js, courseRoutes.js
+│   │   ├── forumRoutes.js, announcementRoutes.js
+│   ├── <span>utils/</span>
+│   │   ├── authMiddleware.js    — protect, admin, adminOrTeacher
+│   │   └── gamification.js      — XP, levels, badges, streaks engine
+│   ├── <span>tests/</span>
+│   │   ├── e2e_auth.js, e2e_course_builder.js, e2e_parent_child.js
+│   ├── seed.js                  — Database seeder (14 accounts + courses)
+│   ├── server.js                — Express app entry point
+│   └── .env                     — Environment variables
+├── <span>tests/</span>
+│   └── app.spec.js              — Playwright E2E test
+├── <span>.github/workflows/</span>
+│   └── ci.yml                   — GitHub Actions CI/CD
+├── vite.config.js, package.json, playwright.config.js
+        </div>
+    </div>
+</div>
+
+<!-- ===================== CLASS DIAGRAM ===================== -->
+<div class="section" id="class">
+    <h2>📐 Class Diagram (UML)</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Class Diagram — Full Application</div>
+        <div class="image-wrapper">
+            <img src="diagrams/class_diagram.png" alt="UML Class Diagram">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== USE CASE DIAGRAM ===================== -->
+<div class="section" id="usecase">
+    <h2>🎯 Use Case Diagram (UML)</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Use Case Diagram — All Actors & Use Cases</div>
+        <div class="image-wrapper">
+            <img src="diagrams/usecase_diagram.png" alt="UML Use Case Diagram">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SEQUENCE DIAGRAMS ===================== -->
+<div class="section" id="sequence">
+    <h2>🔀 Sequence Diagrams (UML)</h2>
+
+    <div class="diagram-container">
+        <div class="diagram-title">Login Flow with MFA</div>
+        <div class="mermaid">
+sequenceDiagram
+    actor U as User
+    participant LP as LoginPage
+    participant AC as AuthContext
+    participant API as Axios API
+    participant AUTH as authController
+    participant MW as authMiddleware
+    participant DB as MongoDB
+    participant MFA as Speakeasy
+
+    U->>LP: Enter username & password
+    LP->>AC: login(username, password)
+    AC->>API: POST /api/auth/login
+    API->>AUTH: loginUser(req, res)
+    AUTH->>DB: User.findOne({ username })
+    DB-->>AUTH: user document
+    AUTH->>AUTH: bcrypt.compare(password, hash)
+    alt MFA Enabled
+        AUTH-->>API: { mfaRequired: true, userId }
+        API-->>AC: mfaRequired response
+        AC-->>LP: Show MFA input
+        U->>LP: Enter TOTP code
+        LP->>API: POST /api/auth/login-mfa
+        API->>AUTH: loginMfa(req, res)
+        AUTH->>MFA: speakeasy.totp.verify(code, secret)
+        MFA-->>AUTH: verified: true
+        AUTH->>AUTH: generateToken(user._id)
+        AUTH-->>API: { user, token }
+    else MFA Disabled
+        AUTH->>AUTH: generateToken(user._id)
+        AUTH-->>API: { user, token }
+    end
+    API-->>AC: { user, token }
+    AC->>AC: localStorage.setItem('user')
+    AC-->>LP: Redirect to Dashboard
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <div class="diagram-title">Course Progress & Gamification Flow</div>
+        <div class="mermaid">
+sequenceDiagram
+    actor S as Student
+    participant QZ as Quiz Component
+    participant API as Axios API
+    participant UC as userController
+    participant GE as GamificationEngine
+    participant DB as MongoDB
+
+    S->>QZ: Complete quiz question
+    QZ->>QZ: Calculate score
+    QZ->>API: PUT /api/users/progress { courseId, 100 }
+    API->>UC: updateProgress(req, res)
+    UC->>DB: User.findById(userId)
+    DB-->>UC: user document
+    UC->>UC: Check if percent > currentProgress
+    UC->>GE: onCourseComplete(user)
+    GE->>GE: awardXP(user, 200, "Course completed!")
+    GE->>GE: calculateLevel(newXP)
+    alt Level Up
+        GE->>GE: onLevelUp(user, oldLevel, newLevel)
+        GE->>GE: Add level_up activity
+    end
+    GE->>GE: checkBadges(user)
+    alt New Badge Earned
+        GE->>GE: Add badge activity
+    end
+    GE-->>UC: { newXP, leveledUp, newLevel }
+    UC->>DB: user.save()
+    DB-->>UC: saved
+    UC-->>API: { progress, gamification, recentActivity }
+    API-->>QZ: Updated data
+    QZ->>QZ: updateUser(gamification)
+    QZ-->>S: Show quiz results + XP animation
+        </div>
+    </div>
+
+    <div class="diagram-container">
+        <div class="diagram-title">Forum Post Creation Flow</div>
+        <div class="mermaid">
+sequenceDiagram
+    actor U as User
+    participant DF as DiscussionForum
+    participant API as Axios API
+    participant MW as authMiddleware
+    participant FC as forumController
+    participant DB as MongoDB
+
+    U->>DF: Write post title, content, tags
+    U->>DF: Click "Create Post"
+    DF->>API: POST /api/forum { title, content, tags }
+    API->>MW: protect middleware
+    MW->>MW: Verify JWT token
+    MW->>DB: User.findById(decoded.id)
+    DB-->>MW: req.user = user
+    MW->>FC: createPost(req, res)
+    FC->>FC: Validate title & content not empty
+    FC->>DB: ForumPost.create({ userId, username, title, content, tags })
+    DB-->>FC: savedPost
+    FC-->>API: 201 Created + post object
+    API-->>DF: New post data
+    DF->>DF: Refresh posts list
+    DF-->>U: Show new post at top
+        </div>
+    </div>
+</div>
+
+<!-- ===================== ACTIVITY DIAGRAM ===================== -->
+<div class="section" id="activity">
+    <h2>🔄 Activity Diagram (UML)</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Complete User Journey — Registration → Learning → Achievement</div>
+        <div class="image-wrapper">
+            <img src="diagrams/activity_diagram.png" alt="UML Activity Diagram">
+        </div>
+    </div>
+</div>
+
+<!-- ===================== OBJECT DIAGRAM ===================== -->
+<div class="section" id="object">
+    <h2>📦 Object Diagram (UML)</h2>
+    <div class="diagram-container">
+        <div class="diagram-title">Runtime Object Instances — Snapshot</div>
+        <div class="image-wrapper">
+            <img src="diagrams/object_diagram.png" alt="UML Object Diagram">
+        </div>
+    </div>
+</div>
+
+</div>
+
+<script>
+    mermaid.initialize({ 
+        startOnLoad: true, 
+        theme: 'dark',
+        themeVariables: {
+            primaryColor: '#7c3aed',
+            primaryTextColor: '#e4e4f0',
+            primaryBorderColor: '#2a2a3d',
+            lineColor: '#06b6d4',
+            secondaryColor: '#1a1a28',
+            tertiaryColor: '#12121a',
+            fontFamily: 'Inter, sans-serif',
+            fontSize: '14px'
+        }
+    });
+
+    // Tab switching
+    document.getElementById('tabs').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('tab')) return;
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        e.target.classList.add('active');
+        document.getElementById(e.target.dataset.tab).classList.add('active');
+    });
+</script>
+
+</body>
+</html>

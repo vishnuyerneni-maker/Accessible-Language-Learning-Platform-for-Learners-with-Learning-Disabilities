@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpeakSmart — Test Runner & Report</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        :root { --bg:#0a0a0f; --surface:#12121a; --surface-2:#1a1a28; --border:#2a2a3d; --text:#e4e4f0; --muted:#8888a0; --cyan:#06b6d4; --purple:#7c3aed; --green:#22c55e; --red:#ef4444; --orange:#f97316; --yellow:#eab308; }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+        .header{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border-bottom:1px solid var(--border);padding:40px 20px;text-align:center;}
+        .header h1{font-size:2.5rem;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .header p{color:var(--muted);margin-top:8px;}
+        .container{max-width:1000px;margin:30px auto;padding:0 20px;}
+        .config{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap;}
+        .config label{font-weight:700;font-size:0.9rem;color:var(--muted);}
+        .config input{background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:10px 16px;border-radius:10px;font-size:0.95rem;font-family:'JetBrains Mono',monospace;flex:1;min-width:200px;}
+        .btn{padding:14px 32px;border:none;border-radius:12px;font-weight:800;font-size:1rem;cursor:pointer;transition:all 0.3s;font-family:inherit;}
+        .btn-run{background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;}
+        .btn-run:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(6,182,212,0.3);}
+        .btn-run:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+        .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin:24px 0;}
+        .stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;}
+        .stat .num{font-size:2.4rem;font-weight:900;}
+        .stat .label{font-size:0.8rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px;}
+        .stat.total .num{color:var(--cyan);}
+        .stat.pass .num{color:var(--green);}
+        .stat.fail .num{color:var(--red);}
+        .stat.time .num{color:var(--orange);}
+        .suite{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin:16px 0;overflow:hidden;}
+        .suite-header{padding:20px 24px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border-bottom:1px solid var(--border);}
+        .suite-header h3{font-size:1.1rem;font-weight:800;}
+        .suite-badge{padding:4px 14px;border-radius:8px;font-weight:800;font-size:0.8rem;}
+        .suite-badge.running{background:rgba(234,179,8,0.15);color:var(--yellow);animation:pulse 1.5s infinite;}
+        .suite-badge.passed{background:rgba(34,197,94,0.15);color:var(--green);}
+        .suite-badge.failed{background:rgba(239,68,68,0.15);color:var(--red);}
+        .suite-badge.pending{background:rgba(136,136,160,0.15);color:var(--muted);}
+        @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+        .test-list{padding:0;}
+        .test{padding:14px 24px;border-bottom:1px solid rgba(42,42,61,0.5);display:flex;align-items:center;gap:14px;font-size:0.9rem;transition:background 0.2s;}
+        .test:hover{background:rgba(6,182,212,0.03);}
+        .test:last-child{border-bottom:none;}
+        .icon{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:900;flex-shrink:0;}
+        .icon.pass{background:rgba(34,197,94,0.15);color:var(--green);}
+        .icon.fail{background:rgba(239,68,68,0.15);color:var(--red);}
+        .icon.run{background:rgba(234,179,8,0.15);color:var(--yellow);animation:pulse 1s infinite;}
+        .icon.wait{background:rgba(136,136,160,0.1);color:var(--muted);}
+        .test-name{flex:1;font-weight:600;}
+        .test-time{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--muted);}
+        .test-error{color:var(--red);font-size:0.8rem;font-family:'JetBrains Mono',monospace;padding:8px 24px 14px 60px;background:rgba(239,68,68,0.03);}
+        .progress-bar{height:6px;background:var(--surface-2);border-radius:3px;margin:24px 0;overflow:hidden;}
+        .progress-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));transition:width 0.3s;border-radius:3px;}
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🧪 Test Runner & Report</h1>
+    <p>Run all tests against the live backend API — Unit, Integration, Regression & E2E</p>
+</div>
+
+<div class="container">
+    <div class="config">
+        <label>API Base URL:</label>
+        <input type="text" id="apiUrl" value="http://127.0.0.1:5002/api" />
+        <button class="btn btn-run" id="runBtn" onclick="runAllTests()">▶ Run All Tests</button>
+    </div>
+
+    <div class="progress-bar"><div class="progress-fill" id="progressBar" style="width:0%"></div></div>
+
+    <div class="summary">
+        <div class="stat total"><div class="num" id="totalCount">0</div><div class="label">Total Tests</div></div>
+        <div class="stat pass"><div class="num" id="passCount">0</div><div class="label">Passed</div></div>
+        <div class="stat fail"><div class="num" id="failCount">0</div><div class="label">Failed</div></div>
+        <div class="stat time"><div class="num" id="duration">0s</div><div class="label">Duration</div></div>
+    </div>
+
+    <div id="results"></div>
+</div>
+
+<script>
+const API = () => document.getElementById('apiUrl').value.replace(/\/+$/, '');
+let results = { total: 0, passed: 0, failed: 0 };
+let startTime;
+
+// ─── Seed data credentials (must match seed.js) ───
+const CREDS = {
+    student: { username: 'student1a', password: 'password123' },
+    teacher: { username: 'teacher1', password: 'password123' },
+    admin:   { username: 'admin', password: 'admin123' },
+    parent:  { username: 'parent1', password: 'password123' }
+};
+
+// ─── Helpers ───
+async function req(method, path, body, token) {
+    const opts = { method, headers: { 'Content-Type': 'application/json' } };
+    if (token) opts.headers['Authorization'] = `Bearer ${token}`;
+    if (body) opts.body = JSON.stringify(body);
+    const res = await fetch(`${API()}${path}`, opts);
+    const data = await res.json().catch(() => ({}));
+    return { status: res.status, ok: res.ok, data };
+}
+
+async function login(role) {
+    const c = CREDS[role];
+    const r = await req('POST', '/auth/login', { username: c.username, password: c.password });
+    if (!r.ok) throw new Error(`Login as ${role} (${c.username}) failed: ${r.data.message || r.status}`);
+    return r.data.token;
+}
+
+function updateStats() {
+    document.getElementById('totalCount').textContent = results.total;
+    document.getElementById('passCount').textContent = results.passed;
+    document.getElementById('failCount').textContent = results.failed;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    document.getElementById('duration').textContent = elapsed + 's';
+    const pct = results.total > 0 ? Math.round((results.passed + results.failed) / results.total * 100) : 0;
+    document.getElementById('progressBar').style.width = pct + '%';
+}
+
+function addSuite(id, name) {
+    const html = `<div class="suite" id="suite-${id}">
+        <div class="suite-header" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">
+            <h3>${name}</h3><span class="suite-badge pending" id="badge-${id}">PENDING</span>
+        </div><div class="test-list" id="tests-${id}"></div></div>`;
+    document.getElementById('results').insertAdjacentHTML('beforeend', html);
+}
+
+function setBadge(id, status) {
+    const b = document.getElementById(`badge-${id}`);
+    b.className = `suite-badge ${status}`;
+    b.textContent = status.toUpperCase();
+}
+
+function addTest(suiteId, name, status, time, error) {
+    const iconClass = status === 'pass' ? 'pass' : status === 'fail' ? 'fail' : status === 'run' ? 'run' : 'wait';
+    const iconChar = status === 'pass' ? '✓' : status === 'fail' ? '✗' : status === 'run' ? '◌' : '·';
+    let html = `<div class="test"><div class="icon ${iconClass}">${iconChar}</div><span class="test-name">${name}</span><span class="test-time">${time || ''}</span></div>`;
+    if (error) html += `<div class="test-error">⚠ ${error}</div>`;
+    document.getElementById(`tests-${suiteId}`).insertAdjacentHTML('beforeend', html);
+}
+
+async function runTest(suiteId, name, fn) {
+    results.total++;
+    updateStats();
+    const t0 = Date.now();
+    try {
+        await fn();
+        const ms = Date.now() - t0;
+        addTest(suiteId, name, 'pass', ms + 'ms');
+        results.passed++;
+    } catch (e) {
+        const ms = Date.now() - t0;
+        addTest(suiteId, name, 'fail', ms + 'ms', e.message);
+        results.failed++;
+    }
+    updateStats();
+}
+
+function assert(condition, msg) { if (!condition) throw new Error(msg || 'Assertion failed'); }
+
+// ─── Test Suites ───
+async function runAllTests() {
+    document.getElementById('runBtn').disabled = true;
+    document.getElementById('results').innerHTML = '';
+    results = { total: 0, passed: 0, failed: 0 };
+    startTime = Date.now();
+    updateStats();
+
+    // Pre-login tokens
+    let adminToken, studentToken, teacherToken, parentToken, testUserId;
+    const testUsername = 'test_runner_' + Date.now();
+
+    // Login all roles upfront
+    try {
+        adminToken = await login('admin');
+        studentToken = await login('student');
+        teacherToken = await login('teacher');
+        parentToken = await login('parent');
+    } catch (e) {
+        document.getElementById('results').innerHTML = `<div class="suite"><div class="suite-header"><h3>⚠ Pre-flight login failed: ${e.message}</h3><span class="suite-badge failed">FAILED</span></div></div>`;
+        document.getElementById('runBtn').disabled = false;
+        return;
+    }
+
+    // ═══════════ SUITE 1: UNIT TESTS ═══════════
+    addSuite('unit', '🔬 Unit Tests — Validation & Logic');
+    setBadge('unit', 'running');
+
+    await runTest('unit', 'Registration: Missing username returns 400', async () => {
+        const r = await req('POST', '/auth/register', { email: 'x@x.com', password: 'test123' });
+        assert(r.status === 400, `Expected 400, got ${r.status}`);
+    });
+    await runTest('unit', 'Registration: Missing password returns 400', async () => {
+        const r = await req('POST', '/auth/register', { username: 'nopass', email: 'x@x.com' });
+        assert(r.status === 400, `Expected 400, got ${r.status}`);
+    });
+    await runTest('unit', 'Registration: Missing email returns 400', async () => {
+        const r = await req('POST', '/auth/register', { username: 'noemail', password: 'test123' });
+        assert(r.status === 400, `Expected 400, got ${r.status}`);
+    });
+    await runTest('unit', 'Login: Invalid credentials returns 401', async () => {
+        const r = await req('POST', '/auth/login', { username: 'nonexistent_user_xyz', password: 'wrong' });
+        assert(r.status === 401, `Expected 401, got ${r.status}`);
+    });
+    await runTest('unit', 'Protected route: No token returns 401', async () => {
+        const r = await req('GET', '/users');
+        assert(r.status === 401, `Expected 401, got ${r.status}`);
+    });
+    await runTest('unit', 'Protected route: Invalid token returns 401', async () => {
+        const r = await req('GET', '/users', null, 'invalid.jwt.token');
+        assert(r.status === 401, `Expected 401, got ${r.status}`);
+    });
+    await runTest('unit', 'Forum: Empty title returns 400', async () => {
+        const r = await req('POST', '/forum', { title: '', content: 'test' }, studentToken);
+        assert(r.status === 400, `Expected 400, got ${r.status}`);
+    });
+    await runTest('unit', 'Forum: Empty content returns 400', async () => {
+        const r = await req('POST', '/forum', { title: 'test', content: '' }, studentToken);
+        assert(r.status === 400, `Expected 400, got ${r.status}`);
+    });
+
+    const unitFails = results.failed;
+    setBadge('unit', unitFails === 0 ? 'passed' : 'failed');
+
+    // ═══════════ SUITE 2: INTEGRATION TESTS ═══════════
+    addSuite('integration', '🔗 Integration Tests — API Workflows');
+    setBadge('integration', 'running');
+
+    await runTest('integration', 'Register new test user', async () => {
+        const r = await req('POST', '/auth/register', { username: testUsername, email: testUsername+'@test.com', password: 'test123', role: 'student' });
+        assert(r.ok, `Register failed: ${r.data.message || r.status}`);
+        assert(r.data.token, 'No token returned');
+        testUserId = r.data._id || r.data.id;
+    });
+
+    await runTest('integration', 'Login with new user', async () => {
+        const r = await req('POST', '/auth/login', { username: testUsername, password: 'test123' });
+        assert(r.ok, `Login failed: ${r.data.message}`);
+        assert(r.data.token, 'No token');
+    });
+
+    await runTest('integration', 'Get user profile (student)', async () => {
+        const r = await req('GET', '/auth/profile', null, studentToken);
+        assert(r.ok, `Profile failed: ${r.status}`);
+        assert(r.data.username === CREDS.student.username, `Username mismatch: ${r.data.username}`);
+    });
+
+    await runTest('integration', 'Get all courses', async () => {
+        const r = await req('GET', '/courses', null, studentToken);
+        assert(r.ok, `Courses failed: ${r.status}`);
+        assert(Array.isArray(r.data), 'Courses not an array');
+        assert(r.data.length > 0, 'No courses found');
+    });
+
+    await runTest('integration', 'Update course progress', async () => {
+        const r = await req('PUT', '/users/progress', { courseId: 'course_101', percent: 25 }, studentToken);
+        assert(r.ok, `Progress update failed: ${r.status}`);
+    });
+
+    await runTest('integration', 'Get system stats (admin)', async () => {
+        const r = await req('GET', '/users/stats', null, adminToken);
+        assert(r.ok, `Stats failed: ${r.status}`);
+        assert(typeof r.data.totalUsers === 'number', 'Missing totalUsers');
+    });
+
+    await runTest('integration', 'Forum: Create post', async () => {
+        const r = await req('POST', '/forum', { title: 'Test Post ' + Date.now(), content: 'Automated test content', tags: ['test'] }, studentToken);
+        assert(r.ok, `Create post failed: ${r.status}`);
+    });
+
+    await runTest('integration', 'Forum: Get all posts', async () => {
+        const r = await req('GET', '/forum', null, studentToken);
+        assert(r.ok, `Get posts failed: ${r.status}`);
+        assert(Array.isArray(r.data), 'Posts not an array');
+    });
+
+    await runTest('integration', 'Announcements: Get all', async () => {
+        const r = await req('GET', '/announcements', null, studentToken);
+        assert(r.ok, `Get announcements failed: ${r.status}`);
+    });
+
+    await runTest('integration', 'Announcements: Create (admin)', async () => {
+        const r = await req('POST', '/announcements', { text: 'Integration Test Announcement ' + Date.now() }, adminToken);
+        assert(r.ok, `Create announcement failed: ${r.status} - ${r.data.message}`);
+        // Cleanup
+        if (r.data._id) await req('DELETE', `/announcements/${r.data._id}`, null, adminToken);
+    });
+
+    const integFails = results.failed - unitFails;
+    setBadge('integration', integFails === 0 ? 'passed' : 'failed');
+
+    // ═══════════ SUITE 3: REGRESSION TESTS ═══════════
+    addSuite('regression', '🔁 Regression Tests — Previous Bug Verifications');
+    setBadge('regression', 'running');
+
+    await runTest('regression', 'Duplicate user registration fails (student1a)', async () => {
+        const r = await req('POST', '/auth/register', { username: 'student1a', email: 'dup@test.com', password: 'test123' });
+        assert(!r.ok, `Duplicate registration should fail, got status ${r.status}`);
+    });
+
+    await runTest('regression', 'Student cannot access user list', async () => {
+        const r = await req('GET', '/users', null, studentToken);
+        assert(r.status === 401, `Student should be blocked from /users, got ${r.status}`);
+    });
+
+    await runTest('regression', 'Admin CAN access user list', async () => {
+        const r = await req('GET', '/users', null, adminToken);
+        assert(r.ok, `Admin should access users, got ${r.status}`);
+    });
+
+    await runTest('regression', 'Admin CAN delete test user', async () => {
+        if (!testUserId) throw new Error('No test user to delete');
+        const r = await req('DELETE', `/users/${testUserId}`, null, adminToken);
+        assert(r.ok, `Delete failed: ${r.data.message || r.status}`);
+    });
+
+    await runTest('regression', 'Deleted user no longer in login', async () => {
+        const r = await req('POST', '/auth/login', { username: testUsername, password: 'test123' });
+        assert(!r.ok, 'Deleted user should not login');
+    });
+
+    await runTest('regression', 'Course CRUD: Create → Read → Delete', async () => {
+        const courseId = 'test_course_' + Date.now();
+        const cr = await req('POST', '/courses', { id: courseId, title: 'Test Course', description: 'Auto test', totalModules: 3, category: 'general' }, adminToken);
+        assert(cr.ok, `Create failed: ${cr.data.message || cr.status}`);
+        const readR = await req('GET', '/courses', null, adminToken);
+        assert(readR.ok, 'Read courses failed');
+        const found = readR.data.find(c => c.id === courseId);
+        assert(found, 'Created course not found');
+        const delR = await req('DELETE', `/courses/${courseId}`, null, adminToken);
+        assert(delR.ok, `Delete by custom id failed: ${delR.data.message || delR.status}`);
+    });
+
+    await runTest('regression', 'Announcement: Create → Read → Delete (admin)', async () => {
+        const cr = await req('POST', '/announcements', { text: 'Regression Test ' + Date.now() }, adminToken);
+        assert(cr.ok, `Create announcement failed: ${cr.status} - ${cr.data.message}`);
+        const annId = cr.data._id;
+        assert(annId, 'No announcement ID returned');
+        const delR = await req('DELETE', `/announcements/${annId}`, null, adminToken);
+        assert(delR.ok, `Delete announcement failed: ${delR.status}`);
+    });
+
+    await runTest('regression', 'Teacher can delete users (adminOrTeacher fix)', async () => {
+        // Create a temp user, then delete with teacher token
+        const tempUser = 'temp_del_' + Date.now();
+        const reg = await req('POST', '/auth/register', { username: tempUser, email: tempUser+'@test.com', password: 'test123', role: 'student' });
+        assert(reg.ok, 'Temp user registration failed');
+        const tempId = reg.data._id || reg.data.id;
+        const del = await req('DELETE', `/users/${tempId}`, null, teacherToken);
+        assert(del.ok, `Teacher delete failed: ${del.data.message || del.status}`);
+    });
+
+    const regFails = results.failed - unitFails - integFails;
+    setBadge('regression', regFails === 0 ? 'passed' : 'failed');
+
+    // ═══════════ SUITE 4: E2E TESTS ═══════════
+    addSuite('e2e', '🌍 End-to-End Tests — Full User Journeys');
+    setBadge('e2e', 'running');
+
+    await runTest('e2e', 'Student: Register → Login → Profile → Courses → Progress → Forum', async () => {
+        const e2eUser = 'e2e_' + Date.now();
+        const reg = await req('POST', '/auth/register', { username: e2eUser, email: e2eUser+'@e2e.com', password: 'e2e123', role: 'student' });
+        assert(reg.ok, `Register: ${reg.data.message || reg.status}`);
+        const loginR = await req('POST', '/auth/login', { username: e2eUser, password: 'e2e123' });
+        assert(loginR.ok, `Login: ${loginR.data.message}`);
+        const tok = loginR.data.token;
+        const prof = await req('GET', '/auth/profile', null, tok);
+        assert(prof.ok && prof.data.username === e2eUser, 'Profile mismatch');
+        const courses = await req('GET', '/courses', null, tok);
+        assert(courses.ok && courses.data.length > 0, 'No courses');
+        const prog = await req('PUT', '/users/progress', { courseId: courses.data[0].id, percent: 50 }, tok);
+        assert(prog.ok, 'Progress update failed');
+        const post = await req('POST', '/forum', { title: 'E2E Test', content: 'End to end!', tags: ['e2e'] }, tok);
+        assert(post.ok, 'Forum post failed');
+        // Cleanup
+        await req('DELETE', `/users/${reg.data._id || reg.data.id}`, null, adminToken);
+    });
+
+    await runTest('e2e', 'Teacher: Login → Stats → Create course → Delete course', async () => {
+        const stats = await req('GET', '/users/stats', null, teacherToken);
+        assert(stats.ok, 'Stats failed');
+        const cid = 'e2e_course_' + Date.now();
+        const cr = await req('POST', '/courses', { id: cid, title: 'E2E Course', description: 'test', totalModules: 1, category: 'general' }, teacherToken);
+        assert(cr.ok, `Create course failed: ${cr.data.message || cr.status}`);
+        const del = await req('DELETE', `/courses/${cid}`, null, teacherToken);
+        assert(del.ok, `Delete course failed: ${del.data.message || del.status}`);
+    });
+
+    await runTest('e2e', 'Admin: Users → Delete → Announcement lifecycle', async () => {
+        const users = await req('GET', '/users', null, adminToken);
+        assert(users.ok, 'List users failed');
+        const ann = await req('POST', '/announcements', { text: 'E2E Admin Test!' }, adminToken);
+        assert(ann.ok, `Push announcement failed: ${ann.data.message || ann.status}`);
+        await req('DELETE', `/announcements/${ann.data._id}`, null, adminToken);
+    });
+
+    await runTest('e2e', 'Parent: Login → Profile → Get child progress', async () => {
+        const parentProfile = await req('GET', '/auth/profile', null, parentToken);
+        assert(parentProfile.ok, 'Parent profile failed');
+        const children = await req('GET', `/users/child/${parentProfile.data._id}`, null, parentToken);
+        // 200 = children found, 400 = no children linked, 404 = children not found in DB
+        assert([200, 400, 404].includes(children.status), `Unexpected status: ${children.status}`);
+    });
+
+    const e2eFails = results.failed - unitFails - integFails - regFails;
+    setBadge('e2e', e2eFails === 0 ? 'passed' : 'failed');
+
+    // Final
+    document.getElementById('runBtn').disabled = false;
+    const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+    document.getElementById('duration').textContent = elapsed + 's';
+    document.getElementById('progressBar').style.width = '100%';
+    document.getElementById('progressBar').style.background = results.failed === 0 ? 'var(--green)' : 'linear-gradient(90deg,var(--green),var(--red))';
+}
+</script>
+</body>
+</html>

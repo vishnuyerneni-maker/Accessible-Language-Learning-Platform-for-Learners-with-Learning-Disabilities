@@ -1,0 +1,44 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      # Frontend
+      - name: Install Frontend Dependencies
+        run: npm ci
+
+      - name: Run Frontend Tests (Vitest)
+        run: npm test -- --run
+
+      - name: Build Frontend
+        run: npm run build
+
+      # Backend
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm ci
+
+    env:
+      VITE_API_URL: http://localhost:5002/api
+      CI: true

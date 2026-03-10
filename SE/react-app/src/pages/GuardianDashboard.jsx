@@ -3,11 +3,12 @@ import DashboardLayout from '../components/DashboardLayout';
 import { useAuth } from '../context/AuthContext';
 import { userAPI, courseAPI } from '../utils/api';
 import IconMapping from '../components/IconMapping';
+import { useNavigate } from 'react-router-dom';
 import { Shield, Home, FileText, BarChart3, Settings, Zap, Flame, Printer, Lock, Unlock, Trophy, BookOpen, User } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
 
 const GuardianDashboard = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const [activeTab, setActiveTab] = useState('hub');
     const [childrenData, setChildrenData] = useState([]);
@@ -107,7 +108,7 @@ const GuardianDashboard = () => {
                         <p style={{ fontSize: '1.2rem', color: 'var(--text-medium)', margin: '20px 0' }}>
                             {t('guardian.pending')}
                         </p>
-                        <button className="btn btn-primary" onClick={() => window.location.href = '/profile'}>
+                        <button className="btn btn-primary" onClick={() => navigate('/profile')}>
                             {t('guardian.linkChild')}
                         </button>
                     </div>

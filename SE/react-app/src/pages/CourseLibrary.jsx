@@ -5,10 +5,12 @@ import { courseAPI } from '../utils/api';
 import { COURSE_DATA } from '../data/course_data';
 import IconMapping from '../components/IconMapping';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Lock, Unlock, CheckCircle2, Info, BookOpen, ArrowRight, Star } from 'lucide-react';
 
 const CourseLibrary = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const { t } = useTranslation();
@@ -134,7 +136,7 @@ const CourseLibrary = () => {
                                                 if (!hasData) {
                                                     alert(t('courseLibrary.underConstruction'));
                                                 } else if (!course.locked) {
-                                                    window.location.href = `/lesson/${course.id}`;
+                                                    navigate(`/lesson/${course.id}`);
                                                 }
                                             }}
                                             style={{

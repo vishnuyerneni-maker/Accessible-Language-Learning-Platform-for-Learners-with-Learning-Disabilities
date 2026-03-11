@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { userAPI, courseAPI } from '../utils/api';
 import IconMapping from '../components/IconMapping';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Shield, Home, FileText, BarChart3, Settings, Zap, Flame, Printer, Lock, Unlock, Trophy, BookOpen, User } from 'lucide-react';
 
 const GuardianDashboard = () => {
